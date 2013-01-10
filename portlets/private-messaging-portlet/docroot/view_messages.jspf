@@ -17,6 +17,10 @@
  */
 --%>
 
+<liferay-ui:error key="error">
+	<%= errorException %>
+</liferay-ui:error>
+
 <aui:layout cssClass="controls">
 	<aui:column columnWidth="85" cssClass="col-1">
 		<aui:button cssClass="check-all" name="checkAll" type="checkbox" />
