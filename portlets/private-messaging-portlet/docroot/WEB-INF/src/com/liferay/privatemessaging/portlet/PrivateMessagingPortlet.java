@@ -110,8 +110,6 @@ public class PrivateMessagingPortlet extends MVCPortlet {
 		}
 	}
 
-	
-
 	public void getMessageAttachment(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
@@ -229,10 +227,10 @@ public class PrivateMessagingPortlet extends MVCPortlet {
 				themeDisplay);
 		}
 		catch (Exception e) {
-			if ((!(e instanceof FileExtensionException)) &&
-				(!(e instanceof FileNameException)) &&
-				(!(e instanceof FileSizeException)) &&
-				(!(e instanceof UserScreenNameException))) {
+			if (!(e instanceof FileExtensionException) &&
+				!(e instanceof FileNameException) &&
+				!(e instanceof FileSizeException) &&
+				!(e instanceof UserScreenNameException)) {
 
 				_log.error(e);
 			}
@@ -325,9 +323,6 @@ public class PrivateMessagingPortlet extends MVCPortlet {
 	protected String getMessage(PortletRequest portletRequest, Exception key)
 		throws Exception {
 
-		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
 		String message = null;
 
 		if (key instanceof FileExtensionException) {
@@ -363,8 +358,7 @@ public class PrivateMessagingPortlet extends MVCPortlet {
 				fileMaxSize);
 		}
 		else if (key instanceof IOException) {
-			message = translate(
-				portletRequest, "unable-to-process-attachment");
+			message = translate(portletRequest, "unable-to-process-attachment");
 		}
 		else if (key instanceof UserScreenNameException) {
 			message = translate(

@@ -489,8 +489,8 @@ public class UserThreadLocalServiceImpl extends UserThreadLocalServiceBaseImpl {
 				continue;
 			}
 
-			InternetAddress to =
-				createEmailAddress(recipient.getEmailAddress());
+			InternetAddress to = createEmailAddress(
+				recipient.getEmailAddress());
 
 			Format dateFormatDateTime =
 				FastDateFormatFactoryUtil.getSimpleDateFormat(
