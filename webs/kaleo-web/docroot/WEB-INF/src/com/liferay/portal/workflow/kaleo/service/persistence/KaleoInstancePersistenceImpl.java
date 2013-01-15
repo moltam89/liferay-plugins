@@ -14,7 +14,6 @@
 
 package com.liferay.portal.workflow.kaleo.service.persistence;
 
-import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -1725,24 +1724,30 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 
 			query.append(_FINDER_COLUMN_C_KDN_KDV_CD_COMPANYID_2);
 
+			boolean bindKaleoDefinitionName = false;
+
 			if (kaleoDefinitionName == null) {
 				query.append(_FINDER_COLUMN_C_KDN_KDV_CD_KALEODEFINITIONNAME_1);
 			}
+			else if (kaleoDefinitionName.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_C_KDN_KDV_CD_KALEODEFINITIONNAME_3);
+			}
 			else {
-				if (kaleoDefinitionName.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_C_KDN_KDV_CD_KALEODEFINITIONNAME_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_C_KDN_KDV_CD_KALEODEFINITIONNAME_2);
-				}
+				bindKaleoDefinitionName = true;
+
+				query.append(_FINDER_COLUMN_C_KDN_KDV_CD_KALEODEFINITIONNAME_2);
 			}
 
 			query.append(_FINDER_COLUMN_C_KDN_KDV_CD_KALEODEFINITIONVERSION_2);
+
+			boolean bindCompletionDate = false;
 
 			if (completionDate == null) {
 				query.append(_FINDER_COLUMN_C_KDN_KDV_CD_COMPLETIONDATE_1);
 			}
 			else {
+				bindCompletionDate = true;
+
 				query.append(_FINDER_COLUMN_C_KDN_KDV_CD_COMPLETIONDATE_2);
 			}
 
@@ -1768,13 +1773,13 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 
 				qPos.add(companyId);
 
-				if (kaleoDefinitionName != null) {
+				if (bindKaleoDefinitionName) {
 					qPos.add(kaleoDefinitionName);
 				}
 
 				qPos.add(kaleoDefinitionVersion);
 
-				if (completionDate != null) {
+				if (bindCompletionDate) {
 					qPos.add(CalendarUtil.getTimestamp(completionDate));
 				}
 
@@ -2019,24 +2024,30 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 
 		query.append(_FINDER_COLUMN_C_KDN_KDV_CD_COMPANYID_2);
 
+		boolean bindKaleoDefinitionName = false;
+
 		if (kaleoDefinitionName == null) {
 			query.append(_FINDER_COLUMN_C_KDN_KDV_CD_KALEODEFINITIONNAME_1);
 		}
+		else if (kaleoDefinitionName.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_C_KDN_KDV_CD_KALEODEFINITIONNAME_3);
+		}
 		else {
-			if (kaleoDefinitionName.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_C_KDN_KDV_CD_KALEODEFINITIONNAME_3);
-			}
-			else {
-				query.append(_FINDER_COLUMN_C_KDN_KDV_CD_KALEODEFINITIONNAME_2);
-			}
+			bindKaleoDefinitionName = true;
+
+			query.append(_FINDER_COLUMN_C_KDN_KDV_CD_KALEODEFINITIONNAME_2);
 		}
 
 		query.append(_FINDER_COLUMN_C_KDN_KDV_CD_KALEODEFINITIONVERSION_2);
+
+		boolean bindCompletionDate = false;
 
 		if (completionDate == null) {
 			query.append(_FINDER_COLUMN_C_KDN_KDV_CD_COMPLETIONDATE_1);
 		}
 		else {
+			bindCompletionDate = true;
+
 			query.append(_FINDER_COLUMN_C_KDN_KDV_CD_COMPLETIONDATE_2);
 		}
 
@@ -2110,13 +2121,13 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 
 		qPos.add(companyId);
 
-		if (kaleoDefinitionName != null) {
+		if (bindKaleoDefinitionName) {
 			qPos.add(kaleoDefinitionName);
 		}
 
 		qPos.add(kaleoDefinitionVersion);
 
-		if (completionDate != null) {
+		if (bindCompletionDate) {
 			qPos.add(CalendarUtil.getTimestamp(completionDate));
 		}
 
@@ -2187,24 +2198,30 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 
 			query.append(_FINDER_COLUMN_C_KDN_KDV_CD_COMPANYID_2);
 
+			boolean bindKaleoDefinitionName = false;
+
 			if (kaleoDefinitionName == null) {
 				query.append(_FINDER_COLUMN_C_KDN_KDV_CD_KALEODEFINITIONNAME_1);
 			}
+			else if (kaleoDefinitionName.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_C_KDN_KDV_CD_KALEODEFINITIONNAME_3);
+			}
 			else {
-				if (kaleoDefinitionName.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_C_KDN_KDV_CD_KALEODEFINITIONNAME_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_C_KDN_KDV_CD_KALEODEFINITIONNAME_2);
-				}
+				bindKaleoDefinitionName = true;
+
+				query.append(_FINDER_COLUMN_C_KDN_KDV_CD_KALEODEFINITIONNAME_2);
 			}
 
 			query.append(_FINDER_COLUMN_C_KDN_KDV_CD_KALEODEFINITIONVERSION_2);
+
+			boolean bindCompletionDate = false;
 
 			if (completionDate == null) {
 				query.append(_FINDER_COLUMN_C_KDN_KDV_CD_COMPLETIONDATE_1);
 			}
 			else {
+				bindCompletionDate = true;
+
 				query.append(_FINDER_COLUMN_C_KDN_KDV_CD_COMPLETIONDATE_2);
 			}
 
@@ -2221,13 +2238,13 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 
 				qPos.add(companyId);
 
-				if (kaleoDefinitionName != null) {
+				if (bindKaleoDefinitionName) {
 					qPos.add(kaleoDefinitionName);
 				}
 
 				qPos.add(kaleoDefinitionVersion);
 
-				if (completionDate != null) {
+				if (bindCompletionDate) {
 					qPos.add(CalendarUtil.getTimestamp(completionDate));
 				}
 
@@ -2254,7 +2271,7 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 	private static final String _FINDER_COLUMN_C_KDN_KDV_CD_KALEODEFINITIONNAME_2 =
 		"kaleoInstance.kaleoDefinitionName = ? AND ";
 	private static final String _FINDER_COLUMN_C_KDN_KDV_CD_KALEODEFINITIONNAME_3 =
-		"(kaleoInstance.kaleoDefinitionName IS NULL OR kaleoInstance.kaleoDefinitionName = ?) AND ";
+		"(kaleoInstance.kaleoDefinitionName IS NULL OR kaleoInstance.kaleoDefinitionName = '') AND ";
 	private static final String _FINDER_COLUMN_C_KDN_KDV_CD_KALEODEFINITIONVERSION_2 =
 		"kaleoInstance.kaleoDefinitionVersion = ? AND ";
 	private static final String _FINDER_COLUMN_C_KDN_KDV_CD_COMPLETIONDATE_1 = "kaleoInstance.completionDate IS NULL";
@@ -2363,7 +2380,7 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 	 */
 	public KaleoInstance remove(long kaleoInstanceId)
 		throws NoSuchInstanceException, SystemException {
-		return remove(Long.valueOf(kaleoInstanceId));
+		return remove((Serializable)kaleoInstanceId);
 	}
 
 	/**
@@ -2481,7 +2498,7 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 			if ((kaleoInstanceModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(kaleoInstanceModelImpl.getOriginalCompanyId())
+						kaleoInstanceModelImpl.getOriginalCompanyId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_COMPANYID,
@@ -2489,9 +2506,7 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID,
 					args);
 
-				args = new Object[] {
-						Long.valueOf(kaleoInstanceModelImpl.getCompanyId())
-					};
+				args = new Object[] { kaleoInstanceModelImpl.getCompanyId() };
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_COMPANYID,
 					args);
@@ -2502,7 +2517,7 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 			if ((kaleoInstanceModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KALEODEFINITIONID.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(kaleoInstanceModelImpl.getOriginalKaleoDefinitionId())
+						kaleoInstanceModelImpl.getOriginalKaleoDefinitionId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_KALEODEFINITIONID,
@@ -2511,7 +2526,7 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 					args);
 
 				args = new Object[] {
-						Long.valueOf(kaleoInstanceModelImpl.getKaleoDefinitionId())
+						kaleoInstanceModelImpl.getKaleoDefinitionId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_KALEODEFINITIONID,
@@ -2523,8 +2538,8 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 			if ((kaleoInstanceModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KDI_C.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(kaleoInstanceModelImpl.getOriginalKaleoDefinitionId()),
-						Boolean.valueOf(kaleoInstanceModelImpl.getOriginalCompleted())
+						kaleoInstanceModelImpl.getOriginalKaleoDefinitionId(),
+						kaleoInstanceModelImpl.getOriginalCompleted()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_KDI_C, args);
@@ -2532,8 +2547,8 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 					args);
 
 				args = new Object[] {
-						Long.valueOf(kaleoInstanceModelImpl.getKaleoDefinitionId()),
-						Boolean.valueOf(kaleoInstanceModelImpl.getCompleted())
+						kaleoInstanceModelImpl.getKaleoDefinitionId(),
+						kaleoInstanceModelImpl.getCompleted()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_KDI_C, args);
@@ -2544,11 +2559,9 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 			if ((kaleoInstanceModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_KDN_KDV_CD.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(kaleoInstanceModelImpl.getOriginalCompanyId()),
-						
+						kaleoInstanceModelImpl.getOriginalCompanyId(),
 						kaleoInstanceModelImpl.getOriginalKaleoDefinitionName(),
-						Integer.valueOf(kaleoInstanceModelImpl.getOriginalKaleoDefinitionVersion()),
-						
+						kaleoInstanceModelImpl.getOriginalKaleoDefinitionVersion(),
 						kaleoInstanceModelImpl.getOriginalCompletionDate()
 					};
 
@@ -2558,11 +2571,9 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 					args);
 
 				args = new Object[] {
-						Long.valueOf(kaleoInstanceModelImpl.getCompanyId()),
-						
+						kaleoInstanceModelImpl.getCompanyId(),
 						kaleoInstanceModelImpl.getKaleoDefinitionName(),
-						Integer.valueOf(kaleoInstanceModelImpl.getKaleoDefinitionVersion()),
-						
+						kaleoInstanceModelImpl.getKaleoDefinitionVersion(),
 						kaleoInstanceModelImpl.getCompletionDate()
 					};
 
@@ -2615,13 +2626,24 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 	 *
 	 * @param primaryKey the primary key of the kaleo instance
 	 * @return the kaleo instance
-	 * @throws com.liferay.portal.NoSuchModelException if a kaleo instance with the primary key could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.NoSuchInstanceException if a kaleo instance with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public KaleoInstance findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchModelException, SystemException {
-		return findByPrimaryKey(((Long)primaryKey).longValue());
+		throws NoSuchInstanceException, SystemException {
+		KaleoInstance kaleoInstance = fetchByPrimaryKey(primaryKey);
+
+		if (kaleoInstance == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			}
+
+			throw new NoSuchInstanceException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
+		}
+
+		return kaleoInstance;
 	}
 
 	/**
@@ -2634,18 +2656,7 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 	 */
 	public KaleoInstance findByPrimaryKey(long kaleoInstanceId)
 		throws NoSuchInstanceException, SystemException {
-		KaleoInstance kaleoInstance = fetchByPrimaryKey(kaleoInstanceId);
-
-		if (kaleoInstance == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + kaleoInstanceId);
-			}
-
-			throw new NoSuchInstanceException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				kaleoInstanceId);
-		}
-
-		return kaleoInstance;
+		return findByPrimaryKey((Serializable)kaleoInstanceId);
 	}
 
 	/**
@@ -2658,20 +2669,8 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 	@Override
 	public KaleoInstance fetchByPrimaryKey(Serializable primaryKey)
 		throws SystemException {
-		return fetchByPrimaryKey(((Long)primaryKey).longValue());
-	}
-
-	/**
-	 * Returns the kaleo instance with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param kaleoInstanceId the primary key of the kaleo instance
-	 * @return the kaleo instance, or <code>null</code> if a kaleo instance with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public KaleoInstance fetchByPrimaryKey(long kaleoInstanceId)
-		throws SystemException {
 		KaleoInstance kaleoInstance = (KaleoInstance)EntityCacheUtil.getResult(KaleoInstanceModelImpl.ENTITY_CACHE_ENABLED,
-				KaleoInstanceImpl.class, kaleoInstanceId);
+				KaleoInstanceImpl.class, primaryKey);
 
 		if (kaleoInstance == _nullKaleoInstance) {
 			return null;
@@ -2684,20 +2683,19 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 				session = openSession();
 
 				kaleoInstance = (KaleoInstance)session.get(KaleoInstanceImpl.class,
-						Long.valueOf(kaleoInstanceId));
+						primaryKey);
 
 				if (kaleoInstance != null) {
 					cacheResult(kaleoInstance);
 				}
 				else {
 					EntityCacheUtil.putResult(KaleoInstanceModelImpl.ENTITY_CACHE_ENABLED,
-						KaleoInstanceImpl.class, kaleoInstanceId,
-						_nullKaleoInstance);
+						KaleoInstanceImpl.class, primaryKey, _nullKaleoInstance);
 				}
 			}
 			catch (Exception e) {
 				EntityCacheUtil.removeResult(KaleoInstanceModelImpl.ENTITY_CACHE_ENABLED,
-					KaleoInstanceImpl.class, kaleoInstanceId);
+					KaleoInstanceImpl.class, primaryKey);
 
 				throw processException(e);
 			}
@@ -2707,6 +2705,18 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 		}
 
 		return kaleoInstance;
+	}
+
+	/**
+	 * Returns the kaleo instance with the primary key or returns <code>null</code> if it could not be found.
+	 *
+	 * @param kaleoInstanceId the primary key of the kaleo instance
+	 * @return the kaleo instance, or <code>null</code> if a kaleo instance with the primary key could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public KaleoInstance fetchByPrimaryKey(long kaleoInstanceId)
+		throws SystemException {
+		return fetchByPrimaryKey((Serializable)kaleoInstanceId);
 	}
 
 	/**

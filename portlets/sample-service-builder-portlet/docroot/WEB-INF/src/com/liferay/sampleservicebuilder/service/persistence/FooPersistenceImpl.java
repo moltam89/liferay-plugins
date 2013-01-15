@@ -14,7 +14,6 @@
 
 package com.liferay.sampleservicebuilder.service.persistence;
 
-import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -191,16 +190,18 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 
 			query.append(_SQL_SELECT_FOO_WHERE);
 
+			boolean bindUuid = false;
+
 			if (uuid == null) {
 				query.append(_FINDER_COLUMN_UUID_UUID_1);
 			}
+			else if (uuid.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_UUID_UUID_3);
+			}
 			else {
-				if (uuid.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_UUID_UUID_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_UUID_UUID_2);
-				}
+				bindUuid = true;
+
+				query.append(_FINDER_COLUMN_UUID_UUID_2);
 			}
 
 			if (orderByComparator != null) {
@@ -223,7 +224,7 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (uuid != null) {
+				if (bindUuid) {
 					qPos.add(uuid);
 				}
 
@@ -408,16 +409,18 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 
 		query.append(_SQL_SELECT_FOO_WHERE);
 
+		boolean bindUuid = false;
+
 		if (uuid == null) {
 			query.append(_FINDER_COLUMN_UUID_UUID_1);
 		}
+		else if (uuid.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_UUID_UUID_3);
+		}
 		else {
-			if (uuid.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_UUID_UUID_3);
-			}
-			else {
-				query.append(_FINDER_COLUMN_UUID_UUID_2);
-			}
+			bindUuid = true;
+
+			query.append(_FINDER_COLUMN_UUID_UUID_2);
 		}
 
 		if (orderByComparator != null) {
@@ -488,7 +491,7 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 
 		QueryPos qPos = QueryPos.getInstance(q);
 
-		if (uuid != null) {
+		if (bindUuid) {
 			qPos.add(uuid);
 		}
 
@@ -543,16 +546,18 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 
 			query.append(_SQL_COUNT_FOO_WHERE);
 
+			boolean bindUuid = false;
+
 			if (uuid == null) {
 				query.append(_FINDER_COLUMN_UUID_UUID_1);
 			}
+			else if (uuid.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_UUID_UUID_3);
+			}
 			else {
-				if (uuid.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_UUID_UUID_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_UUID_UUID_2);
-				}
+				bindUuid = true;
+
+				query.append(_FINDER_COLUMN_UUID_UUID_2);
 			}
 
 			String sql = query.toString();
@@ -566,7 +571,7 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (uuid != null) {
+				if (bindUuid) {
 					qPos.add(uuid);
 				}
 
@@ -589,7 +594,7 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 
 	private static final String _FINDER_COLUMN_UUID_UUID_1 = "foo.uuid IS NULL";
 	private static final String _FINDER_COLUMN_UUID_UUID_2 = "foo.uuid = ?";
-	private static final String _FINDER_COLUMN_UUID_UUID_3 = "(foo.uuid IS NULL OR foo.uuid = ?)";
+	private static final String _FINDER_COLUMN_UUID_UUID_3 = "(foo.uuid IS NULL OR foo.uuid = '')";
 	public static final FinderPath FINDER_PATH_FETCH_BY_UUID_G = new FinderPath(FooModelImpl.ENTITY_CACHE_ENABLED,
 			FooModelImpl.FINDER_CACHE_ENABLED, FooImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G",
@@ -684,16 +689,18 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 
 			query.append(_SQL_SELECT_FOO_WHERE);
 
+			boolean bindUuid = false;
+
 			if (uuid == null) {
 				query.append(_FINDER_COLUMN_UUID_G_UUID_1);
 			}
+			else if (uuid.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_UUID_G_UUID_3);
+			}
 			else {
-				if (uuid.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_UUID_G_UUID_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_UUID_G_UUID_2);
-				}
+				bindUuid = true;
+
+				query.append(_FINDER_COLUMN_UUID_G_UUID_2);
 			}
 
 			query.append(_FINDER_COLUMN_UUID_G_GROUPID_2);
@@ -709,7 +716,7 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (uuid != null) {
+				if (bindUuid) {
 					qPos.add(uuid);
 				}
 
@@ -791,16 +798,18 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 
 			query.append(_SQL_COUNT_FOO_WHERE);
 
+			boolean bindUuid = false;
+
 			if (uuid == null) {
 				query.append(_FINDER_COLUMN_UUID_G_UUID_1);
 			}
+			else if (uuid.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_UUID_G_UUID_3);
+			}
 			else {
-				if (uuid.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_UUID_G_UUID_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_UUID_G_UUID_2);
-				}
+				bindUuid = true;
+
+				query.append(_FINDER_COLUMN_UUID_G_UUID_2);
 			}
 
 			query.append(_FINDER_COLUMN_UUID_G_GROUPID_2);
@@ -816,7 +825,7 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (uuid != null) {
+				if (bindUuid) {
 					qPos.add(uuid);
 				}
 
@@ -841,7 +850,7 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 
 	private static final String _FINDER_COLUMN_UUID_G_UUID_1 = "foo.uuid IS NULL AND ";
 	private static final String _FINDER_COLUMN_UUID_G_UUID_2 = "foo.uuid = ? AND ";
-	private static final String _FINDER_COLUMN_UUID_G_UUID_3 = "(foo.uuid IS NULL OR foo.uuid = ?) AND ";
+	private static final String _FINDER_COLUMN_UUID_G_UUID_3 = "(foo.uuid IS NULL OR foo.uuid = '') AND ";
 	private static final String _FINDER_COLUMN_UUID_G_GROUPID_2 = "foo.groupId = ?";
 	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_UUID_C = new FinderPath(FooModelImpl.ENTITY_CACHE_ENABLED,
 			FooModelImpl.FINDER_CACHE_ENABLED, FooImpl.class,
@@ -961,16 +970,18 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 
 			query.append(_SQL_SELECT_FOO_WHERE);
 
+			boolean bindUuid = false;
+
 			if (uuid == null) {
 				query.append(_FINDER_COLUMN_UUID_C_UUID_1);
 			}
+			else if (uuid.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_UUID_C_UUID_3);
+			}
 			else {
-				if (uuid.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_UUID_C_UUID_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_UUID_C_UUID_2);
-				}
+				bindUuid = true;
+
+				query.append(_FINDER_COLUMN_UUID_C_UUID_2);
 			}
 
 			query.append(_FINDER_COLUMN_UUID_C_COMPANYID_2);
@@ -995,7 +1006,7 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (uuid != null) {
+				if (bindUuid) {
 					qPos.add(uuid);
 				}
 
@@ -1197,16 +1208,18 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 
 		query.append(_SQL_SELECT_FOO_WHERE);
 
+		boolean bindUuid = false;
+
 		if (uuid == null) {
 			query.append(_FINDER_COLUMN_UUID_C_UUID_1);
 		}
+		else if (uuid.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_UUID_C_UUID_3);
+		}
 		else {
-			if (uuid.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_UUID_C_UUID_3);
-			}
-			else {
-				query.append(_FINDER_COLUMN_UUID_C_UUID_2);
-			}
+			bindUuid = true;
+
+			query.append(_FINDER_COLUMN_UUID_C_UUID_2);
 		}
 
 		query.append(_FINDER_COLUMN_UUID_C_COMPANYID_2);
@@ -1279,7 +1292,7 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 
 		QueryPos qPos = QueryPos.getInstance(q);
 
-		if (uuid != null) {
+		if (bindUuid) {
 			qPos.add(uuid);
 		}
 
@@ -1340,16 +1353,18 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 
 			query.append(_SQL_COUNT_FOO_WHERE);
 
+			boolean bindUuid = false;
+
 			if (uuid == null) {
 				query.append(_FINDER_COLUMN_UUID_C_UUID_1);
 			}
+			else if (uuid.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_UUID_C_UUID_3);
+			}
 			else {
-				if (uuid.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_UUID_C_UUID_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_UUID_C_UUID_2);
-				}
+				bindUuid = true;
+
+				query.append(_FINDER_COLUMN_UUID_C_UUID_2);
 			}
 
 			query.append(_FINDER_COLUMN_UUID_C_COMPANYID_2);
@@ -1365,7 +1380,7 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (uuid != null) {
+				if (bindUuid) {
 					qPos.add(uuid);
 				}
 
@@ -1390,7 +1405,7 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 
 	private static final String _FINDER_COLUMN_UUID_C_UUID_1 = "foo.uuid IS NULL AND ";
 	private static final String _FINDER_COLUMN_UUID_C_UUID_2 = "foo.uuid = ? AND ";
-	private static final String _FINDER_COLUMN_UUID_C_UUID_3 = "(foo.uuid IS NULL OR foo.uuid = ?) AND ";
+	private static final String _FINDER_COLUMN_UUID_C_UUID_3 = "(foo.uuid IS NULL OR foo.uuid = '') AND ";
 	private static final String _FINDER_COLUMN_UUID_C_COMPANYID_2 = "foo.companyId = ?";
 	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_FIELD2 = new FinderPath(FooModelImpl.ENTITY_CACHE_ENABLED,
 			FooModelImpl.FINDER_CACHE_ENABLED, FooImpl.class,
@@ -1874,7 +1889,7 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 			FooImpl.class, foo.getPrimaryKey(), foo);
 
 		FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_UUID_G,
-			new Object[] { foo.getUuid(), Long.valueOf(foo.getGroupId()) }, foo);
+			new Object[] { foo.getUuid(), foo.getGroupId() }, foo);
 
 		foo.resetOriginalValues();
 	}
@@ -1949,9 +1964,7 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 
 	protected void cacheUniqueFindersCache(Foo foo) {
 		if (foo.isNew()) {
-			Object[] args = new Object[] {
-					foo.getUuid(), Long.valueOf(foo.getGroupId())
-				};
+			Object[] args = new Object[] { foo.getUuid(), foo.getGroupId() };
 
 			FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_UUID_G, args,
 				Long.valueOf(1));
@@ -1962,9 +1975,7 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 
 			if ((fooModelImpl.getColumnBitmask() &
 					FINDER_PATH_FETCH_BY_UUID_G.getColumnBitmask()) != 0) {
-				Object[] args = new Object[] {
-						foo.getUuid(), Long.valueOf(foo.getGroupId())
-					};
+				Object[] args = new Object[] { foo.getUuid(), foo.getGroupId() };
 
 				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_UUID_G, args,
 					Long.valueOf(1));
@@ -1976,9 +1987,7 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 	protected void clearUniqueFindersCache(Foo foo) {
 		FooModelImpl fooModelImpl = (FooModelImpl)foo;
 
-		Object[] args = new Object[] {
-				foo.getUuid(), Long.valueOf(foo.getGroupId())
-			};
+		Object[] args = new Object[] { foo.getUuid(), foo.getGroupId() };
 
 		FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_UUID_G, args);
 		FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_UUID_G, args);
@@ -1987,7 +1996,7 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 				FINDER_PATH_FETCH_BY_UUID_G.getColumnBitmask()) != 0) {
 			args = new Object[] {
 					fooModelImpl.getOriginalUuid(),
-					Long.valueOf(fooModelImpl.getOriginalGroupId())
+					fooModelImpl.getOriginalGroupId()
 				};
 
 			FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_UUID_G, args);
@@ -2023,7 +2032,7 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 	 * @throws SystemException if a system exception occurred
 	 */
 	public Foo remove(long fooId) throws NoSuchFooException, SystemException {
-		return remove(Long.valueOf(fooId));
+		return remove((Serializable)fooId);
 	}
 
 	/**
@@ -2159,7 +2168,7 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID_C.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
 						fooModelImpl.getOriginalUuid(),
-						Long.valueOf(fooModelImpl.getOriginalCompanyId())
+						fooModelImpl.getOriginalCompanyId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_UUID_C, args);
@@ -2167,8 +2176,7 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 					args);
 
 				args = new Object[] {
-						fooModelImpl.getUuid(),
-						Long.valueOf(fooModelImpl.getCompanyId())
+						fooModelImpl.getUuid(), fooModelImpl.getCompanyId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_UUID_C, args);
@@ -2178,15 +2186,13 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 
 			if ((fooModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_FIELD2.getColumnBitmask()) != 0) {
-				Object[] args = new Object[] {
-						Boolean.valueOf(fooModelImpl.getOriginalField2())
-					};
+				Object[] args = new Object[] { fooModelImpl.getOriginalField2() };
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_FIELD2, args);
 				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_FIELD2,
 					args);
 
-				args = new Object[] { Boolean.valueOf(fooModelImpl.getField2()) };
+				args = new Object[] { fooModelImpl.getField2() };
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_FIELD2, args);
 				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_FIELD2,
@@ -2235,13 +2241,24 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 	 *
 	 * @param primaryKey the primary key of the foo
 	 * @return the foo
-	 * @throws com.liferay.portal.NoSuchModelException if a foo with the primary key could not be found
+	 * @throws com.liferay.sampleservicebuilder.NoSuchFooException if a foo with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public Foo findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchModelException, SystemException {
-		return findByPrimaryKey(((Long)primaryKey).longValue());
+		throws NoSuchFooException, SystemException {
+		Foo foo = fetchByPrimaryKey(primaryKey);
+
+		if (foo == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			}
+
+			throw new NoSuchFooException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
+		}
+
+		return foo;
 	}
 
 	/**
@@ -2254,18 +2271,7 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 	 */
 	public Foo findByPrimaryKey(long fooId)
 		throws NoSuchFooException, SystemException {
-		Foo foo = fetchByPrimaryKey(fooId);
-
-		if (foo == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + fooId);
-			}
-
-			throw new NoSuchFooException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				fooId);
-		}
-
-		return foo;
+		return findByPrimaryKey((Serializable)fooId);
 	}
 
 	/**
@@ -2278,19 +2284,8 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 	@Override
 	public Foo fetchByPrimaryKey(Serializable primaryKey)
 		throws SystemException {
-		return fetchByPrimaryKey(((Long)primaryKey).longValue());
-	}
-
-	/**
-	 * Returns the foo with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param fooId the primary key of the foo
-	 * @return the foo, or <code>null</code> if a foo with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public Foo fetchByPrimaryKey(long fooId) throws SystemException {
 		Foo foo = (Foo)EntityCacheUtil.getResult(FooModelImpl.ENTITY_CACHE_ENABLED,
-				FooImpl.class, fooId);
+				FooImpl.class, primaryKey);
 
 		if (foo == _nullFoo) {
 			return null;
@@ -2302,19 +2297,19 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 			try {
 				session = openSession();
 
-				foo = (Foo)session.get(FooImpl.class, Long.valueOf(fooId));
+				foo = (Foo)session.get(FooImpl.class, primaryKey);
 
 				if (foo != null) {
 					cacheResult(foo);
 				}
 				else {
 					EntityCacheUtil.putResult(FooModelImpl.ENTITY_CACHE_ENABLED,
-						FooImpl.class, fooId, _nullFoo);
+						FooImpl.class, primaryKey, _nullFoo);
 				}
 			}
 			catch (Exception e) {
 				EntityCacheUtil.removeResult(FooModelImpl.ENTITY_CACHE_ENABLED,
-					FooImpl.class, fooId);
+					FooImpl.class, primaryKey);
 
 				throw processException(e);
 			}
@@ -2324,6 +2319,17 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 		}
 
 		return foo;
+	}
+
+	/**
+	 * Returns the foo with the primary key or returns <code>null</code> if it could not be found.
+	 *
+	 * @param fooId the primary key of the foo
+	 * @return the foo, or <code>null</code> if a foo with the primary key could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public Foo fetchByPrimaryKey(long fooId) throws SystemException {
+		return fetchByPrimaryKey((Serializable)fooId);
 	}
 
 	/**

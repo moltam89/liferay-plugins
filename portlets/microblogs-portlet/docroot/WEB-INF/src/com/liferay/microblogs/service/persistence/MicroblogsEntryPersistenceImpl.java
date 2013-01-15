@@ -19,7 +19,6 @@ import com.liferay.microblogs.model.MicroblogsEntry;
 import com.liferay.microblogs.model.impl.MicroblogsEntryImpl;
 import com.liferay.microblogs.model.impl.MicroblogsEntryModelImpl;
 
-import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -4570,7 +4569,7 @@ public class MicroblogsEntryPersistenceImpl extends BasePersistenceImpl<Microblo
 	 */
 	public MicroblogsEntry remove(long microblogsEntryId)
 		throws NoSuchEntryException, SystemException {
-		return remove(Long.valueOf(microblogsEntryId));
+		return remove((Serializable)microblogsEntryId);
 	}
 
 	/**
@@ -4688,7 +4687,7 @@ public class MicroblogsEntryPersistenceImpl extends BasePersistenceImpl<Microblo
 			if ((microblogsEntryModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(microblogsEntryModelImpl.getOriginalCompanyId())
+						microblogsEntryModelImpl.getOriginalCompanyId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_COMPANYID,
@@ -4696,9 +4695,7 @@ public class MicroblogsEntryPersistenceImpl extends BasePersistenceImpl<Microblo
 				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID,
 					args);
 
-				args = new Object[] {
-						Long.valueOf(microblogsEntryModelImpl.getCompanyId())
-					};
+				args = new Object[] { microblogsEntryModelImpl.getCompanyId() };
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_COMPANYID,
 					args);
@@ -4709,16 +4706,14 @@ public class MicroblogsEntryPersistenceImpl extends BasePersistenceImpl<Microblo
 			if ((microblogsEntryModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(microblogsEntryModelImpl.getOriginalUserId())
+						microblogsEntryModelImpl.getOriginalUserId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
 				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID,
 					args);
 
-				args = new Object[] {
-						Long.valueOf(microblogsEntryModelImpl.getUserId())
-					};
+				args = new Object[] { microblogsEntryModelImpl.getUserId() };
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
 				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID,
@@ -4728,8 +4723,8 @@ public class MicroblogsEntryPersistenceImpl extends BasePersistenceImpl<Microblo
 			if ((microblogsEntryModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_U_T.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(microblogsEntryModelImpl.getOriginalUserId()),
-						Integer.valueOf(microblogsEntryModelImpl.getOriginalType())
+						microblogsEntryModelImpl.getOriginalUserId(),
+						microblogsEntryModelImpl.getOriginalType()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_U_T, args);
@@ -4737,8 +4732,8 @@ public class MicroblogsEntryPersistenceImpl extends BasePersistenceImpl<Microblo
 					args);
 
 				args = new Object[] {
-						Long.valueOf(microblogsEntryModelImpl.getUserId()),
-						Integer.valueOf(microblogsEntryModelImpl.getType())
+						microblogsEntryModelImpl.getUserId(),
+						microblogsEntryModelImpl.getType()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_U_T, args);
@@ -4749,8 +4744,8 @@ public class MicroblogsEntryPersistenceImpl extends BasePersistenceImpl<Microblo
 			if ((microblogsEntryModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_T_R.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Integer.valueOf(microblogsEntryModelImpl.getOriginalType()),
-						Long.valueOf(microblogsEntryModelImpl.getOriginalReceiverUserId())
+						microblogsEntryModelImpl.getOriginalType(),
+						microblogsEntryModelImpl.getOriginalReceiverUserId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_T_R, args);
@@ -4758,8 +4753,8 @@ public class MicroblogsEntryPersistenceImpl extends BasePersistenceImpl<Microblo
 					args);
 
 				args = new Object[] {
-						Integer.valueOf(microblogsEntryModelImpl.getType()),
-						Long.valueOf(microblogsEntryModelImpl.getReceiverUserId())
+						microblogsEntryModelImpl.getType(),
+						microblogsEntryModelImpl.getReceiverUserId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_T_R, args);
@@ -4770,8 +4765,8 @@ public class MicroblogsEntryPersistenceImpl extends BasePersistenceImpl<Microblo
 			if ((microblogsEntryModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_T_RMEI.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Integer.valueOf(microblogsEntryModelImpl.getOriginalType()),
-						Long.valueOf(microblogsEntryModelImpl.getOriginalReceiverMicroblogsEntryId())
+						microblogsEntryModelImpl.getOriginalType(),
+						microblogsEntryModelImpl.getOriginalReceiverMicroblogsEntryId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_T_RMEI, args);
@@ -4779,8 +4774,8 @@ public class MicroblogsEntryPersistenceImpl extends BasePersistenceImpl<Microblo
 					args);
 
 				args = new Object[] {
-						Integer.valueOf(microblogsEntryModelImpl.getType()),
-						Long.valueOf(microblogsEntryModelImpl.getReceiverMicroblogsEntryId())
+						microblogsEntryModelImpl.getType(),
+						microblogsEntryModelImpl.getReceiverMicroblogsEntryId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_T_RMEI, args);
@@ -4826,13 +4821,24 @@ public class MicroblogsEntryPersistenceImpl extends BasePersistenceImpl<Microblo
 	 *
 	 * @param primaryKey the primary key of the microblogs entry
 	 * @return the microblogs entry
-	 * @throws com.liferay.portal.NoSuchModelException if a microblogs entry with the primary key could not be found
+	 * @throws com.liferay.microblogs.NoSuchEntryException if a microblogs entry with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public MicroblogsEntry findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchModelException, SystemException {
-		return findByPrimaryKey(((Long)primaryKey).longValue());
+		throws NoSuchEntryException, SystemException {
+		MicroblogsEntry microblogsEntry = fetchByPrimaryKey(primaryKey);
+
+		if (microblogsEntry == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			}
+
+			throw new NoSuchEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
+		}
+
+		return microblogsEntry;
 	}
 
 	/**
@@ -4845,18 +4851,7 @@ public class MicroblogsEntryPersistenceImpl extends BasePersistenceImpl<Microblo
 	 */
 	public MicroblogsEntry findByPrimaryKey(long microblogsEntryId)
 		throws NoSuchEntryException, SystemException {
-		MicroblogsEntry microblogsEntry = fetchByPrimaryKey(microblogsEntryId);
-
-		if (microblogsEntry == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + microblogsEntryId);
-			}
-
-			throw new NoSuchEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				microblogsEntryId);
-		}
-
-		return microblogsEntry;
+		return findByPrimaryKey((Serializable)microblogsEntryId);
 	}
 
 	/**
@@ -4869,20 +4864,8 @@ public class MicroblogsEntryPersistenceImpl extends BasePersistenceImpl<Microblo
 	@Override
 	public MicroblogsEntry fetchByPrimaryKey(Serializable primaryKey)
 		throws SystemException {
-		return fetchByPrimaryKey(((Long)primaryKey).longValue());
-	}
-
-	/**
-	 * Returns the microblogs entry with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param microblogsEntryId the primary key of the microblogs entry
-	 * @return the microblogs entry, or <code>null</code> if a microblogs entry with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public MicroblogsEntry fetchByPrimaryKey(long microblogsEntryId)
-		throws SystemException {
 		MicroblogsEntry microblogsEntry = (MicroblogsEntry)EntityCacheUtil.getResult(MicroblogsEntryModelImpl.ENTITY_CACHE_ENABLED,
-				MicroblogsEntryImpl.class, microblogsEntryId);
+				MicroblogsEntryImpl.class, primaryKey);
 
 		if (microblogsEntry == _nullMicroblogsEntry) {
 			return null;
@@ -4895,20 +4878,20 @@ public class MicroblogsEntryPersistenceImpl extends BasePersistenceImpl<Microblo
 				session = openSession();
 
 				microblogsEntry = (MicroblogsEntry)session.get(MicroblogsEntryImpl.class,
-						Long.valueOf(microblogsEntryId));
+						primaryKey);
 
 				if (microblogsEntry != null) {
 					cacheResult(microblogsEntry);
 				}
 				else {
 					EntityCacheUtil.putResult(MicroblogsEntryModelImpl.ENTITY_CACHE_ENABLED,
-						MicroblogsEntryImpl.class, microblogsEntryId,
+						MicroblogsEntryImpl.class, primaryKey,
 						_nullMicroblogsEntry);
 				}
 			}
 			catch (Exception e) {
 				EntityCacheUtil.removeResult(MicroblogsEntryModelImpl.ENTITY_CACHE_ENABLED,
-					MicroblogsEntryImpl.class, microblogsEntryId);
+					MicroblogsEntryImpl.class, primaryKey);
 
 				throw processException(e);
 			}
@@ -4918,6 +4901,18 @@ public class MicroblogsEntryPersistenceImpl extends BasePersistenceImpl<Microblo
 		}
 
 		return microblogsEntry;
+	}
+
+	/**
+	 * Returns the microblogs entry with the primary key or returns <code>null</code> if it could not be found.
+	 *
+	 * @param microblogsEntryId the primary key of the microblogs entry
+	 * @return the microblogs entry, or <code>null</code> if a microblogs entry with the primary key could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public MicroblogsEntry fetchByPrimaryKey(long microblogsEntryId)
+		throws SystemException {
+		return fetchByPrimaryKey((Serializable)microblogsEntryId);
 	}
 
 	/**

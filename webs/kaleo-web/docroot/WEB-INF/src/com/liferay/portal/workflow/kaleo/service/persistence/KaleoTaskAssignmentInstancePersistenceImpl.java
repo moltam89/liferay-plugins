@@ -14,7 +14,6 @@
 
 package com.liferay.portal.workflow.kaleo.service.persistence;
 
-import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -2177,7 +2176,7 @@ public class KaleoTaskAssignmentInstancePersistenceImpl
 	public KaleoTaskAssignmentInstance remove(
 		long kaleoTaskAssignmentInstanceId)
 		throws NoSuchTaskAssignmentInstanceException, SystemException {
-		return remove(Long.valueOf(kaleoTaskAssignmentInstanceId));
+		return remove((Serializable)kaleoTaskAssignmentInstanceId);
 	}
 
 	/**
@@ -2298,7 +2297,7 @@ public class KaleoTaskAssignmentInstancePersistenceImpl
 			if ((kaleoTaskAssignmentInstanceModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(kaleoTaskAssignmentInstanceModelImpl.getOriginalCompanyId())
+						kaleoTaskAssignmentInstanceModelImpl.getOriginalCompanyId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_COMPANYID,
@@ -2307,7 +2306,7 @@ public class KaleoTaskAssignmentInstancePersistenceImpl
 					args);
 
 				args = new Object[] {
-						Long.valueOf(kaleoTaskAssignmentInstanceModelImpl.getCompanyId())
+						kaleoTaskAssignmentInstanceModelImpl.getCompanyId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_COMPANYID,
@@ -2319,7 +2318,7 @@ public class KaleoTaskAssignmentInstancePersistenceImpl
 			if ((kaleoTaskAssignmentInstanceModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KALEODEFINITIONID.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(kaleoTaskAssignmentInstanceModelImpl.getOriginalKaleoDefinitionId())
+						kaleoTaskAssignmentInstanceModelImpl.getOriginalKaleoDefinitionId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_KALEODEFINITIONID,
@@ -2328,7 +2327,7 @@ public class KaleoTaskAssignmentInstancePersistenceImpl
 					args);
 
 				args = new Object[] {
-						Long.valueOf(kaleoTaskAssignmentInstanceModelImpl.getKaleoDefinitionId())
+						kaleoTaskAssignmentInstanceModelImpl.getKaleoDefinitionId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_KALEODEFINITIONID,
@@ -2340,7 +2339,7 @@ public class KaleoTaskAssignmentInstancePersistenceImpl
 			if ((kaleoTaskAssignmentInstanceModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KALEOINSTANCEID.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(kaleoTaskAssignmentInstanceModelImpl.getOriginalKaleoInstanceId())
+						kaleoTaskAssignmentInstanceModelImpl.getOriginalKaleoInstanceId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_KALEOINSTANCEID,
@@ -2349,7 +2348,7 @@ public class KaleoTaskAssignmentInstancePersistenceImpl
 					args);
 
 				args = new Object[] {
-						Long.valueOf(kaleoTaskAssignmentInstanceModelImpl.getKaleoInstanceId())
+						kaleoTaskAssignmentInstanceModelImpl.getKaleoInstanceId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_KALEOINSTANCEID,
@@ -2361,7 +2360,7 @@ public class KaleoTaskAssignmentInstancePersistenceImpl
 			if ((kaleoTaskAssignmentInstanceModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KALEOTASKINSTANCETOKENID.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(kaleoTaskAssignmentInstanceModelImpl.getOriginalKaleoTaskInstanceTokenId())
+						kaleoTaskAssignmentInstanceModelImpl.getOriginalKaleoTaskInstanceTokenId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_KALEOTASKINSTANCETOKENID,
@@ -2370,7 +2369,7 @@ public class KaleoTaskAssignmentInstancePersistenceImpl
 					args);
 
 				args = new Object[] {
-						Long.valueOf(kaleoTaskAssignmentInstanceModelImpl.getKaleoTaskInstanceTokenId())
+						kaleoTaskAssignmentInstanceModelImpl.getKaleoTaskInstanceTokenId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_KALEOTASKINSTANCETOKENID,
@@ -2425,13 +2424,24 @@ public class KaleoTaskAssignmentInstancePersistenceImpl
 	 *
 	 * @param primaryKey the primary key of the kaleo task assignment instance
 	 * @return the kaleo task assignment instance
-	 * @throws com.liferay.portal.NoSuchModelException if a kaleo task assignment instance with the primary key could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.NoSuchTaskAssignmentInstanceException if a kaleo task assignment instance with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public KaleoTaskAssignmentInstance findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchModelException, SystemException {
-		return findByPrimaryKey(((Long)primaryKey).longValue());
+		throws NoSuchTaskAssignmentInstanceException, SystemException {
+		KaleoTaskAssignmentInstance kaleoTaskAssignmentInstance = fetchByPrimaryKey(primaryKey);
+
+		if (kaleoTaskAssignmentInstance == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			}
+
+			throw new NoSuchTaskAssignmentInstanceException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
+		}
+
+		return kaleoTaskAssignmentInstance;
 	}
 
 	/**
@@ -2445,19 +2455,7 @@ public class KaleoTaskAssignmentInstancePersistenceImpl
 	public KaleoTaskAssignmentInstance findByPrimaryKey(
 		long kaleoTaskAssignmentInstanceId)
 		throws NoSuchTaskAssignmentInstanceException, SystemException {
-		KaleoTaskAssignmentInstance kaleoTaskAssignmentInstance = fetchByPrimaryKey(kaleoTaskAssignmentInstanceId);
-
-		if (kaleoTaskAssignmentInstance == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-					kaleoTaskAssignmentInstanceId);
-			}
-
-			throw new NoSuchTaskAssignmentInstanceException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				kaleoTaskAssignmentInstanceId);
-		}
-
-		return kaleoTaskAssignmentInstance;
+		return findByPrimaryKey((Serializable)kaleoTaskAssignmentInstanceId);
 	}
 
 	/**
@@ -2470,21 +2468,8 @@ public class KaleoTaskAssignmentInstancePersistenceImpl
 	@Override
 	public KaleoTaskAssignmentInstance fetchByPrimaryKey(
 		Serializable primaryKey) throws SystemException {
-		return fetchByPrimaryKey(((Long)primaryKey).longValue());
-	}
-
-	/**
-	 * Returns the kaleo task assignment instance with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param kaleoTaskAssignmentInstanceId the primary key of the kaleo task assignment instance
-	 * @return the kaleo task assignment instance, or <code>null</code> if a kaleo task assignment instance with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public KaleoTaskAssignmentInstance fetchByPrimaryKey(
-		long kaleoTaskAssignmentInstanceId) throws SystemException {
 		KaleoTaskAssignmentInstance kaleoTaskAssignmentInstance = (KaleoTaskAssignmentInstance)EntityCacheUtil.getResult(KaleoTaskAssignmentInstanceModelImpl.ENTITY_CACHE_ENABLED,
-				KaleoTaskAssignmentInstanceImpl.class,
-				kaleoTaskAssignmentInstanceId);
+				KaleoTaskAssignmentInstanceImpl.class, primaryKey);
 
 		if (kaleoTaskAssignmentInstance == _nullKaleoTaskAssignmentInstance) {
 			return null;
@@ -2497,22 +2482,20 @@ public class KaleoTaskAssignmentInstancePersistenceImpl
 				session = openSession();
 
 				kaleoTaskAssignmentInstance = (KaleoTaskAssignmentInstance)session.get(KaleoTaskAssignmentInstanceImpl.class,
-						Long.valueOf(kaleoTaskAssignmentInstanceId));
+						primaryKey);
 
 				if (kaleoTaskAssignmentInstance != null) {
 					cacheResult(kaleoTaskAssignmentInstance);
 				}
 				else {
 					EntityCacheUtil.putResult(KaleoTaskAssignmentInstanceModelImpl.ENTITY_CACHE_ENABLED,
-						KaleoTaskAssignmentInstanceImpl.class,
-						kaleoTaskAssignmentInstanceId,
+						KaleoTaskAssignmentInstanceImpl.class, primaryKey,
 						_nullKaleoTaskAssignmentInstance);
 				}
 			}
 			catch (Exception e) {
 				EntityCacheUtil.removeResult(KaleoTaskAssignmentInstanceModelImpl.ENTITY_CACHE_ENABLED,
-					KaleoTaskAssignmentInstanceImpl.class,
-					kaleoTaskAssignmentInstanceId);
+					KaleoTaskAssignmentInstanceImpl.class, primaryKey);
 
 				throw processException(e);
 			}
@@ -2522,6 +2505,18 @@ public class KaleoTaskAssignmentInstancePersistenceImpl
 		}
 
 		return kaleoTaskAssignmentInstance;
+	}
+
+	/**
+	 * Returns the kaleo task assignment instance with the primary key or returns <code>null</code> if it could not be found.
+	 *
+	 * @param kaleoTaskAssignmentInstanceId the primary key of the kaleo task assignment instance
+	 * @return the kaleo task assignment instance, or <code>null</code> if a kaleo task assignment instance with the primary key could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public KaleoTaskAssignmentInstance fetchByPrimaryKey(
+		long kaleoTaskAssignmentInstanceId) throws SystemException {
+		return fetchByPrimaryKey((Serializable)kaleoTaskAssignmentInstanceId);
 	}
 
 	/**

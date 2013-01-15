@@ -19,7 +19,6 @@ import com.liferay.knowledgebase.model.KBComment;
 import com.liferay.knowledgebase.model.impl.KBCommentImpl;
 import com.liferay.knowledgebase.model.impl.KBCommentModelImpl;
 
-import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -191,16 +190,18 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 
 			query.append(_SQL_SELECT_KBCOMMENT_WHERE);
 
+			boolean bindUuid = false;
+
 			if (uuid == null) {
 				query.append(_FINDER_COLUMN_UUID_UUID_1);
 			}
+			else if (uuid.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_UUID_UUID_3);
+			}
 			else {
-				if (uuid.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_UUID_UUID_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_UUID_UUID_2);
-				}
+				bindUuid = true;
+
+				query.append(_FINDER_COLUMN_UUID_UUID_2);
 			}
 
 			if (orderByComparator != null) {
@@ -223,7 +224,7 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (uuid != null) {
+				if (bindUuid) {
 					qPos.add(uuid);
 				}
 
@@ -413,16 +414,18 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 
 		query.append(_SQL_SELECT_KBCOMMENT_WHERE);
 
+		boolean bindUuid = false;
+
 		if (uuid == null) {
 			query.append(_FINDER_COLUMN_UUID_UUID_1);
 		}
+		else if (uuid.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_UUID_UUID_3);
+		}
 		else {
-			if (uuid.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_UUID_UUID_3);
-			}
-			else {
-				query.append(_FINDER_COLUMN_UUID_UUID_2);
-			}
+			bindUuid = true;
+
+			query.append(_FINDER_COLUMN_UUID_UUID_2);
 		}
 
 		if (orderByComparator != null) {
@@ -493,7 +496,7 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 
 		QueryPos qPos = QueryPos.getInstance(q);
 
-		if (uuid != null) {
+		if (bindUuid) {
 			qPos.add(uuid);
 		}
 
@@ -548,16 +551,18 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 
 			query.append(_SQL_COUNT_KBCOMMENT_WHERE);
 
+			boolean bindUuid = false;
+
 			if (uuid == null) {
 				query.append(_FINDER_COLUMN_UUID_UUID_1);
 			}
+			else if (uuid.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_UUID_UUID_3);
+			}
 			else {
-				if (uuid.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_UUID_UUID_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_UUID_UUID_2);
-				}
+				bindUuid = true;
+
+				query.append(_FINDER_COLUMN_UUID_UUID_2);
 			}
 
 			String sql = query.toString();
@@ -571,7 +576,7 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (uuid != null) {
+				if (bindUuid) {
 					qPos.add(uuid);
 				}
 
@@ -594,7 +599,7 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 
 	private static final String _FINDER_COLUMN_UUID_UUID_1 = "kbComment.uuid IS NULL";
 	private static final String _FINDER_COLUMN_UUID_UUID_2 = "kbComment.uuid = ?";
-	private static final String _FINDER_COLUMN_UUID_UUID_3 = "(kbComment.uuid IS NULL OR kbComment.uuid = ?)";
+	private static final String _FINDER_COLUMN_UUID_UUID_3 = "(kbComment.uuid IS NULL OR kbComment.uuid = '')";
 	public static final FinderPath FINDER_PATH_FETCH_BY_UUID_G = new FinderPath(KBCommentModelImpl.ENTITY_CACHE_ENABLED,
 			KBCommentModelImpl.FINDER_CACHE_ENABLED, KBCommentImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G",
@@ -689,16 +694,18 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 
 			query.append(_SQL_SELECT_KBCOMMENT_WHERE);
 
+			boolean bindUuid = false;
+
 			if (uuid == null) {
 				query.append(_FINDER_COLUMN_UUID_G_UUID_1);
 			}
+			else if (uuid.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_UUID_G_UUID_3);
+			}
 			else {
-				if (uuid.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_UUID_G_UUID_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_UUID_G_UUID_2);
-				}
+				bindUuid = true;
+
+				query.append(_FINDER_COLUMN_UUID_G_UUID_2);
 			}
 
 			query.append(_FINDER_COLUMN_UUID_G_GROUPID_2);
@@ -714,7 +721,7 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (uuid != null) {
+				if (bindUuid) {
 					qPos.add(uuid);
 				}
 
@@ -797,16 +804,18 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 
 			query.append(_SQL_COUNT_KBCOMMENT_WHERE);
 
+			boolean bindUuid = false;
+
 			if (uuid == null) {
 				query.append(_FINDER_COLUMN_UUID_G_UUID_1);
 			}
+			else if (uuid.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_UUID_G_UUID_3);
+			}
 			else {
-				if (uuid.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_UUID_G_UUID_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_UUID_G_UUID_2);
-				}
+				bindUuid = true;
+
+				query.append(_FINDER_COLUMN_UUID_G_UUID_2);
 			}
 
 			query.append(_FINDER_COLUMN_UUID_G_GROUPID_2);
@@ -822,7 +831,7 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (uuid != null) {
+				if (bindUuid) {
 					qPos.add(uuid);
 				}
 
@@ -847,7 +856,7 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 
 	private static final String _FINDER_COLUMN_UUID_G_UUID_1 = "kbComment.uuid IS NULL AND ";
 	private static final String _FINDER_COLUMN_UUID_G_UUID_2 = "kbComment.uuid = ? AND ";
-	private static final String _FINDER_COLUMN_UUID_G_UUID_3 = "(kbComment.uuid IS NULL OR kbComment.uuid = ?) AND ";
+	private static final String _FINDER_COLUMN_UUID_G_UUID_3 = "(kbComment.uuid IS NULL OR kbComment.uuid = '') AND ";
 	private static final String _FINDER_COLUMN_UUID_G_GROUPID_2 = "kbComment.groupId = ?";
 	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_UUID_C = new FinderPath(KBCommentModelImpl.ENTITY_CACHE_ENABLED,
 			KBCommentModelImpl.FINDER_CACHE_ENABLED, KBCommentImpl.class,
@@ -967,16 +976,18 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 
 			query.append(_SQL_SELECT_KBCOMMENT_WHERE);
 
+			boolean bindUuid = false;
+
 			if (uuid == null) {
 				query.append(_FINDER_COLUMN_UUID_C_UUID_1);
 			}
+			else if (uuid.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_UUID_C_UUID_3);
+			}
 			else {
-				if (uuid.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_UUID_C_UUID_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_UUID_C_UUID_2);
-				}
+				bindUuid = true;
+
+				query.append(_FINDER_COLUMN_UUID_C_UUID_2);
 			}
 
 			query.append(_FINDER_COLUMN_UUID_C_COMPANYID_2);
@@ -1001,7 +1012,7 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (uuid != null) {
+				if (bindUuid) {
 					qPos.add(uuid);
 				}
 
@@ -1207,16 +1218,18 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 
 		query.append(_SQL_SELECT_KBCOMMENT_WHERE);
 
+		boolean bindUuid = false;
+
 		if (uuid == null) {
 			query.append(_FINDER_COLUMN_UUID_C_UUID_1);
 		}
+		else if (uuid.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_UUID_C_UUID_3);
+		}
 		else {
-			if (uuid.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_UUID_C_UUID_3);
-			}
-			else {
-				query.append(_FINDER_COLUMN_UUID_C_UUID_2);
-			}
+			bindUuid = true;
+
+			query.append(_FINDER_COLUMN_UUID_C_UUID_2);
 		}
 
 		query.append(_FINDER_COLUMN_UUID_C_COMPANYID_2);
@@ -1289,7 +1302,7 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 
 		QueryPos qPos = QueryPos.getInstance(q);
 
-		if (uuid != null) {
+		if (bindUuid) {
 			qPos.add(uuid);
 		}
 
@@ -1350,16 +1363,18 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 
 			query.append(_SQL_COUNT_KBCOMMENT_WHERE);
 
+			boolean bindUuid = false;
+
 			if (uuid == null) {
 				query.append(_FINDER_COLUMN_UUID_C_UUID_1);
 			}
+			else if (uuid.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_UUID_C_UUID_3);
+			}
 			else {
-				if (uuid.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_UUID_C_UUID_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_UUID_C_UUID_2);
-				}
+				bindUuid = true;
+
+				query.append(_FINDER_COLUMN_UUID_C_UUID_2);
 			}
 
 			query.append(_FINDER_COLUMN_UUID_C_COMPANYID_2);
@@ -1375,7 +1390,7 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (uuid != null) {
+				if (bindUuid) {
 					qPos.add(uuid);
 				}
 
@@ -1400,7 +1415,7 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 
 	private static final String _FINDER_COLUMN_UUID_C_UUID_1 = "kbComment.uuid IS NULL AND ";
 	private static final String _FINDER_COLUMN_UUID_C_UUID_2 = "kbComment.uuid = ? AND ";
-	private static final String _FINDER_COLUMN_UUID_C_UUID_3 = "(kbComment.uuid IS NULL OR kbComment.uuid = ?) AND ";
+	private static final String _FINDER_COLUMN_UUID_C_UUID_3 = "(kbComment.uuid IS NULL OR kbComment.uuid = '') AND ";
 	private static final String _FINDER_COLUMN_UUID_C_COMPANYID_2 = "kbComment.companyId = ?";
 	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_GROUPID = new FinderPath(KBCommentModelImpl.ENTITY_CACHE_ENABLED,
 			KBCommentModelImpl.FINDER_CACHE_ENABLED, KBCommentImpl.class,
@@ -3166,15 +3181,13 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 			KBCommentImpl.class, kbComment.getPrimaryKey(), kbComment);
 
 		FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_UUID_G,
-			new Object[] {
-				kbComment.getUuid(), Long.valueOf(kbComment.getGroupId())
-			}, kbComment);
+			new Object[] { kbComment.getUuid(), kbComment.getGroupId() },
+			kbComment);
 
 		FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_U_C_C,
 			new Object[] {
-				Long.valueOf(kbComment.getUserId()),
-				Long.valueOf(kbComment.getClassNameId()),
-				Long.valueOf(kbComment.getClassPK())
+				kbComment.getUserId(), kbComment.getClassNameId(),
+				kbComment.getClassPK()
 			}, kbComment);
 
 		kbComment.resetOriginalValues();
@@ -3252,7 +3265,7 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 	protected void cacheUniqueFindersCache(KBComment kbComment) {
 		if (kbComment.isNew()) {
 			Object[] args = new Object[] {
-					kbComment.getUuid(), Long.valueOf(kbComment.getGroupId())
+					kbComment.getUuid(), kbComment.getGroupId()
 				};
 
 			FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_UUID_G, args,
@@ -3261,9 +3274,8 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 				kbComment);
 
 			args = new Object[] {
-					Long.valueOf(kbComment.getUserId()),
-					Long.valueOf(kbComment.getClassNameId()),
-					Long.valueOf(kbComment.getClassPK())
+					kbComment.getUserId(), kbComment.getClassNameId(),
+					kbComment.getClassPK()
 				};
 
 			FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_U_C_C, args,
@@ -3277,8 +3289,7 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 			if ((kbCommentModelImpl.getColumnBitmask() &
 					FINDER_PATH_FETCH_BY_UUID_G.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						kbComment.getUuid(),
-						Long.valueOf(kbComment.getGroupId())
+						kbComment.getUuid(), kbComment.getGroupId()
 					};
 
 				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_UUID_G, args,
@@ -3290,9 +3301,8 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 			if ((kbCommentModelImpl.getColumnBitmask() &
 					FINDER_PATH_FETCH_BY_U_C_C.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(kbComment.getUserId()),
-						Long.valueOf(kbComment.getClassNameId()),
-						Long.valueOf(kbComment.getClassPK())
+						kbComment.getUserId(), kbComment.getClassNameId(),
+						kbComment.getClassPK()
 					};
 
 				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_U_C_C, args,
@@ -3306,9 +3316,7 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 	protected void clearUniqueFindersCache(KBComment kbComment) {
 		KBCommentModelImpl kbCommentModelImpl = (KBCommentModelImpl)kbComment;
 
-		Object[] args = new Object[] {
-				kbComment.getUuid(), Long.valueOf(kbComment.getGroupId())
-			};
+		Object[] args = new Object[] { kbComment.getUuid(), kbComment.getGroupId() };
 
 		FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_UUID_G, args);
 		FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_UUID_G, args);
@@ -3317,7 +3325,7 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 				FINDER_PATH_FETCH_BY_UUID_G.getColumnBitmask()) != 0) {
 			args = new Object[] {
 					kbCommentModelImpl.getOriginalUuid(),
-					Long.valueOf(kbCommentModelImpl.getOriginalGroupId())
+					kbCommentModelImpl.getOriginalGroupId()
 				};
 
 			FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_UUID_G, args);
@@ -3325,9 +3333,8 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 		}
 
 		args = new Object[] {
-				Long.valueOf(kbComment.getUserId()),
-				Long.valueOf(kbComment.getClassNameId()),
-				Long.valueOf(kbComment.getClassPK())
+				kbComment.getUserId(), kbComment.getClassNameId(),
+				kbComment.getClassPK()
 			};
 
 		FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_U_C_C, args);
@@ -3336,9 +3343,9 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 		if ((kbCommentModelImpl.getColumnBitmask() &
 				FINDER_PATH_FETCH_BY_U_C_C.getColumnBitmask()) != 0) {
 			args = new Object[] {
-					Long.valueOf(kbCommentModelImpl.getOriginalUserId()),
-					Long.valueOf(kbCommentModelImpl.getOriginalClassNameId()),
-					Long.valueOf(kbCommentModelImpl.getOriginalClassPK())
+					kbCommentModelImpl.getOriginalUserId(),
+					kbCommentModelImpl.getOriginalClassNameId(),
+					kbCommentModelImpl.getOriginalClassPK()
 				};
 
 			FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_U_C_C, args);
@@ -3375,7 +3382,7 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 	 */
 	public KBComment remove(long kbCommentId)
 		throws NoSuchCommentException, SystemException {
-		return remove(Long.valueOf(kbCommentId));
+		return remove((Serializable)kbCommentId);
 	}
 
 	/**
@@ -3517,7 +3524,7 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID_C.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
 						kbCommentModelImpl.getOriginalUuid(),
-						Long.valueOf(kbCommentModelImpl.getOriginalCompanyId())
+						kbCommentModelImpl.getOriginalCompanyId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_UUID_C, args);
@@ -3526,7 +3533,7 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 
 				args = new Object[] {
 						kbCommentModelImpl.getUuid(),
-						Long.valueOf(kbCommentModelImpl.getCompanyId())
+						kbCommentModelImpl.getCompanyId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_UUID_C, args);
@@ -3537,16 +3544,14 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 			if ((kbCommentModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GROUPID.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(kbCommentModelImpl.getOriginalGroupId())
+						kbCommentModelImpl.getOriginalGroupId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_GROUPID, args);
 				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GROUPID,
 					args);
 
-				args = new Object[] {
-						Long.valueOf(kbCommentModelImpl.getGroupId())
-					};
+				args = new Object[] { kbCommentModelImpl.getGroupId() };
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_GROUPID, args);
 				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GROUPID,
@@ -3556,8 +3561,8 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 			if ((kbCommentModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_C.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(kbCommentModelImpl.getOriginalGroupId()),
-						Long.valueOf(kbCommentModelImpl.getOriginalClassNameId())
+						kbCommentModelImpl.getOriginalGroupId(),
+						kbCommentModelImpl.getOriginalClassNameId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_G_C, args);
@@ -3565,8 +3570,8 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 					args);
 
 				args = new Object[] {
-						Long.valueOf(kbCommentModelImpl.getGroupId()),
-						Long.valueOf(kbCommentModelImpl.getClassNameId())
+						kbCommentModelImpl.getGroupId(),
+						kbCommentModelImpl.getClassNameId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_G_C, args);
@@ -3577,8 +3582,8 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 			if ((kbCommentModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_C.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(kbCommentModelImpl.getOriginalClassNameId()),
-						Long.valueOf(kbCommentModelImpl.getOriginalClassPK())
+						kbCommentModelImpl.getOriginalClassNameId(),
+						kbCommentModelImpl.getOriginalClassPK()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_C_C, args);
@@ -3586,8 +3591,8 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 					args);
 
 				args = new Object[] {
-						Long.valueOf(kbCommentModelImpl.getClassNameId()),
-						Long.valueOf(kbCommentModelImpl.getClassPK())
+						kbCommentModelImpl.getClassNameId(),
+						kbCommentModelImpl.getClassPK()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_C_C, args);
@@ -3636,13 +3641,24 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 	 *
 	 * @param primaryKey the primary key of the k b comment
 	 * @return the k b comment
-	 * @throws com.liferay.portal.NoSuchModelException if a k b comment with the primary key could not be found
+	 * @throws com.liferay.knowledgebase.NoSuchCommentException if a k b comment with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public KBComment findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchModelException, SystemException {
-		return findByPrimaryKey(((Long)primaryKey).longValue());
+		throws NoSuchCommentException, SystemException {
+		KBComment kbComment = fetchByPrimaryKey(primaryKey);
+
+		if (kbComment == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			}
+
+			throw new NoSuchCommentException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
+		}
+
+		return kbComment;
 	}
 
 	/**
@@ -3655,18 +3671,7 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 	 */
 	public KBComment findByPrimaryKey(long kbCommentId)
 		throws NoSuchCommentException, SystemException {
-		KBComment kbComment = fetchByPrimaryKey(kbCommentId);
-
-		if (kbComment == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + kbCommentId);
-			}
-
-			throw new NoSuchCommentException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				kbCommentId);
-		}
-
-		return kbComment;
+		return findByPrimaryKey((Serializable)kbCommentId);
 	}
 
 	/**
@@ -3679,20 +3684,8 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 	@Override
 	public KBComment fetchByPrimaryKey(Serializable primaryKey)
 		throws SystemException {
-		return fetchByPrimaryKey(((Long)primaryKey).longValue());
-	}
-
-	/**
-	 * Returns the k b comment with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param kbCommentId the primary key of the k b comment
-	 * @return the k b comment, or <code>null</code> if a k b comment with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public KBComment fetchByPrimaryKey(long kbCommentId)
-		throws SystemException {
 		KBComment kbComment = (KBComment)EntityCacheUtil.getResult(KBCommentModelImpl.ENTITY_CACHE_ENABLED,
-				KBCommentImpl.class, kbCommentId);
+				KBCommentImpl.class, primaryKey);
 
 		if (kbComment == _nullKBComment) {
 			return null;
@@ -3705,19 +3698,19 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 				session = openSession();
 
 				kbComment = (KBComment)session.get(KBCommentImpl.class,
-						Long.valueOf(kbCommentId));
+						primaryKey);
 
 				if (kbComment != null) {
 					cacheResult(kbComment);
 				}
 				else {
 					EntityCacheUtil.putResult(KBCommentModelImpl.ENTITY_CACHE_ENABLED,
-						KBCommentImpl.class, kbCommentId, _nullKBComment);
+						KBCommentImpl.class, primaryKey, _nullKBComment);
 				}
 			}
 			catch (Exception e) {
 				EntityCacheUtil.removeResult(KBCommentModelImpl.ENTITY_CACHE_ENABLED,
-					KBCommentImpl.class, kbCommentId);
+					KBCommentImpl.class, primaryKey);
 
 				throw processException(e);
 			}
@@ -3727,6 +3720,18 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 		}
 
 		return kbComment;
+	}
+
+	/**
+	 * Returns the k b comment with the primary key or returns <code>null</code> if it could not be found.
+	 *
+	 * @param kbCommentId the primary key of the k b comment
+	 * @return the k b comment, or <code>null</code> if a k b comment with the primary key could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public KBComment fetchByPrimaryKey(long kbCommentId)
+		throws SystemException {
+		return fetchByPrimaryKey((Serializable)kbCommentId);
 	}
 
 	/**

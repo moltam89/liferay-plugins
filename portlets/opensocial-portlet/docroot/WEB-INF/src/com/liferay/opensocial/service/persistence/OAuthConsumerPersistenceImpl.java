@@ -19,7 +19,6 @@ import com.liferay.opensocial.model.OAuthConsumer;
 import com.liferay.opensocial.model.impl.OAuthConsumerImpl;
 import com.liferay.opensocial.model.impl.OAuthConsumerModelImpl;
 
-import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -197,16 +196,18 @@ public class OAuthConsumerPersistenceImpl extends BasePersistenceImpl<OAuthConsu
 
 			query.append(_SQL_SELECT_OAUTHCONSUMER_WHERE);
 
+			boolean bindGadgetKey = false;
+
 			if (gadgetKey == null) {
 				query.append(_FINDER_COLUMN_GADGETKEY_GADGETKEY_1);
 			}
+			else if (gadgetKey.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_GADGETKEY_GADGETKEY_3);
+			}
 			else {
-				if (gadgetKey.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_GADGETKEY_GADGETKEY_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_GADGETKEY_GADGETKEY_2);
-				}
+				bindGadgetKey = true;
+
+				query.append(_FINDER_COLUMN_GADGETKEY_GADGETKEY_2);
 			}
 
 			if (orderByComparator != null) {
@@ -229,7 +230,7 @@ public class OAuthConsumerPersistenceImpl extends BasePersistenceImpl<OAuthConsu
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (gadgetKey != null) {
+				if (bindGadgetKey) {
 					qPos.add(gadgetKey);
 				}
 
@@ -422,16 +423,18 @@ public class OAuthConsumerPersistenceImpl extends BasePersistenceImpl<OAuthConsu
 
 		query.append(_SQL_SELECT_OAUTHCONSUMER_WHERE);
 
+		boolean bindGadgetKey = false;
+
 		if (gadgetKey == null) {
 			query.append(_FINDER_COLUMN_GADGETKEY_GADGETKEY_1);
 		}
+		else if (gadgetKey.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_GADGETKEY_GADGETKEY_3);
+		}
 		else {
-			if (gadgetKey.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_GADGETKEY_GADGETKEY_3);
-			}
-			else {
-				query.append(_FINDER_COLUMN_GADGETKEY_GADGETKEY_2);
-			}
+			bindGadgetKey = true;
+
+			query.append(_FINDER_COLUMN_GADGETKEY_GADGETKEY_2);
 		}
 
 		if (orderByComparator != null) {
@@ -502,7 +505,7 @@ public class OAuthConsumerPersistenceImpl extends BasePersistenceImpl<OAuthConsu
 
 		QueryPos qPos = QueryPos.getInstance(q);
 
-		if (gadgetKey != null) {
+		if (bindGadgetKey) {
 			qPos.add(gadgetKey);
 		}
 
@@ -557,16 +560,18 @@ public class OAuthConsumerPersistenceImpl extends BasePersistenceImpl<OAuthConsu
 
 			query.append(_SQL_COUNT_OAUTHCONSUMER_WHERE);
 
+			boolean bindGadgetKey = false;
+
 			if (gadgetKey == null) {
 				query.append(_FINDER_COLUMN_GADGETKEY_GADGETKEY_1);
 			}
+			else if (gadgetKey.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_GADGETKEY_GADGETKEY_3);
+			}
 			else {
-				if (gadgetKey.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_GADGETKEY_GADGETKEY_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_GADGETKEY_GADGETKEY_2);
-				}
+				bindGadgetKey = true;
+
+				query.append(_FINDER_COLUMN_GADGETKEY_GADGETKEY_2);
 			}
 
 			String sql = query.toString();
@@ -580,7 +585,7 @@ public class OAuthConsumerPersistenceImpl extends BasePersistenceImpl<OAuthConsu
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (gadgetKey != null) {
+				if (bindGadgetKey) {
 					qPos.add(gadgetKey);
 				}
 
@@ -603,7 +608,7 @@ public class OAuthConsumerPersistenceImpl extends BasePersistenceImpl<OAuthConsu
 
 	private static final String _FINDER_COLUMN_GADGETKEY_GADGETKEY_1 = "oAuthConsumer.gadgetKey IS NULL";
 	private static final String _FINDER_COLUMN_GADGETKEY_GADGETKEY_2 = "oAuthConsumer.gadgetKey = ?";
-	private static final String _FINDER_COLUMN_GADGETKEY_GADGETKEY_3 = "(oAuthConsumer.gadgetKey IS NULL OR oAuthConsumer.gadgetKey = ?)";
+	private static final String _FINDER_COLUMN_GADGETKEY_GADGETKEY_3 = "(oAuthConsumer.gadgetKey IS NULL OR oAuthConsumer.gadgetKey = '')";
 	public static final FinderPath FINDER_PATH_FETCH_BY_G_S = new FinderPath(OAuthConsumerModelImpl.ENTITY_CACHE_ENABLED,
 			OAuthConsumerModelImpl.FINDER_CACHE_ENABLED,
 			OAuthConsumerImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByG_S",
@@ -699,28 +704,32 @@ public class OAuthConsumerPersistenceImpl extends BasePersistenceImpl<OAuthConsu
 
 			query.append(_SQL_SELECT_OAUTHCONSUMER_WHERE);
 
+			boolean bindGadgetKey = false;
+
 			if (gadgetKey == null) {
 				query.append(_FINDER_COLUMN_G_S_GADGETKEY_1);
 			}
-			else {
-				if (gadgetKey.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_G_S_GADGETKEY_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_G_S_GADGETKEY_2);
-				}
+			else if (gadgetKey.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_G_S_GADGETKEY_3);
 			}
+			else {
+				bindGadgetKey = true;
+
+				query.append(_FINDER_COLUMN_G_S_GADGETKEY_2);
+			}
+
+			boolean bindServiceName = false;
 
 			if (serviceName == null) {
 				query.append(_FINDER_COLUMN_G_S_SERVICENAME_1);
 			}
+			else if (serviceName.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_G_S_SERVICENAME_3);
+			}
 			else {
-				if (serviceName.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_G_S_SERVICENAME_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_G_S_SERVICENAME_2);
-				}
+				bindServiceName = true;
+
+				query.append(_FINDER_COLUMN_G_S_SERVICENAME_2);
 			}
 
 			String sql = query.toString();
@@ -734,11 +743,11 @@ public class OAuthConsumerPersistenceImpl extends BasePersistenceImpl<OAuthConsu
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (gadgetKey != null) {
+				if (bindGadgetKey) {
 					qPos.add(gadgetKey);
 				}
 
-				if (serviceName != null) {
+				if (bindServiceName) {
 					qPos.add(serviceName);
 				}
 
@@ -827,28 +836,32 @@ public class OAuthConsumerPersistenceImpl extends BasePersistenceImpl<OAuthConsu
 
 			query.append(_SQL_COUNT_OAUTHCONSUMER_WHERE);
 
+			boolean bindGadgetKey = false;
+
 			if (gadgetKey == null) {
 				query.append(_FINDER_COLUMN_G_S_GADGETKEY_1);
 			}
-			else {
-				if (gadgetKey.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_G_S_GADGETKEY_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_G_S_GADGETKEY_2);
-				}
+			else if (gadgetKey.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_G_S_GADGETKEY_3);
 			}
+			else {
+				bindGadgetKey = true;
+
+				query.append(_FINDER_COLUMN_G_S_GADGETKEY_2);
+			}
+
+			boolean bindServiceName = false;
 
 			if (serviceName == null) {
 				query.append(_FINDER_COLUMN_G_S_SERVICENAME_1);
 			}
+			else if (serviceName.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_G_S_SERVICENAME_3);
+			}
 			else {
-				if (serviceName.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_G_S_SERVICENAME_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_G_S_SERVICENAME_2);
-				}
+				bindServiceName = true;
+
+				query.append(_FINDER_COLUMN_G_S_SERVICENAME_2);
 			}
 
 			String sql = query.toString();
@@ -862,11 +875,11 @@ public class OAuthConsumerPersistenceImpl extends BasePersistenceImpl<OAuthConsu
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (gadgetKey != null) {
+				if (bindGadgetKey) {
 					qPos.add(gadgetKey);
 				}
 
-				if (serviceName != null) {
+				if (bindServiceName) {
 					qPos.add(serviceName);
 				}
 
@@ -889,10 +902,10 @@ public class OAuthConsumerPersistenceImpl extends BasePersistenceImpl<OAuthConsu
 
 	private static final String _FINDER_COLUMN_G_S_GADGETKEY_1 = "oAuthConsumer.gadgetKey IS NULL AND ";
 	private static final String _FINDER_COLUMN_G_S_GADGETKEY_2 = "oAuthConsumer.gadgetKey = ? AND ";
-	private static final String _FINDER_COLUMN_G_S_GADGETKEY_3 = "(oAuthConsumer.gadgetKey IS NULL OR oAuthConsumer.gadgetKey = ?) AND ";
+	private static final String _FINDER_COLUMN_G_S_GADGETKEY_3 = "(oAuthConsumer.gadgetKey IS NULL OR oAuthConsumer.gadgetKey = '') AND ";
 	private static final String _FINDER_COLUMN_G_S_SERVICENAME_1 = "oAuthConsumer.serviceName IS NULL";
 	private static final String _FINDER_COLUMN_G_S_SERVICENAME_2 = "oAuthConsumer.serviceName = ?";
-	private static final String _FINDER_COLUMN_G_S_SERVICENAME_3 = "(oAuthConsumer.serviceName IS NULL OR oAuthConsumer.serviceName = ?)";
+	private static final String _FINDER_COLUMN_G_S_SERVICENAME_3 = "(oAuthConsumer.serviceName IS NULL OR oAuthConsumer.serviceName = '')";
 
 	/**
 	 * Caches the o auth consumer in the entity cache if it is enabled.
@@ -906,9 +919,7 @@ public class OAuthConsumerPersistenceImpl extends BasePersistenceImpl<OAuthConsu
 
 		FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_G_S,
 			new Object[] {
-				oAuthConsumer.getGadgetKey(),
-				
-			oAuthConsumer.getServiceName()
+				oAuthConsumer.getGadgetKey(), oAuthConsumer.getServiceName()
 			}, oAuthConsumer);
 
 		oAuthConsumer.resetOriginalValues();
@@ -986,9 +997,7 @@ public class OAuthConsumerPersistenceImpl extends BasePersistenceImpl<OAuthConsu
 	protected void cacheUniqueFindersCache(OAuthConsumer oAuthConsumer) {
 		if (oAuthConsumer.isNew()) {
 			Object[] args = new Object[] {
-					oAuthConsumer.getGadgetKey(),
-					
-					oAuthConsumer.getServiceName()
+					oAuthConsumer.getGadgetKey(), oAuthConsumer.getServiceName()
 				};
 
 			FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_G_S, args,
@@ -1003,7 +1012,6 @@ public class OAuthConsumerPersistenceImpl extends BasePersistenceImpl<OAuthConsu
 					FINDER_PATH_FETCH_BY_G_S.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
 						oAuthConsumer.getGadgetKey(),
-						
 						oAuthConsumer.getServiceName()
 					};
 
@@ -1019,9 +1027,7 @@ public class OAuthConsumerPersistenceImpl extends BasePersistenceImpl<OAuthConsu
 		OAuthConsumerModelImpl oAuthConsumerModelImpl = (OAuthConsumerModelImpl)oAuthConsumer;
 
 		Object[] args = new Object[] {
-				oAuthConsumer.getGadgetKey(),
-				
-				oAuthConsumer.getServiceName()
+				oAuthConsumer.getGadgetKey(), oAuthConsumer.getServiceName()
 			};
 
 		FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_G_S, args);
@@ -1031,7 +1037,6 @@ public class OAuthConsumerPersistenceImpl extends BasePersistenceImpl<OAuthConsu
 				FINDER_PATH_FETCH_BY_G_S.getColumnBitmask()) != 0) {
 			args = new Object[] {
 					oAuthConsumerModelImpl.getOriginalGadgetKey(),
-					
 					oAuthConsumerModelImpl.getOriginalServiceName()
 				};
 
@@ -1065,7 +1070,7 @@ public class OAuthConsumerPersistenceImpl extends BasePersistenceImpl<OAuthConsu
 	 */
 	public OAuthConsumer remove(long oAuthConsumerId)
 		throws NoSuchOAuthConsumerException, SystemException {
-		return remove(Long.valueOf(oAuthConsumerId));
+		return remove((Serializable)oAuthConsumerId);
 	}
 
 	/**
@@ -1238,13 +1243,24 @@ public class OAuthConsumerPersistenceImpl extends BasePersistenceImpl<OAuthConsu
 	 *
 	 * @param primaryKey the primary key of the o auth consumer
 	 * @return the o auth consumer
-	 * @throws com.liferay.portal.NoSuchModelException if a o auth consumer with the primary key could not be found
+	 * @throws com.liferay.opensocial.NoSuchOAuthConsumerException if a o auth consumer with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public OAuthConsumer findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchModelException, SystemException {
-		return findByPrimaryKey(((Long)primaryKey).longValue());
+		throws NoSuchOAuthConsumerException, SystemException {
+		OAuthConsumer oAuthConsumer = fetchByPrimaryKey(primaryKey);
+
+		if (oAuthConsumer == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			}
+
+			throw new NoSuchOAuthConsumerException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
+		}
+
+		return oAuthConsumer;
 	}
 
 	/**
@@ -1257,18 +1273,7 @@ public class OAuthConsumerPersistenceImpl extends BasePersistenceImpl<OAuthConsu
 	 */
 	public OAuthConsumer findByPrimaryKey(long oAuthConsumerId)
 		throws NoSuchOAuthConsumerException, SystemException {
-		OAuthConsumer oAuthConsumer = fetchByPrimaryKey(oAuthConsumerId);
-
-		if (oAuthConsumer == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + oAuthConsumerId);
-			}
-
-			throw new NoSuchOAuthConsumerException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				oAuthConsumerId);
-		}
-
-		return oAuthConsumer;
+		return findByPrimaryKey((Serializable)oAuthConsumerId);
 	}
 
 	/**
@@ -1281,20 +1286,8 @@ public class OAuthConsumerPersistenceImpl extends BasePersistenceImpl<OAuthConsu
 	@Override
 	public OAuthConsumer fetchByPrimaryKey(Serializable primaryKey)
 		throws SystemException {
-		return fetchByPrimaryKey(((Long)primaryKey).longValue());
-	}
-
-	/**
-	 * Returns the o auth consumer with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param oAuthConsumerId the primary key of the o auth consumer
-	 * @return the o auth consumer, or <code>null</code> if a o auth consumer with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public OAuthConsumer fetchByPrimaryKey(long oAuthConsumerId)
-		throws SystemException {
 		OAuthConsumer oAuthConsumer = (OAuthConsumer)EntityCacheUtil.getResult(OAuthConsumerModelImpl.ENTITY_CACHE_ENABLED,
-				OAuthConsumerImpl.class, oAuthConsumerId);
+				OAuthConsumerImpl.class, primaryKey);
 
 		if (oAuthConsumer == _nullOAuthConsumer) {
 			return null;
@@ -1307,20 +1300,19 @@ public class OAuthConsumerPersistenceImpl extends BasePersistenceImpl<OAuthConsu
 				session = openSession();
 
 				oAuthConsumer = (OAuthConsumer)session.get(OAuthConsumerImpl.class,
-						Long.valueOf(oAuthConsumerId));
+						primaryKey);
 
 				if (oAuthConsumer != null) {
 					cacheResult(oAuthConsumer);
 				}
 				else {
 					EntityCacheUtil.putResult(OAuthConsumerModelImpl.ENTITY_CACHE_ENABLED,
-						OAuthConsumerImpl.class, oAuthConsumerId,
-						_nullOAuthConsumer);
+						OAuthConsumerImpl.class, primaryKey, _nullOAuthConsumer);
 				}
 			}
 			catch (Exception e) {
 				EntityCacheUtil.removeResult(OAuthConsumerModelImpl.ENTITY_CACHE_ENABLED,
-					OAuthConsumerImpl.class, oAuthConsumerId);
+					OAuthConsumerImpl.class, primaryKey);
 
 				throw processException(e);
 			}
@@ -1330,6 +1322,18 @@ public class OAuthConsumerPersistenceImpl extends BasePersistenceImpl<OAuthConsu
 		}
 
 		return oAuthConsumer;
+	}
+
+	/**
+	 * Returns the o auth consumer with the primary key or returns <code>null</code> if it could not be found.
+	 *
+	 * @param oAuthConsumerId the primary key of the o auth consumer
+	 * @return the o auth consumer, or <code>null</code> if a o auth consumer with the primary key could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public OAuthConsumer fetchByPrimaryKey(long oAuthConsumerId)
+		throws SystemException {
+		return fetchByPrimaryKey((Serializable)oAuthConsumerId);
 	}
 
 	/**

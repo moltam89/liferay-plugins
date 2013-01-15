@@ -14,7 +14,6 @@
 
 package com.liferay.testpacl.service.persistence;
 
-import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -655,7 +654,7 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 	 * @throws SystemException if a system exception occurred
 	 */
 	public Foo remove(long fooId) throws NoSuchFooException, SystemException {
-		return remove(Long.valueOf(fooId));
+		return remove((Serializable)fooId);
 	}
 
 	/**
@@ -768,15 +767,13 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 		else {
 			if ((fooModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_FIELD2.getColumnBitmask()) != 0) {
-				Object[] args = new Object[] {
-						Boolean.valueOf(fooModelImpl.getOriginalField2())
-					};
+				Object[] args = new Object[] { fooModelImpl.getOriginalField2() };
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_FIELD2, args);
 				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_FIELD2,
 					args);
 
-				args = new Object[] { Boolean.valueOf(fooModelImpl.getField2()) };
+				args = new Object[] { fooModelImpl.getField2() };
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_FIELD2, args);
 				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_FIELD2,
@@ -821,13 +818,24 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 	 *
 	 * @param primaryKey the primary key of the foo
 	 * @return the foo
-	 * @throws com.liferay.portal.NoSuchModelException if a foo with the primary key could not be found
+	 * @throws com.liferay.testpacl.NoSuchFooException if a foo with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public Foo findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchModelException, SystemException {
-		return findByPrimaryKey(((Long)primaryKey).longValue());
+		throws NoSuchFooException, SystemException {
+		Foo foo = fetchByPrimaryKey(primaryKey);
+
+		if (foo == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			}
+
+			throw new NoSuchFooException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
+		}
+
+		return foo;
 	}
 
 	/**
@@ -840,18 +848,7 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 	 */
 	public Foo findByPrimaryKey(long fooId)
 		throws NoSuchFooException, SystemException {
-		Foo foo = fetchByPrimaryKey(fooId);
-
-		if (foo == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + fooId);
-			}
-
-			throw new NoSuchFooException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				fooId);
-		}
-
-		return foo;
+		return findByPrimaryKey((Serializable)fooId);
 	}
 
 	/**
@@ -864,19 +861,8 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 	@Override
 	public Foo fetchByPrimaryKey(Serializable primaryKey)
 		throws SystemException {
-		return fetchByPrimaryKey(((Long)primaryKey).longValue());
-	}
-
-	/**
-	 * Returns the foo with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param fooId the primary key of the foo
-	 * @return the foo, or <code>null</code> if a foo with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public Foo fetchByPrimaryKey(long fooId) throws SystemException {
 		Foo foo = (Foo)EntityCacheUtil.getResult(FooModelImpl.ENTITY_CACHE_ENABLED,
-				FooImpl.class, fooId);
+				FooImpl.class, primaryKey);
 
 		if (foo == _nullFoo) {
 			return null;
@@ -888,19 +874,19 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 			try {
 				session = openSession();
 
-				foo = (Foo)session.get(FooImpl.class, Long.valueOf(fooId));
+				foo = (Foo)session.get(FooImpl.class, primaryKey);
 
 				if (foo != null) {
 					cacheResult(foo);
 				}
 				else {
 					EntityCacheUtil.putResult(FooModelImpl.ENTITY_CACHE_ENABLED,
-						FooImpl.class, fooId, _nullFoo);
+						FooImpl.class, primaryKey, _nullFoo);
 				}
 			}
 			catch (Exception e) {
 				EntityCacheUtil.removeResult(FooModelImpl.ENTITY_CACHE_ENABLED,
-					FooImpl.class, fooId);
+					FooImpl.class, primaryKey);
 
 				throw processException(e);
 			}
@@ -910,6 +896,17 @@ public class FooPersistenceImpl extends BasePersistenceImpl<Foo>
 		}
 
 		return foo;
+	}
+
+	/**
+	 * Returns the foo with the primary key or returns <code>null</code> if it could not be found.
+	 *
+	 * @param fooId the primary key of the foo
+	 * @return the foo, or <code>null</code> if a foo with the primary key could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public Foo fetchByPrimaryKey(long fooId) throws SystemException {
+		return fetchByPrimaryKey((Serializable)fooId);
 	}
 
 	/**

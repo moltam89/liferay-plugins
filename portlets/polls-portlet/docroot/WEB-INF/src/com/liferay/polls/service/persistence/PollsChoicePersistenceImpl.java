@@ -19,7 +19,6 @@ import com.liferay.polls.model.PollsChoice;
 import com.liferay.polls.model.impl.PollsChoiceImpl;
 import com.liferay.polls.model.impl.PollsChoiceModelImpl;
 
-import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -59,7 +58,7 @@ import java.util.List;
  * Caching information and settings can be found in <code>portal.properties</code>
  * </p>
  *
- * @author Juan Fernández
+ * @author Juan Fernï¿½ndez
  * @see PollsChoicePersistence
  * @see PollsChoiceUtil
  * @generated
@@ -192,16 +191,18 @@ public class PollsChoicePersistenceImpl extends BasePersistenceImpl<PollsChoice>
 
 			query.append(_SQL_SELECT_POLLSCHOICE_WHERE);
 
+			boolean bindUuid = false;
+
 			if (uuid == null) {
 				query.append(_FINDER_COLUMN_UUID_UUID_1);
 			}
+			else if (uuid.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_UUID_UUID_3);
+			}
 			else {
-				if (uuid.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_UUID_UUID_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_UUID_UUID_2);
-				}
+				bindUuid = true;
+
+				query.append(_FINDER_COLUMN_UUID_UUID_2);
 			}
 
 			if (orderByComparator != null) {
@@ -224,7 +225,7 @@ public class PollsChoicePersistenceImpl extends BasePersistenceImpl<PollsChoice>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (uuid != null) {
+				if (bindUuid) {
 					qPos.add(uuid);
 				}
 
@@ -414,16 +415,18 @@ public class PollsChoicePersistenceImpl extends BasePersistenceImpl<PollsChoice>
 
 		query.append(_SQL_SELECT_POLLSCHOICE_WHERE);
 
+		boolean bindUuid = false;
+
 		if (uuid == null) {
 			query.append(_FINDER_COLUMN_UUID_UUID_1);
 		}
+		else if (uuid.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_UUID_UUID_3);
+		}
 		else {
-			if (uuid.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_UUID_UUID_3);
-			}
-			else {
-				query.append(_FINDER_COLUMN_UUID_UUID_2);
-			}
+			bindUuid = true;
+
+			query.append(_FINDER_COLUMN_UUID_UUID_2);
 		}
 
 		if (orderByComparator != null) {
@@ -494,7 +497,7 @@ public class PollsChoicePersistenceImpl extends BasePersistenceImpl<PollsChoice>
 
 		QueryPos qPos = QueryPos.getInstance(q);
 
-		if (uuid != null) {
+		if (bindUuid) {
 			qPos.add(uuid);
 		}
 
@@ -549,16 +552,18 @@ public class PollsChoicePersistenceImpl extends BasePersistenceImpl<PollsChoice>
 
 			query.append(_SQL_COUNT_POLLSCHOICE_WHERE);
 
+			boolean bindUuid = false;
+
 			if (uuid == null) {
 				query.append(_FINDER_COLUMN_UUID_UUID_1);
 			}
+			else if (uuid.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_UUID_UUID_3);
+			}
 			else {
-				if (uuid.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_UUID_UUID_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_UUID_UUID_2);
-				}
+				bindUuid = true;
+
+				query.append(_FINDER_COLUMN_UUID_UUID_2);
 			}
 
 			String sql = query.toString();
@@ -572,7 +577,7 @@ public class PollsChoicePersistenceImpl extends BasePersistenceImpl<PollsChoice>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (uuid != null) {
+				if (bindUuid) {
 					qPos.add(uuid);
 				}
 
@@ -595,7 +600,7 @@ public class PollsChoicePersistenceImpl extends BasePersistenceImpl<PollsChoice>
 
 	private static final String _FINDER_COLUMN_UUID_UUID_1 = "pollsChoice.uuid IS NULL";
 	private static final String _FINDER_COLUMN_UUID_UUID_2 = "pollsChoice.uuid = ?";
-	private static final String _FINDER_COLUMN_UUID_UUID_3 = "(pollsChoice.uuid IS NULL OR pollsChoice.uuid = ?)";
+	private static final String _FINDER_COLUMN_UUID_UUID_3 = "(pollsChoice.uuid IS NULL OR pollsChoice.uuid = '')";
 	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_POLLSQUESTIONID =
 		new FinderPath(PollsChoiceModelImpl.ENTITY_CACHE_ENABLED,
 			PollsChoiceModelImpl.FINDER_CACHE_ENABLED, PollsChoiceImpl.class,
@@ -1179,16 +1184,18 @@ public class PollsChoicePersistenceImpl extends BasePersistenceImpl<PollsChoice>
 
 			query.append(_FINDER_COLUMN_PQI_N_POLLSQUESTIONID_2);
 
+			boolean bindName = false;
+
 			if (name == null) {
 				query.append(_FINDER_COLUMN_PQI_N_NAME_1);
 			}
+			else if (name.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_PQI_N_NAME_3);
+			}
 			else {
-				if (name.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_PQI_N_NAME_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_PQI_N_NAME_2);
-				}
+				bindName = true;
+
+				query.append(_FINDER_COLUMN_PQI_N_NAME_2);
 			}
 
 			String sql = query.toString();
@@ -1204,7 +1211,7 @@ public class PollsChoicePersistenceImpl extends BasePersistenceImpl<PollsChoice>
 
 				qPos.add(pollsQuestionId);
 
-				if (name != null) {
+				if (bindName) {
 					qPos.add(name);
 				}
 
@@ -1287,16 +1294,18 @@ public class PollsChoicePersistenceImpl extends BasePersistenceImpl<PollsChoice>
 
 			query.append(_FINDER_COLUMN_PQI_N_POLLSQUESTIONID_2);
 
+			boolean bindName = false;
+
 			if (name == null) {
 				query.append(_FINDER_COLUMN_PQI_N_NAME_1);
 			}
+			else if (name.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_PQI_N_NAME_3);
+			}
 			else {
-				if (name.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_PQI_N_NAME_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_PQI_N_NAME_2);
-				}
+				bindName = true;
+
+				query.append(_FINDER_COLUMN_PQI_N_NAME_2);
 			}
 
 			String sql = query.toString();
@@ -1312,7 +1321,7 @@ public class PollsChoicePersistenceImpl extends BasePersistenceImpl<PollsChoice>
 
 				qPos.add(pollsQuestionId);
 
-				if (name != null) {
+				if (bindName) {
 					qPos.add(name);
 				}
 
@@ -1336,7 +1345,7 @@ public class PollsChoicePersistenceImpl extends BasePersistenceImpl<PollsChoice>
 	private static final String _FINDER_COLUMN_PQI_N_POLLSQUESTIONID_2 = "pollsChoice.pollsQuestionId = ? AND ";
 	private static final String _FINDER_COLUMN_PQI_N_NAME_1 = "pollsChoice.name IS NULL";
 	private static final String _FINDER_COLUMN_PQI_N_NAME_2 = "pollsChoice.name = ?";
-	private static final String _FINDER_COLUMN_PQI_N_NAME_3 = "(pollsChoice.name IS NULL OR pollsChoice.name = ?)";
+	private static final String _FINDER_COLUMN_PQI_N_NAME_3 = "(pollsChoice.name IS NULL OR pollsChoice.name = '')";
 
 	/**
 	 * Caches the polls choice in the entity cache if it is enabled.
@@ -1348,11 +1357,8 @@ public class PollsChoicePersistenceImpl extends BasePersistenceImpl<PollsChoice>
 			PollsChoiceImpl.class, pollsChoice.getPrimaryKey(), pollsChoice);
 
 		FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_PQI_N,
-			new Object[] {
-				Long.valueOf(pollsChoice.getPollsQuestionId()),
-				
-			pollsChoice.getName()
-			}, pollsChoice);
+			new Object[] { pollsChoice.getPollsQuestionId(), pollsChoice.getName() },
+			pollsChoice);
 
 		pollsChoice.resetOriginalValues();
 	}
@@ -1429,9 +1435,7 @@ public class PollsChoicePersistenceImpl extends BasePersistenceImpl<PollsChoice>
 	protected void cacheUniqueFindersCache(PollsChoice pollsChoice) {
 		if (pollsChoice.isNew()) {
 			Object[] args = new Object[] {
-					Long.valueOf(pollsChoice.getPollsQuestionId()),
-					
-					pollsChoice.getName()
+					pollsChoice.getPollsQuestionId(), pollsChoice.getName()
 				};
 
 			FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_PQI_N, args,
@@ -1445,9 +1449,7 @@ public class PollsChoicePersistenceImpl extends BasePersistenceImpl<PollsChoice>
 			if ((pollsChoiceModelImpl.getColumnBitmask() &
 					FINDER_PATH_FETCH_BY_PQI_N.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(pollsChoice.getPollsQuestionId()),
-						
-						pollsChoice.getName()
+						pollsChoice.getPollsQuestionId(), pollsChoice.getName()
 					};
 
 				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_PQI_N, args,
@@ -1462,9 +1464,7 @@ public class PollsChoicePersistenceImpl extends BasePersistenceImpl<PollsChoice>
 		PollsChoiceModelImpl pollsChoiceModelImpl = (PollsChoiceModelImpl)pollsChoice;
 
 		Object[] args = new Object[] {
-				Long.valueOf(pollsChoice.getPollsQuestionId()),
-				
-				pollsChoice.getName()
+				pollsChoice.getPollsQuestionId(), pollsChoice.getName()
 			};
 
 		FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PQI_N, args);
@@ -1473,8 +1473,7 @@ public class PollsChoicePersistenceImpl extends BasePersistenceImpl<PollsChoice>
 		if ((pollsChoiceModelImpl.getColumnBitmask() &
 				FINDER_PATH_FETCH_BY_PQI_N.getColumnBitmask()) != 0) {
 			args = new Object[] {
-					Long.valueOf(pollsChoiceModelImpl.getOriginalPollsQuestionId()),
-					
+					pollsChoiceModelImpl.getOriginalPollsQuestionId(),
 					pollsChoiceModelImpl.getOriginalName()
 				};
 
@@ -1512,7 +1511,7 @@ public class PollsChoicePersistenceImpl extends BasePersistenceImpl<PollsChoice>
 	 */
 	public PollsChoice remove(long pollsChoiceId)
 		throws NoSuchChoiceException, SystemException {
-		return remove(Long.valueOf(pollsChoiceId));
+		return remove((Serializable)pollsChoiceId);
 	}
 
 	/**
@@ -1653,7 +1652,7 @@ public class PollsChoicePersistenceImpl extends BasePersistenceImpl<PollsChoice>
 			if ((pollsChoiceModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_POLLSQUESTIONID.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(pollsChoiceModelImpl.getOriginalPollsQuestionId())
+						pollsChoiceModelImpl.getOriginalPollsQuestionId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_POLLSQUESTIONID,
@@ -1661,9 +1660,7 @@ public class PollsChoicePersistenceImpl extends BasePersistenceImpl<PollsChoice>
 				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_POLLSQUESTIONID,
 					args);
 
-				args = new Object[] {
-						Long.valueOf(pollsChoiceModelImpl.getPollsQuestionId())
-					};
+				args = new Object[] { pollsChoiceModelImpl.getPollsQuestionId() };
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_POLLSQUESTIONID,
 					args);
@@ -1705,13 +1702,24 @@ public class PollsChoicePersistenceImpl extends BasePersistenceImpl<PollsChoice>
 	 *
 	 * @param primaryKey the primary key of the polls choice
 	 * @return the polls choice
-	 * @throws com.liferay.portal.NoSuchModelException if a polls choice with the primary key could not be found
+	 * @throws com.liferay.polls.NoSuchChoiceException if a polls choice with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public PollsChoice findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchModelException, SystemException {
-		return findByPrimaryKey(((Long)primaryKey).longValue());
+		throws NoSuchChoiceException, SystemException {
+		PollsChoice pollsChoice = fetchByPrimaryKey(primaryKey);
+
+		if (pollsChoice == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			}
+
+			throw new NoSuchChoiceException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
+		}
+
+		return pollsChoice;
 	}
 
 	/**
@@ -1724,18 +1732,7 @@ public class PollsChoicePersistenceImpl extends BasePersistenceImpl<PollsChoice>
 	 */
 	public PollsChoice findByPrimaryKey(long pollsChoiceId)
 		throws NoSuchChoiceException, SystemException {
-		PollsChoice pollsChoice = fetchByPrimaryKey(pollsChoiceId);
-
-		if (pollsChoice == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + pollsChoiceId);
-			}
-
-			throw new NoSuchChoiceException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				pollsChoiceId);
-		}
-
-		return pollsChoice;
+		return findByPrimaryKey((Serializable)pollsChoiceId);
 	}
 
 	/**
@@ -1748,20 +1745,8 @@ public class PollsChoicePersistenceImpl extends BasePersistenceImpl<PollsChoice>
 	@Override
 	public PollsChoice fetchByPrimaryKey(Serializable primaryKey)
 		throws SystemException {
-		return fetchByPrimaryKey(((Long)primaryKey).longValue());
-	}
-
-	/**
-	 * Returns the polls choice with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param pollsChoiceId the primary key of the polls choice
-	 * @return the polls choice, or <code>null</code> if a polls choice with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public PollsChoice fetchByPrimaryKey(long pollsChoiceId)
-		throws SystemException {
 		PollsChoice pollsChoice = (PollsChoice)EntityCacheUtil.getResult(PollsChoiceModelImpl.ENTITY_CACHE_ENABLED,
-				PollsChoiceImpl.class, pollsChoiceId);
+				PollsChoiceImpl.class, primaryKey);
 
 		if (pollsChoice == _nullPollsChoice) {
 			return null;
@@ -1774,19 +1759,19 @@ public class PollsChoicePersistenceImpl extends BasePersistenceImpl<PollsChoice>
 				session = openSession();
 
 				pollsChoice = (PollsChoice)session.get(PollsChoiceImpl.class,
-						Long.valueOf(pollsChoiceId));
+						primaryKey);
 
 				if (pollsChoice != null) {
 					cacheResult(pollsChoice);
 				}
 				else {
 					EntityCacheUtil.putResult(PollsChoiceModelImpl.ENTITY_CACHE_ENABLED,
-						PollsChoiceImpl.class, pollsChoiceId, _nullPollsChoice);
+						PollsChoiceImpl.class, primaryKey, _nullPollsChoice);
 				}
 			}
 			catch (Exception e) {
 				EntityCacheUtil.removeResult(PollsChoiceModelImpl.ENTITY_CACHE_ENABLED,
-					PollsChoiceImpl.class, pollsChoiceId);
+					PollsChoiceImpl.class, primaryKey);
 
 				throw processException(e);
 			}
@@ -1796,6 +1781,18 @@ public class PollsChoicePersistenceImpl extends BasePersistenceImpl<PollsChoice>
 		}
 
 		return pollsChoice;
+	}
+
+	/**
+	 * Returns the polls choice with the primary key or returns <code>null</code> if it could not be found.
+	 *
+	 * @param pollsChoiceId the primary key of the polls choice
+	 * @return the polls choice, or <code>null</code> if a polls choice with the primary key could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public PollsChoice fetchByPrimaryKey(long pollsChoiceId)
+		throws SystemException {
+		return fetchByPrimaryKey((Serializable)pollsChoiceId);
 	}
 
 	/**

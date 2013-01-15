@@ -19,7 +19,6 @@ import com.liferay.marketplace.model.App;
 import com.liferay.marketplace.model.impl.AppImpl;
 import com.liferay.marketplace.model.impl.AppModelImpl;
 
-import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -190,16 +189,18 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 
 			query.append(_SQL_SELECT_APP_WHERE);
 
+			boolean bindUuid = false;
+
 			if (uuid == null) {
 				query.append(_FINDER_COLUMN_UUID_UUID_1);
 			}
+			else if (uuid.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_UUID_UUID_3);
+			}
 			else {
-				if (uuid.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_UUID_UUID_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_UUID_UUID_2);
-				}
+				bindUuid = true;
+
+				query.append(_FINDER_COLUMN_UUID_UUID_2);
 			}
 
 			if (orderByComparator != null) {
@@ -222,7 +223,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (uuid != null) {
+				if (bindUuid) {
 					qPos.add(uuid);
 				}
 
@@ -407,16 +408,18 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 
 		query.append(_SQL_SELECT_APP_WHERE);
 
+		boolean bindUuid = false;
+
 		if (uuid == null) {
 			query.append(_FINDER_COLUMN_UUID_UUID_1);
 		}
+		else if (uuid.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_UUID_UUID_3);
+		}
 		else {
-			if (uuid.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_UUID_UUID_3);
-			}
-			else {
-				query.append(_FINDER_COLUMN_UUID_UUID_2);
-			}
+			bindUuid = true;
+
+			query.append(_FINDER_COLUMN_UUID_UUID_2);
 		}
 
 		if (orderByComparator != null) {
@@ -487,7 +490,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 
 		QueryPos qPos = QueryPos.getInstance(q);
 
-		if (uuid != null) {
+		if (bindUuid) {
 			qPos.add(uuid);
 		}
 
@@ -542,16 +545,18 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 
 			query.append(_SQL_COUNT_APP_WHERE);
 
+			boolean bindUuid = false;
+
 			if (uuid == null) {
 				query.append(_FINDER_COLUMN_UUID_UUID_1);
 			}
+			else if (uuid.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_UUID_UUID_3);
+			}
 			else {
-				if (uuid.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_UUID_UUID_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_UUID_UUID_2);
-				}
+				bindUuid = true;
+
+				query.append(_FINDER_COLUMN_UUID_UUID_2);
 			}
 
 			String sql = query.toString();
@@ -565,7 +570,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (uuid != null) {
+				if (bindUuid) {
 					qPos.add(uuid);
 				}
 
@@ -588,7 +593,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 
 	private static final String _FINDER_COLUMN_UUID_UUID_1 = "app.uuid IS NULL";
 	private static final String _FINDER_COLUMN_UUID_UUID_2 = "app.uuid = ?";
-	private static final String _FINDER_COLUMN_UUID_UUID_3 = "(app.uuid IS NULL OR app.uuid = ?)";
+	private static final String _FINDER_COLUMN_UUID_UUID_3 = "(app.uuid IS NULL OR app.uuid = '')";
 	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_UUID_C = new FinderPath(AppModelImpl.ENTITY_CACHE_ENABLED,
 			AppModelImpl.FINDER_CACHE_ENABLED, AppImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid_C",
@@ -706,16 +711,18 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 
 			query.append(_SQL_SELECT_APP_WHERE);
 
+			boolean bindUuid = false;
+
 			if (uuid == null) {
 				query.append(_FINDER_COLUMN_UUID_C_UUID_1);
 			}
+			else if (uuid.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_UUID_C_UUID_3);
+			}
 			else {
-				if (uuid.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_UUID_C_UUID_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_UUID_C_UUID_2);
-				}
+				bindUuid = true;
+
+				query.append(_FINDER_COLUMN_UUID_C_UUID_2);
 			}
 
 			query.append(_FINDER_COLUMN_UUID_C_COMPANYID_2);
@@ -740,7 +747,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (uuid != null) {
+				if (bindUuid) {
 					qPos.add(uuid);
 				}
 
@@ -942,16 +949,18 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 
 		query.append(_SQL_SELECT_APP_WHERE);
 
+		boolean bindUuid = false;
+
 		if (uuid == null) {
 			query.append(_FINDER_COLUMN_UUID_C_UUID_1);
 		}
+		else if (uuid.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_UUID_C_UUID_3);
+		}
 		else {
-			if (uuid.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_UUID_C_UUID_3);
-			}
-			else {
-				query.append(_FINDER_COLUMN_UUID_C_UUID_2);
-			}
+			bindUuid = true;
+
+			query.append(_FINDER_COLUMN_UUID_C_UUID_2);
 		}
 
 		query.append(_FINDER_COLUMN_UUID_C_COMPANYID_2);
@@ -1024,7 +1033,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 
 		QueryPos qPos = QueryPos.getInstance(q);
 
-		if (uuid != null) {
+		if (bindUuid) {
 			qPos.add(uuid);
 		}
 
@@ -1085,16 +1094,18 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 
 			query.append(_SQL_COUNT_APP_WHERE);
 
+			boolean bindUuid = false;
+
 			if (uuid == null) {
 				query.append(_FINDER_COLUMN_UUID_C_UUID_1);
 			}
+			else if (uuid.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_UUID_C_UUID_3);
+			}
 			else {
-				if (uuid.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_UUID_C_UUID_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_UUID_C_UUID_2);
-				}
+				bindUuid = true;
+
+				query.append(_FINDER_COLUMN_UUID_C_UUID_2);
 			}
 
 			query.append(_FINDER_COLUMN_UUID_C_COMPANYID_2);
@@ -1110,7 +1121,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (uuid != null) {
+				if (bindUuid) {
 					qPos.add(uuid);
 				}
 
@@ -1135,7 +1146,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 
 	private static final String _FINDER_COLUMN_UUID_C_UUID_1 = "app.uuid IS NULL AND ";
 	private static final String _FINDER_COLUMN_UUID_C_UUID_2 = "app.uuid = ? AND ";
-	private static final String _FINDER_COLUMN_UUID_C_UUID_3 = "(app.uuid IS NULL OR app.uuid = ?) AND ";
+	private static final String _FINDER_COLUMN_UUID_C_UUID_3 = "(app.uuid IS NULL OR app.uuid = '') AND ";
 	private static final String _FINDER_COLUMN_UUID_C_COMPANYID_2 = "app.companyId = ?";
 	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_COMPANYID =
 		new FinderPath(AppModelImpl.ENTITY_CACHE_ENABLED,
@@ -1832,7 +1843,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 			AppImpl.class, app.getPrimaryKey(), app);
 
 		FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_REMOTEAPPID,
-			new Object[] { Long.valueOf(app.getRemoteAppId()) }, app);
+			new Object[] { app.getRemoteAppId() }, app);
 
 		app.resetOriginalValues();
 	}
@@ -1907,7 +1918,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 
 	protected void cacheUniqueFindersCache(App app) {
 		if (app.isNew()) {
-			Object[] args = new Object[] { Long.valueOf(app.getRemoteAppId()) };
+			Object[] args = new Object[] { app.getRemoteAppId() };
 
 			FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_REMOTEAPPID, args,
 				Long.valueOf(1));
@@ -1919,7 +1930,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 
 			if ((appModelImpl.getColumnBitmask() &
 					FINDER_PATH_FETCH_BY_REMOTEAPPID.getColumnBitmask()) != 0) {
-				Object[] args = new Object[] { Long.valueOf(app.getRemoteAppId()) };
+				Object[] args = new Object[] { app.getRemoteAppId() };
 
 				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_REMOTEAPPID,
 					args, Long.valueOf(1));
@@ -1932,16 +1943,14 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	protected void clearUniqueFindersCache(App app) {
 		AppModelImpl appModelImpl = (AppModelImpl)app;
 
-		Object[] args = new Object[] { Long.valueOf(app.getRemoteAppId()) };
+		Object[] args = new Object[] { app.getRemoteAppId() };
 
 		FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_REMOTEAPPID, args);
 		FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_REMOTEAPPID, args);
 
 		if ((appModelImpl.getColumnBitmask() &
 				FINDER_PATH_FETCH_BY_REMOTEAPPID.getColumnBitmask()) != 0) {
-			args = new Object[] {
-					Long.valueOf(appModelImpl.getOriginalRemoteAppId())
-				};
+			args = new Object[] { appModelImpl.getOriginalRemoteAppId() };
 
 			FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_REMOTEAPPID, args);
 			FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_REMOTEAPPID, args);
@@ -1976,7 +1985,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	 * @throws SystemException if a system exception occurred
 	 */
 	public App remove(long appId) throws NoSuchAppException, SystemException {
-		return remove(Long.valueOf(appId));
+		return remove((Serializable)appId);
 	}
 
 	/**
@@ -2112,7 +2121,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID_C.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
 						appModelImpl.getOriginalUuid(),
-						Long.valueOf(appModelImpl.getOriginalCompanyId())
+						appModelImpl.getOriginalCompanyId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_UUID_C, args);
@@ -2120,8 +2129,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 					args);
 
 				args = new Object[] {
-						appModelImpl.getUuid(),
-						Long.valueOf(appModelImpl.getCompanyId())
+						appModelImpl.getUuid(), appModelImpl.getCompanyId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_UUID_C, args);
@@ -2131,16 +2139,14 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 
 			if ((appModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID.getColumnBitmask()) != 0) {
-				Object[] args = new Object[] {
-						Long.valueOf(appModelImpl.getOriginalCompanyId())
-					};
+				Object[] args = new Object[] { appModelImpl.getOriginalCompanyId() };
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_COMPANYID,
 					args);
 				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID,
 					args);
 
-				args = new Object[] { Long.valueOf(appModelImpl.getCompanyId()) };
+				args = new Object[] { appModelImpl.getCompanyId() };
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_COMPANYID,
 					args);
@@ -2186,13 +2192,24 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	 *
 	 * @param primaryKey the primary key of the app
 	 * @return the app
-	 * @throws com.liferay.portal.NoSuchModelException if a app with the primary key could not be found
+	 * @throws com.liferay.marketplace.NoSuchAppException if a app with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public App findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchModelException, SystemException {
-		return findByPrimaryKey(((Long)primaryKey).longValue());
+		throws NoSuchAppException, SystemException {
+		App app = fetchByPrimaryKey(primaryKey);
+
+		if (app == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			}
+
+			throw new NoSuchAppException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
+		}
+
+		return app;
 	}
 
 	/**
@@ -2205,18 +2222,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	 */
 	public App findByPrimaryKey(long appId)
 		throws NoSuchAppException, SystemException {
-		App app = fetchByPrimaryKey(appId);
-
-		if (app == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + appId);
-			}
-
-			throw new NoSuchAppException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				appId);
-		}
-
-		return app;
+		return findByPrimaryKey((Serializable)appId);
 	}
 
 	/**
@@ -2229,19 +2235,8 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	@Override
 	public App fetchByPrimaryKey(Serializable primaryKey)
 		throws SystemException {
-		return fetchByPrimaryKey(((Long)primaryKey).longValue());
-	}
-
-	/**
-	 * Returns the app with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param appId the primary key of the app
-	 * @return the app, or <code>null</code> if a app with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public App fetchByPrimaryKey(long appId) throws SystemException {
 		App app = (App)EntityCacheUtil.getResult(AppModelImpl.ENTITY_CACHE_ENABLED,
-				AppImpl.class, appId);
+				AppImpl.class, primaryKey);
 
 		if (app == _nullApp) {
 			return null;
@@ -2253,19 +2248,19 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 			try {
 				session = openSession();
 
-				app = (App)session.get(AppImpl.class, Long.valueOf(appId));
+				app = (App)session.get(AppImpl.class, primaryKey);
 
 				if (app != null) {
 					cacheResult(app);
 				}
 				else {
 					EntityCacheUtil.putResult(AppModelImpl.ENTITY_CACHE_ENABLED,
-						AppImpl.class, appId, _nullApp);
+						AppImpl.class, primaryKey, _nullApp);
 				}
 			}
 			catch (Exception e) {
 				EntityCacheUtil.removeResult(AppModelImpl.ENTITY_CACHE_ENABLED,
-					AppImpl.class, appId);
+					AppImpl.class, primaryKey);
 
 				throw processException(e);
 			}
@@ -2275,6 +2270,17 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 		}
 
 		return app;
+	}
+
+	/**
+	 * Returns the app with the primary key or returns <code>null</code> if it could not be found.
+	 *
+	 * @param appId the primary key of the app
+	 * @return the app, or <code>null</code> if a app with the primary key could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public App fetchByPrimaryKey(long appId) throws SystemException {
+		return fetchByPrimaryKey((Serializable)appId);
 	}
 
 	/**

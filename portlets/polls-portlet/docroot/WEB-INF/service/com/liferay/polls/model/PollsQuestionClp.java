@@ -38,7 +38,7 @@ import java.util.Locale;
 import java.util.Map;
 
 /**
- * @author Juan Fernández
+ * @author Juan Fern�ndez
  */
 public class PollsQuestionClp extends BaseModelImpl<PollsQuestion>
 	implements PollsQuestion {
@@ -62,7 +62,7 @@ public class PollsQuestionClp extends BaseModelImpl<PollsQuestion>
 	}
 
 	public Serializable getPrimaryKeyObj() {
-		return new Long(_pollsQuestionId);
+		return _pollsQuestionId;
 	}
 
 	public void setPrimaryKeyObj(Serializable primaryKeyObj) {

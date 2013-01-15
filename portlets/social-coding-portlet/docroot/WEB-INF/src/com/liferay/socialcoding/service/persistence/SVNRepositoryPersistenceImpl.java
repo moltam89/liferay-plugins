@@ -14,7 +14,6 @@
 
 package com.liferay.socialcoding.service.persistence;
 
-import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -171,16 +170,18 @@ public class SVNRepositoryPersistenceImpl extends BasePersistenceImpl<SVNReposit
 
 			query.append(_SQL_SELECT_SVNREPOSITORY_WHERE);
 
+			boolean bindUrl = false;
+
 			if (url == null) {
 				query.append(_FINDER_COLUMN_URL_URL_1);
 			}
+			else if (url.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_URL_URL_3);
+			}
 			else {
-				if (url.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_URL_URL_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_URL_URL_2);
-				}
+				bindUrl = true;
+
+				query.append(_FINDER_COLUMN_URL_URL_2);
 			}
 
 			String sql = query.toString();
@@ -194,7 +195,7 @@ public class SVNRepositoryPersistenceImpl extends BasePersistenceImpl<SVNReposit
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (url != null) {
+				if (bindUrl) {
 					qPos.add(url);
 				}
 
@@ -278,16 +279,18 @@ public class SVNRepositoryPersistenceImpl extends BasePersistenceImpl<SVNReposit
 
 			query.append(_SQL_COUNT_SVNREPOSITORY_WHERE);
 
+			boolean bindUrl = false;
+
 			if (url == null) {
 				query.append(_FINDER_COLUMN_URL_URL_1);
 			}
+			else if (url.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_URL_URL_3);
+			}
 			else {
-				if (url.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_URL_URL_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_URL_URL_2);
-				}
+				bindUrl = true;
+
+				query.append(_FINDER_COLUMN_URL_URL_2);
 			}
 
 			String sql = query.toString();
@@ -301,7 +304,7 @@ public class SVNRepositoryPersistenceImpl extends BasePersistenceImpl<SVNReposit
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (url != null) {
+				if (bindUrl) {
 					qPos.add(url);
 				}
 
@@ -324,7 +327,7 @@ public class SVNRepositoryPersistenceImpl extends BasePersistenceImpl<SVNReposit
 
 	private static final String _FINDER_COLUMN_URL_URL_1 = "svnRepository.url IS NULL";
 	private static final String _FINDER_COLUMN_URL_URL_2 = "svnRepository.url = ?";
-	private static final String _FINDER_COLUMN_URL_URL_3 = "(svnRepository.url IS NULL OR svnRepository.url = ?)";
+	private static final String _FINDER_COLUMN_URL_URL_3 = "(svnRepository.url IS NULL OR svnRepository.url = '')";
 
 	/**
 	 * Caches the s v n repository in the entity cache if it is enabled.
@@ -477,7 +480,7 @@ public class SVNRepositoryPersistenceImpl extends BasePersistenceImpl<SVNReposit
 	 */
 	public SVNRepository remove(long svnRepositoryId)
 		throws NoSuchSVNRepositoryException, SystemException {
-		return remove(Long.valueOf(svnRepositoryId));
+		return remove((Serializable)svnRepositoryId);
 	}
 
 	/**
@@ -621,13 +624,24 @@ public class SVNRepositoryPersistenceImpl extends BasePersistenceImpl<SVNReposit
 	 *
 	 * @param primaryKey the primary key of the s v n repository
 	 * @return the s v n repository
-	 * @throws com.liferay.portal.NoSuchModelException if a s v n repository with the primary key could not be found
+	 * @throws com.liferay.socialcoding.NoSuchSVNRepositoryException if a s v n repository with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public SVNRepository findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchModelException, SystemException {
-		return findByPrimaryKey(((Long)primaryKey).longValue());
+		throws NoSuchSVNRepositoryException, SystemException {
+		SVNRepository svnRepository = fetchByPrimaryKey(primaryKey);
+
+		if (svnRepository == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			}
+
+			throw new NoSuchSVNRepositoryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
+		}
+
+		return svnRepository;
 	}
 
 	/**
@@ -640,18 +654,7 @@ public class SVNRepositoryPersistenceImpl extends BasePersistenceImpl<SVNReposit
 	 */
 	public SVNRepository findByPrimaryKey(long svnRepositoryId)
 		throws NoSuchSVNRepositoryException, SystemException {
-		SVNRepository svnRepository = fetchByPrimaryKey(svnRepositoryId);
-
-		if (svnRepository == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + svnRepositoryId);
-			}
-
-			throw new NoSuchSVNRepositoryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				svnRepositoryId);
-		}
-
-		return svnRepository;
+		return findByPrimaryKey((Serializable)svnRepositoryId);
 	}
 
 	/**
@@ -664,20 +667,8 @@ public class SVNRepositoryPersistenceImpl extends BasePersistenceImpl<SVNReposit
 	@Override
 	public SVNRepository fetchByPrimaryKey(Serializable primaryKey)
 		throws SystemException {
-		return fetchByPrimaryKey(((Long)primaryKey).longValue());
-	}
-
-	/**
-	 * Returns the s v n repository with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param svnRepositoryId the primary key of the s v n repository
-	 * @return the s v n repository, or <code>null</code> if a s v n repository with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public SVNRepository fetchByPrimaryKey(long svnRepositoryId)
-		throws SystemException {
 		SVNRepository svnRepository = (SVNRepository)EntityCacheUtil.getResult(SVNRepositoryModelImpl.ENTITY_CACHE_ENABLED,
-				SVNRepositoryImpl.class, svnRepositoryId);
+				SVNRepositoryImpl.class, primaryKey);
 
 		if (svnRepository == _nullSVNRepository) {
 			return null;
@@ -690,20 +681,19 @@ public class SVNRepositoryPersistenceImpl extends BasePersistenceImpl<SVNReposit
 				session = openSession();
 
 				svnRepository = (SVNRepository)session.get(SVNRepositoryImpl.class,
-						Long.valueOf(svnRepositoryId));
+						primaryKey);
 
 				if (svnRepository != null) {
 					cacheResult(svnRepository);
 				}
 				else {
 					EntityCacheUtil.putResult(SVNRepositoryModelImpl.ENTITY_CACHE_ENABLED,
-						SVNRepositoryImpl.class, svnRepositoryId,
-						_nullSVNRepository);
+						SVNRepositoryImpl.class, primaryKey, _nullSVNRepository);
 				}
 			}
 			catch (Exception e) {
 				EntityCacheUtil.removeResult(SVNRepositoryModelImpl.ENTITY_CACHE_ENABLED,
-					SVNRepositoryImpl.class, svnRepositoryId);
+					SVNRepositoryImpl.class, primaryKey);
 
 				throw processException(e);
 			}
@@ -713,6 +703,18 @@ public class SVNRepositoryPersistenceImpl extends BasePersistenceImpl<SVNReposit
 		}
 
 		return svnRepository;
+	}
+
+	/**
+	 * Returns the s v n repository with the primary key or returns <code>null</code> if it could not be found.
+	 *
+	 * @param svnRepositoryId the primary key of the s v n repository
+	 * @return the s v n repository, or <code>null</code> if a s v n repository with the primary key could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public SVNRepository fetchByPrimaryKey(long svnRepositoryId)
+		throws SystemException {
+		return fetchByPrimaryKey((Serializable)svnRepositoryId);
 	}
 
 	/**

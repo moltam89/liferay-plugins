@@ -14,7 +14,6 @@
 
 package com.liferay.wsrp.service.persistence;
 
-import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -196,16 +195,18 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 
 			query.append(_SQL_SELECT_WSRPCONSUMERPORTLET_WHERE);
 
+			boolean bindUuid = false;
+
 			if (uuid == null) {
 				query.append(_FINDER_COLUMN_UUID_UUID_1);
 			}
+			else if (uuid.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_UUID_UUID_3);
+			}
 			else {
-				if (uuid.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_UUID_UUID_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_UUID_UUID_2);
-				}
+				bindUuid = true;
+
+				query.append(_FINDER_COLUMN_UUID_UUID_2);
 			}
 
 			if (orderByComparator != null) {
@@ -228,7 +229,7 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (uuid != null) {
+				if (bindUuid) {
 					qPos.add(uuid);
 				}
 
@@ -422,16 +423,18 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 
 		query.append(_SQL_SELECT_WSRPCONSUMERPORTLET_WHERE);
 
+		boolean bindUuid = false;
+
 		if (uuid == null) {
 			query.append(_FINDER_COLUMN_UUID_UUID_1);
 		}
+		else if (uuid.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_UUID_UUID_3);
+		}
 		else {
-			if (uuid.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_UUID_UUID_3);
-			}
-			else {
-				query.append(_FINDER_COLUMN_UUID_UUID_2);
-			}
+			bindUuid = true;
+
+			query.append(_FINDER_COLUMN_UUID_UUID_2);
 		}
 
 		if (orderByComparator != null) {
@@ -502,7 +505,7 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 
 		QueryPos qPos = QueryPos.getInstance(q);
 
-		if (uuid != null) {
+		if (bindUuid) {
 			qPos.add(uuid);
 		}
 
@@ -557,16 +560,18 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 
 			query.append(_SQL_COUNT_WSRPCONSUMERPORTLET_WHERE);
 
+			boolean bindUuid = false;
+
 			if (uuid == null) {
 				query.append(_FINDER_COLUMN_UUID_UUID_1);
 			}
+			else if (uuid.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_UUID_UUID_3);
+			}
 			else {
-				if (uuid.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_UUID_UUID_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_UUID_UUID_2);
-				}
+				bindUuid = true;
+
+				query.append(_FINDER_COLUMN_UUID_UUID_2);
 			}
 
 			String sql = query.toString();
@@ -580,7 +585,7 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (uuid != null) {
+				if (bindUuid) {
 					qPos.add(uuid);
 				}
 
@@ -603,7 +608,7 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 
 	private static final String _FINDER_COLUMN_UUID_UUID_1 = "wsrpConsumerPortlet.uuid IS NULL";
 	private static final String _FINDER_COLUMN_UUID_UUID_2 = "wsrpConsumerPortlet.uuid = ?";
-	private static final String _FINDER_COLUMN_UUID_UUID_3 = "(wsrpConsumerPortlet.uuid IS NULL OR wsrpConsumerPortlet.uuid = ?)";
+	private static final String _FINDER_COLUMN_UUID_UUID_3 = "(wsrpConsumerPortlet.uuid IS NULL OR wsrpConsumerPortlet.uuid = '')";
 	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_UUID_C = new FinderPath(WSRPConsumerPortletModelImpl.ENTITY_CACHE_ENABLED,
 			WSRPConsumerPortletModelImpl.FINDER_CACHE_ENABLED,
 			WSRPConsumerPortletImpl.class,
@@ -725,16 +730,18 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 
 			query.append(_SQL_SELECT_WSRPCONSUMERPORTLET_WHERE);
 
+			boolean bindUuid = false;
+
 			if (uuid == null) {
 				query.append(_FINDER_COLUMN_UUID_C_UUID_1);
 			}
+			else if (uuid.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_UUID_C_UUID_3);
+			}
 			else {
-				if (uuid.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_UUID_C_UUID_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_UUID_C_UUID_2);
-				}
+				bindUuid = true;
+
+				query.append(_FINDER_COLUMN_UUID_C_UUID_2);
 			}
 
 			query.append(_FINDER_COLUMN_UUID_C_COMPANYID_2);
@@ -759,7 +766,7 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (uuid != null) {
+				if (bindUuid) {
 					qPos.add(uuid);
 				}
 
@@ -966,16 +973,18 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 
 		query.append(_SQL_SELECT_WSRPCONSUMERPORTLET_WHERE);
 
+		boolean bindUuid = false;
+
 		if (uuid == null) {
 			query.append(_FINDER_COLUMN_UUID_C_UUID_1);
 		}
+		else if (uuid.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_UUID_C_UUID_3);
+		}
 		else {
-			if (uuid.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_UUID_C_UUID_3);
-			}
-			else {
-				query.append(_FINDER_COLUMN_UUID_C_UUID_2);
-			}
+			bindUuid = true;
+
+			query.append(_FINDER_COLUMN_UUID_C_UUID_2);
 		}
 
 		query.append(_FINDER_COLUMN_UUID_C_COMPANYID_2);
@@ -1048,7 +1057,7 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 
 		QueryPos qPos = QueryPos.getInstance(q);
 
-		if (uuid != null) {
+		if (bindUuid) {
 			qPos.add(uuid);
 		}
 
@@ -1109,16 +1118,18 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 
 			query.append(_SQL_COUNT_WSRPCONSUMERPORTLET_WHERE);
 
+			boolean bindUuid = false;
+
 			if (uuid == null) {
 				query.append(_FINDER_COLUMN_UUID_C_UUID_1);
 			}
+			else if (uuid.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_UUID_C_UUID_3);
+			}
 			else {
-				if (uuid.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_UUID_C_UUID_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_UUID_C_UUID_2);
-				}
+				bindUuid = true;
+
+				query.append(_FINDER_COLUMN_UUID_C_UUID_2);
 			}
 
 			query.append(_FINDER_COLUMN_UUID_C_COMPANYID_2);
@@ -1134,7 +1145,7 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (uuid != null) {
+				if (bindUuid) {
 					qPos.add(uuid);
 				}
 
@@ -1159,7 +1170,7 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 
 	private static final String _FINDER_COLUMN_UUID_C_UUID_1 = "wsrpConsumerPortlet.uuid IS NULL AND ";
 	private static final String _FINDER_COLUMN_UUID_C_UUID_2 = "wsrpConsumerPortlet.uuid = ? AND ";
-	private static final String _FINDER_COLUMN_UUID_C_UUID_3 = "(wsrpConsumerPortlet.uuid IS NULL OR wsrpConsumerPortlet.uuid = ?) AND ";
+	private static final String _FINDER_COLUMN_UUID_C_UUID_3 = "(wsrpConsumerPortlet.uuid IS NULL OR wsrpConsumerPortlet.uuid = '') AND ";
 	private static final String _FINDER_COLUMN_UUID_C_COMPANYID_2 = "wsrpConsumerPortlet.companyId = ?";
 	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_WSRPCONSUMERID =
 		new FinderPath(WSRPConsumerPortletModelImpl.ENTITY_CACHE_ENABLED,
@@ -1754,16 +1765,18 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 
 			query.append(_FINDER_COLUMN_W_P_WSRPCONSUMERID_2);
 
+			boolean bindPortletHandle = false;
+
 			if (portletHandle == null) {
 				query.append(_FINDER_COLUMN_W_P_PORTLETHANDLE_1);
 			}
+			else if (portletHandle.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_W_P_PORTLETHANDLE_3);
+			}
 			else {
-				if (portletHandle.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_W_P_PORTLETHANDLE_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_W_P_PORTLETHANDLE_2);
-				}
+				bindPortletHandle = true;
+
+				query.append(_FINDER_COLUMN_W_P_PORTLETHANDLE_2);
 			}
 
 			String sql = query.toString();
@@ -1779,7 +1792,7 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 
 				qPos.add(wsrpConsumerId);
 
-				if (portletHandle != null) {
+				if (bindPortletHandle) {
 					qPos.add(portletHandle);
 				}
 
@@ -1872,16 +1885,18 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 
 			query.append(_FINDER_COLUMN_W_P_WSRPCONSUMERID_2);
 
+			boolean bindPortletHandle = false;
+
 			if (portletHandle == null) {
 				query.append(_FINDER_COLUMN_W_P_PORTLETHANDLE_1);
 			}
+			else if (portletHandle.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_W_P_PORTLETHANDLE_3);
+			}
 			else {
-				if (portletHandle.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_W_P_PORTLETHANDLE_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_W_P_PORTLETHANDLE_2);
-				}
+				bindPortletHandle = true;
+
+				query.append(_FINDER_COLUMN_W_P_PORTLETHANDLE_2);
 			}
 
 			String sql = query.toString();
@@ -1897,7 +1912,7 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 
 				qPos.add(wsrpConsumerId);
 
-				if (portletHandle != null) {
+				if (bindPortletHandle) {
 					qPos.add(portletHandle);
 				}
 
@@ -1921,7 +1936,7 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 	private static final String _FINDER_COLUMN_W_P_WSRPCONSUMERID_2 = "wsrpConsumerPortlet.wsrpConsumerId = ? AND ";
 	private static final String _FINDER_COLUMN_W_P_PORTLETHANDLE_1 = "wsrpConsumerPortlet.portletHandle IS NULL";
 	private static final String _FINDER_COLUMN_W_P_PORTLETHANDLE_2 = "wsrpConsumerPortlet.portletHandle = ?";
-	private static final String _FINDER_COLUMN_W_P_PORTLETHANDLE_3 = "(wsrpConsumerPortlet.portletHandle IS NULL OR wsrpConsumerPortlet.portletHandle = ?)";
+	private static final String _FINDER_COLUMN_W_P_PORTLETHANDLE_3 = "(wsrpConsumerPortlet.portletHandle IS NULL OR wsrpConsumerPortlet.portletHandle = '')";
 
 	/**
 	 * Caches the w s r p consumer portlet in the entity cache if it is enabled.
@@ -1935,9 +1950,8 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 
 		FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_W_P,
 			new Object[] {
-				Long.valueOf(wsrpConsumerPortlet.getWsrpConsumerId()),
-				
-			wsrpConsumerPortlet.getPortletHandle()
+				wsrpConsumerPortlet.getWsrpConsumerId(),
+				wsrpConsumerPortlet.getPortletHandle()
 			}, wsrpConsumerPortlet);
 
 		wsrpConsumerPortlet.resetOriginalValues();
@@ -2018,8 +2032,7 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 		WSRPConsumerPortlet wsrpConsumerPortlet) {
 		if (wsrpConsumerPortlet.isNew()) {
 			Object[] args = new Object[] {
-					Long.valueOf(wsrpConsumerPortlet.getWsrpConsumerId()),
-					
+					wsrpConsumerPortlet.getWsrpConsumerId(),
 					wsrpConsumerPortlet.getPortletHandle()
 				};
 
@@ -2034,8 +2047,7 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 			if ((wsrpConsumerPortletModelImpl.getColumnBitmask() &
 					FINDER_PATH_FETCH_BY_W_P.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(wsrpConsumerPortlet.getWsrpConsumerId()),
-						
+						wsrpConsumerPortlet.getWsrpConsumerId(),
 						wsrpConsumerPortlet.getPortletHandle()
 					};
 
@@ -2052,8 +2064,7 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 		WSRPConsumerPortletModelImpl wsrpConsumerPortletModelImpl = (WSRPConsumerPortletModelImpl)wsrpConsumerPortlet;
 
 		Object[] args = new Object[] {
-				Long.valueOf(wsrpConsumerPortlet.getWsrpConsumerId()),
-				
+				wsrpConsumerPortlet.getWsrpConsumerId(),
 				wsrpConsumerPortlet.getPortletHandle()
 			};
 
@@ -2063,8 +2074,7 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 		if ((wsrpConsumerPortletModelImpl.getColumnBitmask() &
 				FINDER_PATH_FETCH_BY_W_P.getColumnBitmask()) != 0) {
 			args = new Object[] {
-					Long.valueOf(wsrpConsumerPortletModelImpl.getOriginalWsrpConsumerId()),
-					
+					wsrpConsumerPortletModelImpl.getOriginalWsrpConsumerId(),
 					wsrpConsumerPortletModelImpl.getOriginalPortletHandle()
 				};
 
@@ -2102,7 +2112,7 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 	 */
 	public WSRPConsumerPortlet remove(long wsrpConsumerPortletId)
 		throws NoSuchConsumerPortletException, SystemException {
-		return remove(Long.valueOf(wsrpConsumerPortletId));
+		return remove((Serializable)wsrpConsumerPortletId);
 	}
 
 	/**
@@ -2244,7 +2254,7 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID_C.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
 						wsrpConsumerPortletModelImpl.getOriginalUuid(),
-						Long.valueOf(wsrpConsumerPortletModelImpl.getOriginalCompanyId())
+						wsrpConsumerPortletModelImpl.getOriginalCompanyId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_UUID_C, args);
@@ -2253,7 +2263,7 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 
 				args = new Object[] {
 						wsrpConsumerPortletModelImpl.getUuid(),
-						Long.valueOf(wsrpConsumerPortletModelImpl.getCompanyId())
+						wsrpConsumerPortletModelImpl.getCompanyId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_UUID_C, args);
@@ -2264,7 +2274,7 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 			if ((wsrpConsumerPortletModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_WSRPCONSUMERID.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(wsrpConsumerPortletModelImpl.getOriginalWsrpConsumerId())
+						wsrpConsumerPortletModelImpl.getOriginalWsrpConsumerId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_WSRPCONSUMERID,
@@ -2273,7 +2283,7 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 					args);
 
 				args = new Object[] {
-						Long.valueOf(wsrpConsumerPortletModelImpl.getWsrpConsumerId())
+						wsrpConsumerPortletModelImpl.getWsrpConsumerId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_WSRPCONSUMERID,
@@ -2321,13 +2331,24 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 	 *
 	 * @param primaryKey the primary key of the w s r p consumer portlet
 	 * @return the w s r p consumer portlet
-	 * @throws com.liferay.portal.NoSuchModelException if a w s r p consumer portlet with the primary key could not be found
+	 * @throws com.liferay.wsrp.NoSuchConsumerPortletException if a w s r p consumer portlet with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public WSRPConsumerPortlet findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchModelException, SystemException {
-		return findByPrimaryKey(((Long)primaryKey).longValue());
+		throws NoSuchConsumerPortletException, SystemException {
+		WSRPConsumerPortlet wsrpConsumerPortlet = fetchByPrimaryKey(primaryKey);
+
+		if (wsrpConsumerPortlet == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			}
+
+			throw new NoSuchConsumerPortletException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
+		}
+
+		return wsrpConsumerPortlet;
 	}
 
 	/**
@@ -2340,19 +2361,7 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 	 */
 	public WSRPConsumerPortlet findByPrimaryKey(long wsrpConsumerPortletId)
 		throws NoSuchConsumerPortletException, SystemException {
-		WSRPConsumerPortlet wsrpConsumerPortlet = fetchByPrimaryKey(wsrpConsumerPortletId);
-
-		if (wsrpConsumerPortlet == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-					wsrpConsumerPortletId);
-			}
-
-			throw new NoSuchConsumerPortletException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				wsrpConsumerPortletId);
-		}
-
-		return wsrpConsumerPortlet;
+		return findByPrimaryKey((Serializable)wsrpConsumerPortletId);
 	}
 
 	/**
@@ -2365,20 +2374,8 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 	@Override
 	public WSRPConsumerPortlet fetchByPrimaryKey(Serializable primaryKey)
 		throws SystemException {
-		return fetchByPrimaryKey(((Long)primaryKey).longValue());
-	}
-
-	/**
-	 * Returns the w s r p consumer portlet with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param wsrpConsumerPortletId the primary key of the w s r p consumer portlet
-	 * @return the w s r p consumer portlet, or <code>null</code> if a w s r p consumer portlet with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public WSRPConsumerPortlet fetchByPrimaryKey(long wsrpConsumerPortletId)
-		throws SystemException {
 		WSRPConsumerPortlet wsrpConsumerPortlet = (WSRPConsumerPortlet)EntityCacheUtil.getResult(WSRPConsumerPortletModelImpl.ENTITY_CACHE_ENABLED,
-				WSRPConsumerPortletImpl.class, wsrpConsumerPortletId);
+				WSRPConsumerPortletImpl.class, primaryKey);
 
 		if (wsrpConsumerPortlet == _nullWSRPConsumerPortlet) {
 			return null;
@@ -2391,20 +2388,20 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 				session = openSession();
 
 				wsrpConsumerPortlet = (WSRPConsumerPortlet)session.get(WSRPConsumerPortletImpl.class,
-						Long.valueOf(wsrpConsumerPortletId));
+						primaryKey);
 
 				if (wsrpConsumerPortlet != null) {
 					cacheResult(wsrpConsumerPortlet);
 				}
 				else {
 					EntityCacheUtil.putResult(WSRPConsumerPortletModelImpl.ENTITY_CACHE_ENABLED,
-						WSRPConsumerPortletImpl.class, wsrpConsumerPortletId,
+						WSRPConsumerPortletImpl.class, primaryKey,
 						_nullWSRPConsumerPortlet);
 				}
 			}
 			catch (Exception e) {
 				EntityCacheUtil.removeResult(WSRPConsumerPortletModelImpl.ENTITY_CACHE_ENABLED,
-					WSRPConsumerPortletImpl.class, wsrpConsumerPortletId);
+					WSRPConsumerPortletImpl.class, primaryKey);
 
 				throw processException(e);
 			}
@@ -2414,6 +2411,18 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 		}
 
 		return wsrpConsumerPortlet;
+	}
+
+	/**
+	 * Returns the w s r p consumer portlet with the primary key or returns <code>null</code> if it could not be found.
+	 *
+	 * @param wsrpConsumerPortletId the primary key of the w s r p consumer portlet
+	 * @return the w s r p consumer portlet, or <code>null</code> if a w s r p consumer portlet with the primary key could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public WSRPConsumerPortlet fetchByPrimaryKey(long wsrpConsumerPortletId)
+		throws SystemException {
+		return fetchByPrimaryKey((Serializable)wsrpConsumerPortletId);
 	}
 
 	/**

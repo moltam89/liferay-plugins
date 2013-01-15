@@ -14,7 +14,6 @@
 
 package com.liferay.socialcoding.service.persistence;
 
-import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -199,16 +198,18 @@ public class JIRAChangeGroupPersistenceImpl extends BasePersistenceImpl<JIRAChan
 
 			query.append(_SQL_SELECT_JIRACHANGEGROUP_WHERE);
 
+			boolean bindJiraUserId = false;
+
 			if (jiraUserId == null) {
 				query.append(_FINDER_COLUMN_JIRAUSERID_JIRAUSERID_1);
 			}
+			else if (jiraUserId.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_JIRAUSERID_JIRAUSERID_3);
+			}
 			else {
-				if (jiraUserId.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_JIRAUSERID_JIRAUSERID_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_JIRAUSERID_JIRAUSERID_2);
-				}
+				bindJiraUserId = true;
+
+				query.append(_FINDER_COLUMN_JIRAUSERID_JIRAUSERID_2);
 			}
 
 			if (orderByComparator != null) {
@@ -231,7 +232,7 @@ public class JIRAChangeGroupPersistenceImpl extends BasePersistenceImpl<JIRAChan
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (jiraUserId != null) {
+				if (bindJiraUserId) {
 					qPos.add(jiraUserId);
 				}
 
@@ -425,16 +426,18 @@ public class JIRAChangeGroupPersistenceImpl extends BasePersistenceImpl<JIRAChan
 
 		query.append(_SQL_SELECT_JIRACHANGEGROUP_WHERE);
 
+		boolean bindJiraUserId = false;
+
 		if (jiraUserId == null) {
 			query.append(_FINDER_COLUMN_JIRAUSERID_JIRAUSERID_1);
 		}
+		else if (jiraUserId.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_JIRAUSERID_JIRAUSERID_3);
+		}
 		else {
-			if (jiraUserId.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_JIRAUSERID_JIRAUSERID_3);
-			}
-			else {
-				query.append(_FINDER_COLUMN_JIRAUSERID_JIRAUSERID_2);
-			}
+			bindJiraUserId = true;
+
+			query.append(_FINDER_COLUMN_JIRAUSERID_JIRAUSERID_2);
 		}
 
 		if (orderByComparator != null) {
@@ -505,7 +508,7 @@ public class JIRAChangeGroupPersistenceImpl extends BasePersistenceImpl<JIRAChan
 
 		QueryPos qPos = QueryPos.getInstance(q);
 
-		if (jiraUserId != null) {
+		if (bindJiraUserId) {
 			qPos.add(jiraUserId);
 		}
 
@@ -560,16 +563,18 @@ public class JIRAChangeGroupPersistenceImpl extends BasePersistenceImpl<JIRAChan
 
 			query.append(_SQL_COUNT_JIRACHANGEGROUP_WHERE);
 
+			boolean bindJiraUserId = false;
+
 			if (jiraUserId == null) {
 				query.append(_FINDER_COLUMN_JIRAUSERID_JIRAUSERID_1);
 			}
+			else if (jiraUserId.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_JIRAUSERID_JIRAUSERID_3);
+			}
 			else {
-				if (jiraUserId.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_JIRAUSERID_JIRAUSERID_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_JIRAUSERID_JIRAUSERID_2);
-				}
+				bindJiraUserId = true;
+
+				query.append(_FINDER_COLUMN_JIRAUSERID_JIRAUSERID_2);
 			}
 
 			String sql = query.toString();
@@ -583,7 +588,7 @@ public class JIRAChangeGroupPersistenceImpl extends BasePersistenceImpl<JIRAChan
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (jiraUserId != null) {
+				if (bindJiraUserId) {
 					qPos.add(jiraUserId);
 				}
 
@@ -606,7 +611,7 @@ public class JIRAChangeGroupPersistenceImpl extends BasePersistenceImpl<JIRAChan
 
 	private static final String _FINDER_COLUMN_JIRAUSERID_JIRAUSERID_1 = "jiraChangeGroup.jiraUserId IS NULL";
 	private static final String _FINDER_COLUMN_JIRAUSERID_JIRAUSERID_2 = "jiraChangeGroup.jiraUserId = ?";
-	private static final String _FINDER_COLUMN_JIRAUSERID_JIRAUSERID_3 = "(jiraChangeGroup.jiraUserId IS NULL OR jiraChangeGroup.jiraUserId = ?)";
+	private static final String _FINDER_COLUMN_JIRAUSERID_JIRAUSERID_3 = "(jiraChangeGroup.jiraUserId IS NULL OR jiraChangeGroup.jiraUserId = '')";
 	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_JIRAISSUEID =
 		new FinderPath(JIRAChangeGroupModelImpl.ENTITY_CACHE_ENABLED,
 			JIRAChangeGroupModelImpl.FINDER_CACHE_ENABLED,
@@ -1194,7 +1199,7 @@ public class JIRAChangeGroupPersistenceImpl extends BasePersistenceImpl<JIRAChan
 	 */
 	public JIRAChangeGroup remove(long jiraChangeGroupId)
 		throws NoSuchJIRAChangeGroupException, SystemException {
-		return remove(Long.valueOf(jiraChangeGroupId));
+		return remove((Serializable)jiraChangeGroupId);
 	}
 
 	/**
@@ -1331,7 +1336,7 @@ public class JIRAChangeGroupPersistenceImpl extends BasePersistenceImpl<JIRAChan
 			if ((jiraChangeGroupModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_JIRAISSUEID.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(jiraChangeGroupModelImpl.getOriginalJiraIssueId())
+						jiraChangeGroupModelImpl.getOriginalJiraIssueId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_JIRAISSUEID,
@@ -1339,9 +1344,7 @@ public class JIRAChangeGroupPersistenceImpl extends BasePersistenceImpl<JIRAChan
 				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_JIRAISSUEID,
 					args);
 
-				args = new Object[] {
-						Long.valueOf(jiraChangeGroupModelImpl.getJiraIssueId())
-					};
+				args = new Object[] { jiraChangeGroupModelImpl.getJiraIssueId() };
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_JIRAISSUEID,
 					args);
@@ -1380,13 +1383,24 @@ public class JIRAChangeGroupPersistenceImpl extends BasePersistenceImpl<JIRAChan
 	 *
 	 * @param primaryKey the primary key of the j i r a change group
 	 * @return the j i r a change group
-	 * @throws com.liferay.portal.NoSuchModelException if a j i r a change group with the primary key could not be found
+	 * @throws com.liferay.socialcoding.NoSuchJIRAChangeGroupException if a j i r a change group with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JIRAChangeGroup findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchModelException, SystemException {
-		return findByPrimaryKey(((Long)primaryKey).longValue());
+		throws NoSuchJIRAChangeGroupException, SystemException {
+		JIRAChangeGroup jiraChangeGroup = fetchByPrimaryKey(primaryKey);
+
+		if (jiraChangeGroup == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			}
+
+			throw new NoSuchJIRAChangeGroupException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
+		}
+
+		return jiraChangeGroup;
 	}
 
 	/**
@@ -1399,18 +1413,7 @@ public class JIRAChangeGroupPersistenceImpl extends BasePersistenceImpl<JIRAChan
 	 */
 	public JIRAChangeGroup findByPrimaryKey(long jiraChangeGroupId)
 		throws NoSuchJIRAChangeGroupException, SystemException {
-		JIRAChangeGroup jiraChangeGroup = fetchByPrimaryKey(jiraChangeGroupId);
-
-		if (jiraChangeGroup == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + jiraChangeGroupId);
-			}
-
-			throw new NoSuchJIRAChangeGroupException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				jiraChangeGroupId);
-		}
-
-		return jiraChangeGroup;
+		return findByPrimaryKey((Serializable)jiraChangeGroupId);
 	}
 
 	/**
@@ -1423,20 +1426,8 @@ public class JIRAChangeGroupPersistenceImpl extends BasePersistenceImpl<JIRAChan
 	@Override
 	public JIRAChangeGroup fetchByPrimaryKey(Serializable primaryKey)
 		throws SystemException {
-		return fetchByPrimaryKey(((Long)primaryKey).longValue());
-	}
-
-	/**
-	 * Returns the j i r a change group with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param jiraChangeGroupId the primary key of the j i r a change group
-	 * @return the j i r a change group, or <code>null</code> if a j i r a change group with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public JIRAChangeGroup fetchByPrimaryKey(long jiraChangeGroupId)
-		throws SystemException {
 		JIRAChangeGroup jiraChangeGroup = (JIRAChangeGroup)EntityCacheUtil.getResult(JIRAChangeGroupModelImpl.ENTITY_CACHE_ENABLED,
-				JIRAChangeGroupImpl.class, jiraChangeGroupId);
+				JIRAChangeGroupImpl.class, primaryKey);
 
 		if (jiraChangeGroup == _nullJIRAChangeGroup) {
 			return null;
@@ -1449,20 +1440,20 @@ public class JIRAChangeGroupPersistenceImpl extends BasePersistenceImpl<JIRAChan
 				session = openSession();
 
 				jiraChangeGroup = (JIRAChangeGroup)session.get(JIRAChangeGroupImpl.class,
-						Long.valueOf(jiraChangeGroupId));
+						primaryKey);
 
 				if (jiraChangeGroup != null) {
 					cacheResult(jiraChangeGroup);
 				}
 				else {
 					EntityCacheUtil.putResult(JIRAChangeGroupModelImpl.ENTITY_CACHE_ENABLED,
-						JIRAChangeGroupImpl.class, jiraChangeGroupId,
+						JIRAChangeGroupImpl.class, primaryKey,
 						_nullJIRAChangeGroup);
 				}
 			}
 			catch (Exception e) {
 				EntityCacheUtil.removeResult(JIRAChangeGroupModelImpl.ENTITY_CACHE_ENABLED,
-					JIRAChangeGroupImpl.class, jiraChangeGroupId);
+					JIRAChangeGroupImpl.class, primaryKey);
 
 				throw processException(e);
 			}
@@ -1472,6 +1463,18 @@ public class JIRAChangeGroupPersistenceImpl extends BasePersistenceImpl<JIRAChan
 		}
 
 		return jiraChangeGroup;
+	}
+
+	/**
+	 * Returns the j i r a change group with the primary key or returns <code>null</code> if it could not be found.
+	 *
+	 * @param jiraChangeGroupId the primary key of the j i r a change group
+	 * @return the j i r a change group, or <code>null</code> if a j i r a change group with the primary key could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public JIRAChangeGroup fetchByPrimaryKey(long jiraChangeGroupId)
+		throws SystemException {
+		return fetchByPrimaryKey((Serializable)jiraChangeGroupId);
 	}
 
 	/**

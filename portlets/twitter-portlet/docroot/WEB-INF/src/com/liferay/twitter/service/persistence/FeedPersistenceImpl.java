@@ -14,7 +14,6 @@
 
 package com.liferay.twitter.service.persistence;
 
-import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -415,16 +414,18 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 
 			query.append(_FINDER_COLUMN_C_TSN_COMPANYID_2);
 
+			boolean bindTwitterScreenName = false;
+
 			if (twitterScreenName == null) {
 				query.append(_FINDER_COLUMN_C_TSN_TWITTERSCREENNAME_1);
 			}
+			else if (twitterScreenName.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_C_TSN_TWITTERSCREENNAME_3);
+			}
 			else {
-				if (twitterScreenName.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_C_TSN_TWITTERSCREENNAME_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_C_TSN_TWITTERSCREENNAME_2);
-				}
+				bindTwitterScreenName = true;
+
+				query.append(_FINDER_COLUMN_C_TSN_TWITTERSCREENNAME_2);
 			}
 
 			String sql = query.toString();
@@ -440,7 +441,7 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 
 				qPos.add(companyId);
 
-				if (twitterScreenName != null) {
+				if (bindTwitterScreenName) {
 					qPos.add(twitterScreenName);
 				}
 
@@ -531,16 +532,18 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 
 			query.append(_FINDER_COLUMN_C_TSN_COMPANYID_2);
 
+			boolean bindTwitterScreenName = false;
+
 			if (twitterScreenName == null) {
 				query.append(_FINDER_COLUMN_C_TSN_TWITTERSCREENNAME_1);
 			}
+			else if (twitterScreenName.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_C_TSN_TWITTERSCREENNAME_3);
+			}
 			else {
-				if (twitterScreenName.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_C_TSN_TWITTERSCREENNAME_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_C_TSN_TWITTERSCREENNAME_2);
-				}
+				bindTwitterScreenName = true;
+
+				query.append(_FINDER_COLUMN_C_TSN_TWITTERSCREENNAME_2);
 			}
 
 			String sql = query.toString();
@@ -556,7 +559,7 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 
 				qPos.add(companyId);
 
-				if (twitterScreenName != null) {
+				if (bindTwitterScreenName) {
 					qPos.add(twitterScreenName);
 				}
 
@@ -580,7 +583,7 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 	private static final String _FINDER_COLUMN_C_TSN_COMPANYID_2 = "feed.companyId = ? AND ";
 	private static final String _FINDER_COLUMN_C_TSN_TWITTERSCREENNAME_1 = "feed.twitterScreenName IS NULL";
 	private static final String _FINDER_COLUMN_C_TSN_TWITTERSCREENNAME_2 = "feed.twitterScreenName = ?";
-	private static final String _FINDER_COLUMN_C_TSN_TWITTERSCREENNAME_3 = "(feed.twitterScreenName IS NULL OR feed.twitterScreenName = ?)";
+	private static final String _FINDER_COLUMN_C_TSN_TWITTERSCREENNAME_3 = "(feed.twitterScreenName IS NULL OR feed.twitterScreenName = '')";
 
 	/**
 	 * Caches the feed in the entity cache if it is enabled.
@@ -592,17 +595,11 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 			FeedImpl.class, feed.getPrimaryKey(), feed);
 
 		FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_C_TWUI,
-			new Object[] {
-				Long.valueOf(feed.getCompanyId()),
-				Long.valueOf(feed.getTwitterUserId())
-			}, feed);
+			new Object[] { feed.getCompanyId(), feed.getTwitterUserId() }, feed);
 
 		FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_C_TSN,
-			new Object[] {
-				Long.valueOf(feed.getCompanyId()),
-				
-			feed.getTwitterScreenName()
-			}, feed);
+			new Object[] { feed.getCompanyId(), feed.getTwitterScreenName() },
+			feed);
 
 		feed.resetOriginalValues();
 	}
@@ -678,19 +675,14 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 	protected void cacheUniqueFindersCache(Feed feed) {
 		if (feed.isNew()) {
 			Object[] args = new Object[] {
-					Long.valueOf(feed.getCompanyId()),
-					Long.valueOf(feed.getTwitterUserId())
+					feed.getCompanyId(), feed.getTwitterUserId()
 				};
 
 			FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_C_TWUI, args,
 				Long.valueOf(1));
 			FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_C_TWUI, args, feed);
 
-			args = new Object[] {
-					Long.valueOf(feed.getCompanyId()),
-					
-					feed.getTwitterScreenName()
-				};
+			args = new Object[] { feed.getCompanyId(), feed.getTwitterScreenName() };
 
 			FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_C_TSN, args,
 				Long.valueOf(1));
@@ -702,8 +694,7 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 			if ((feedModelImpl.getColumnBitmask() &
 					FINDER_PATH_FETCH_BY_C_TWUI.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(feed.getCompanyId()),
-						Long.valueOf(feed.getTwitterUserId())
+						feed.getCompanyId(), feed.getTwitterUserId()
 					};
 
 				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_C_TWUI, args,
@@ -715,9 +706,7 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 			if ((feedModelImpl.getColumnBitmask() &
 					FINDER_PATH_FETCH_BY_C_TSN.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(feed.getCompanyId()),
-						
-						feed.getTwitterScreenName()
+						feed.getCompanyId(), feed.getTwitterScreenName()
 					};
 
 				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_C_TSN, args,
@@ -731,8 +720,7 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 		FeedModelImpl feedModelImpl = (FeedModelImpl)feed;
 
 		Object[] args = new Object[] {
-				Long.valueOf(feed.getCompanyId()),
-				Long.valueOf(feed.getTwitterUserId())
+				feed.getCompanyId(), feed.getTwitterUserId()
 			};
 
 		FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_C_TWUI, args);
@@ -741,19 +729,15 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 		if ((feedModelImpl.getColumnBitmask() &
 				FINDER_PATH_FETCH_BY_C_TWUI.getColumnBitmask()) != 0) {
 			args = new Object[] {
-					Long.valueOf(feedModelImpl.getOriginalCompanyId()),
-					Long.valueOf(feedModelImpl.getOriginalTwitterUserId())
+					feedModelImpl.getOriginalCompanyId(),
+					feedModelImpl.getOriginalTwitterUserId()
 				};
 
 			FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_C_TWUI, args);
 			FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_C_TWUI, args);
 		}
 
-		args = new Object[] {
-				Long.valueOf(feed.getCompanyId()),
-				
-				feed.getTwitterScreenName()
-			};
+		args = new Object[] { feed.getCompanyId(), feed.getTwitterScreenName() };
 
 		FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_C_TSN, args);
 		FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_C_TSN, args);
@@ -761,8 +745,7 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 		if ((feedModelImpl.getColumnBitmask() &
 				FINDER_PATH_FETCH_BY_C_TSN.getColumnBitmask()) != 0) {
 			args = new Object[] {
-					Long.valueOf(feedModelImpl.getOriginalCompanyId()),
-					
+					feedModelImpl.getOriginalCompanyId(),
 					feedModelImpl.getOriginalTwitterScreenName()
 				};
 
@@ -795,7 +778,7 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 	 * @throws SystemException if a system exception occurred
 	 */
 	public Feed remove(long feedId) throws NoSuchFeedException, SystemException {
-		return remove(Long.valueOf(feedId));
+		return remove((Serializable)feedId);
 	}
 
 	/**
@@ -940,13 +923,24 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 	 *
 	 * @param primaryKey the primary key of the feed
 	 * @return the feed
-	 * @throws com.liferay.portal.NoSuchModelException if a feed with the primary key could not be found
+	 * @throws com.liferay.twitter.NoSuchFeedException if a feed with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public Feed findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchModelException, SystemException {
-		return findByPrimaryKey(((Long)primaryKey).longValue());
+		throws NoSuchFeedException, SystemException {
+		Feed feed = fetchByPrimaryKey(primaryKey);
+
+		if (feed == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			}
+
+			throw new NoSuchFeedException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
+		}
+
+		return feed;
 	}
 
 	/**
@@ -959,18 +953,7 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 	 */
 	public Feed findByPrimaryKey(long feedId)
 		throws NoSuchFeedException, SystemException {
-		Feed feed = fetchByPrimaryKey(feedId);
-
-		if (feed == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + feedId);
-			}
-
-			throw new NoSuchFeedException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				feedId);
-		}
-
-		return feed;
+		return findByPrimaryKey((Serializable)feedId);
 	}
 
 	/**
@@ -983,19 +966,8 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 	@Override
 	public Feed fetchByPrimaryKey(Serializable primaryKey)
 		throws SystemException {
-		return fetchByPrimaryKey(((Long)primaryKey).longValue());
-	}
-
-	/**
-	 * Returns the feed with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param feedId the primary key of the feed
-	 * @return the feed, or <code>null</code> if a feed with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public Feed fetchByPrimaryKey(long feedId) throws SystemException {
 		Feed feed = (Feed)EntityCacheUtil.getResult(FeedModelImpl.ENTITY_CACHE_ENABLED,
-				FeedImpl.class, feedId);
+				FeedImpl.class, primaryKey);
 
 		if (feed == _nullFeed) {
 			return null;
@@ -1007,19 +979,19 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 			try {
 				session = openSession();
 
-				feed = (Feed)session.get(FeedImpl.class, Long.valueOf(feedId));
+				feed = (Feed)session.get(FeedImpl.class, primaryKey);
 
 				if (feed != null) {
 					cacheResult(feed);
 				}
 				else {
 					EntityCacheUtil.putResult(FeedModelImpl.ENTITY_CACHE_ENABLED,
-						FeedImpl.class, feedId, _nullFeed);
+						FeedImpl.class, primaryKey, _nullFeed);
 				}
 			}
 			catch (Exception e) {
 				EntityCacheUtil.removeResult(FeedModelImpl.ENTITY_CACHE_ENABLED,
-					FeedImpl.class, feedId);
+					FeedImpl.class, primaryKey);
 
 				throw processException(e);
 			}
@@ -1029,6 +1001,17 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 		}
 
 		return feed;
+	}
+
+	/**
+	 * Returns the feed with the primary key or returns <code>null</code> if it could not be found.
+	 *
+	 * @param feedId the primary key of the feed
+	 * @return the feed, or <code>null</code> if a feed with the primary key could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public Feed fetchByPrimaryKey(long feedId) throws SystemException {
+		return fetchByPrimaryKey((Serializable)feedId);
 	}
 
 	/**

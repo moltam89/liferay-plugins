@@ -14,7 +14,6 @@
 
 package com.liferay.so.service.persistence;
 
-import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -666,7 +665,7 @@ public class ProjectsEntryPersistenceImpl extends BasePersistenceImpl<ProjectsEn
 	 */
 	public ProjectsEntry remove(long projectsEntryId)
 		throws NoSuchProjectsEntryException, SystemException {
-		return remove(Long.valueOf(projectsEntryId));
+		return remove((Serializable)projectsEntryId);
 	}
 
 	/**
@@ -784,16 +783,14 @@ public class ProjectsEntryPersistenceImpl extends BasePersistenceImpl<ProjectsEn
 			if ((projectsEntryModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(projectsEntryModelImpl.getOriginalUserId())
+						projectsEntryModelImpl.getOriginalUserId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
 				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID,
 					args);
 
-				args = new Object[] {
-						Long.valueOf(projectsEntryModelImpl.getUserId())
-					};
+				args = new Object[] { projectsEntryModelImpl.getUserId() };
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
 				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID,
@@ -838,13 +835,24 @@ public class ProjectsEntryPersistenceImpl extends BasePersistenceImpl<ProjectsEn
 	 *
 	 * @param primaryKey the primary key of the projects entry
 	 * @return the projects entry
-	 * @throws com.liferay.portal.NoSuchModelException if a projects entry with the primary key could not be found
+	 * @throws com.liferay.so.NoSuchProjectsEntryException if a projects entry with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public ProjectsEntry findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchModelException, SystemException {
-		return findByPrimaryKey(((Long)primaryKey).longValue());
+		throws NoSuchProjectsEntryException, SystemException {
+		ProjectsEntry projectsEntry = fetchByPrimaryKey(primaryKey);
+
+		if (projectsEntry == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			}
+
+			throw new NoSuchProjectsEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
+		}
+
+		return projectsEntry;
 	}
 
 	/**
@@ -857,18 +865,7 @@ public class ProjectsEntryPersistenceImpl extends BasePersistenceImpl<ProjectsEn
 	 */
 	public ProjectsEntry findByPrimaryKey(long projectsEntryId)
 		throws NoSuchProjectsEntryException, SystemException {
-		ProjectsEntry projectsEntry = fetchByPrimaryKey(projectsEntryId);
-
-		if (projectsEntry == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + projectsEntryId);
-			}
-
-			throw new NoSuchProjectsEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				projectsEntryId);
-		}
-
-		return projectsEntry;
+		return findByPrimaryKey((Serializable)projectsEntryId);
 	}
 
 	/**
@@ -881,20 +878,8 @@ public class ProjectsEntryPersistenceImpl extends BasePersistenceImpl<ProjectsEn
 	@Override
 	public ProjectsEntry fetchByPrimaryKey(Serializable primaryKey)
 		throws SystemException {
-		return fetchByPrimaryKey(((Long)primaryKey).longValue());
-	}
-
-	/**
-	 * Returns the projects entry with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param projectsEntryId the primary key of the projects entry
-	 * @return the projects entry, or <code>null</code> if a projects entry with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public ProjectsEntry fetchByPrimaryKey(long projectsEntryId)
-		throws SystemException {
 		ProjectsEntry projectsEntry = (ProjectsEntry)EntityCacheUtil.getResult(ProjectsEntryModelImpl.ENTITY_CACHE_ENABLED,
-				ProjectsEntryImpl.class, projectsEntryId);
+				ProjectsEntryImpl.class, primaryKey);
 
 		if (projectsEntry == _nullProjectsEntry) {
 			return null;
@@ -907,20 +892,19 @@ public class ProjectsEntryPersistenceImpl extends BasePersistenceImpl<ProjectsEn
 				session = openSession();
 
 				projectsEntry = (ProjectsEntry)session.get(ProjectsEntryImpl.class,
-						Long.valueOf(projectsEntryId));
+						primaryKey);
 
 				if (projectsEntry != null) {
 					cacheResult(projectsEntry);
 				}
 				else {
 					EntityCacheUtil.putResult(ProjectsEntryModelImpl.ENTITY_CACHE_ENABLED,
-						ProjectsEntryImpl.class, projectsEntryId,
-						_nullProjectsEntry);
+						ProjectsEntryImpl.class, primaryKey, _nullProjectsEntry);
 				}
 			}
 			catch (Exception e) {
 				EntityCacheUtil.removeResult(ProjectsEntryModelImpl.ENTITY_CACHE_ENABLED,
-					ProjectsEntryImpl.class, projectsEntryId);
+					ProjectsEntryImpl.class, primaryKey);
 
 				throw processException(e);
 			}
@@ -930,6 +914,18 @@ public class ProjectsEntryPersistenceImpl extends BasePersistenceImpl<ProjectsEn
 		}
 
 		return projectsEntry;
+	}
+
+	/**
+	 * Returns the projects entry with the primary key or returns <code>null</code> if it could not be found.
+	 *
+	 * @param projectsEntryId the primary key of the projects entry
+	 * @return the projects entry, or <code>null</code> if a projects entry with the primary key could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public ProjectsEntry fetchByPrimaryKey(long projectsEntryId)
+		throws SystemException {
+		return fetchByPrimaryKey((Serializable)projectsEntryId);
 	}
 
 	/**

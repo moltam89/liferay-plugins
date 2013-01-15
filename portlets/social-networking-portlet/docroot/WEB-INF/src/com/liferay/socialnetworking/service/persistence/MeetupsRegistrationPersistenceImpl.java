@@ -14,7 +14,6 @@
 
 package com.liferay.socialnetworking.service.persistence;
 
-import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -1348,8 +1347,8 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 
 		FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_U_ME,
 			new Object[] {
-				Long.valueOf(meetupsRegistration.getUserId()),
-				Long.valueOf(meetupsRegistration.getMeetupsEntryId())
+				meetupsRegistration.getUserId(),
+				meetupsRegistration.getMeetupsEntryId()
 			}, meetupsRegistration);
 
 		meetupsRegistration.resetOriginalValues();
@@ -1430,8 +1429,8 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 		MeetupsRegistration meetupsRegistration) {
 		if (meetupsRegistration.isNew()) {
 			Object[] args = new Object[] {
-					Long.valueOf(meetupsRegistration.getUserId()),
-					Long.valueOf(meetupsRegistration.getMeetupsEntryId())
+					meetupsRegistration.getUserId(),
+					meetupsRegistration.getMeetupsEntryId()
 				};
 
 			FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_U_ME, args,
@@ -1445,8 +1444,8 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 			if ((meetupsRegistrationModelImpl.getColumnBitmask() &
 					FINDER_PATH_FETCH_BY_U_ME.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(meetupsRegistration.getUserId()),
-						Long.valueOf(meetupsRegistration.getMeetupsEntryId())
+						meetupsRegistration.getUserId(),
+						meetupsRegistration.getMeetupsEntryId()
 					};
 
 				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_U_ME, args,
@@ -1462,8 +1461,8 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 		MeetupsRegistrationModelImpl meetupsRegistrationModelImpl = (MeetupsRegistrationModelImpl)meetupsRegistration;
 
 		Object[] args = new Object[] {
-				Long.valueOf(meetupsRegistration.getUserId()),
-				Long.valueOf(meetupsRegistration.getMeetupsEntryId())
+				meetupsRegistration.getUserId(),
+				meetupsRegistration.getMeetupsEntryId()
 			};
 
 		FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_U_ME, args);
@@ -1472,8 +1471,8 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 		if ((meetupsRegistrationModelImpl.getColumnBitmask() &
 				FINDER_PATH_FETCH_BY_U_ME.getColumnBitmask()) != 0) {
 			args = new Object[] {
-					Long.valueOf(meetupsRegistrationModelImpl.getOriginalUserId()),
-					Long.valueOf(meetupsRegistrationModelImpl.getOriginalMeetupsEntryId())
+					meetupsRegistrationModelImpl.getOriginalUserId(),
+					meetupsRegistrationModelImpl.getOriginalMeetupsEntryId()
 				};
 
 			FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_U_ME, args);
@@ -1506,7 +1505,7 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 	 */
 	public MeetupsRegistration remove(long meetupsRegistrationId)
 		throws NoSuchMeetupsRegistrationException, SystemException {
-		return remove(Long.valueOf(meetupsRegistrationId));
+		return remove((Serializable)meetupsRegistrationId);
 	}
 
 	/**
@@ -1624,7 +1623,7 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 			if ((meetupsRegistrationModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_MEETUPSENTRYID.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(meetupsRegistrationModelImpl.getOriginalMeetupsEntryId())
+						meetupsRegistrationModelImpl.getOriginalMeetupsEntryId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_MEETUPSENTRYID,
@@ -1633,7 +1632,7 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 					args);
 
 				args = new Object[] {
-						Long.valueOf(meetupsRegistrationModelImpl.getMeetupsEntryId())
+						meetupsRegistrationModelImpl.getMeetupsEntryId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_MEETUPSENTRYID,
@@ -1645,8 +1644,8 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 			if ((meetupsRegistrationModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ME_S.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(meetupsRegistrationModelImpl.getOriginalMeetupsEntryId()),
-						Integer.valueOf(meetupsRegistrationModelImpl.getOriginalStatus())
+						meetupsRegistrationModelImpl.getOriginalMeetupsEntryId(),
+						meetupsRegistrationModelImpl.getOriginalStatus()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_ME_S, args);
@@ -1654,8 +1653,8 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 					args);
 
 				args = new Object[] {
-						Long.valueOf(meetupsRegistrationModelImpl.getMeetupsEntryId()),
-						Integer.valueOf(meetupsRegistrationModelImpl.getStatus())
+						meetupsRegistrationModelImpl.getMeetupsEntryId(),
+						meetupsRegistrationModelImpl.getStatus()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_ME_S, args);
@@ -1703,13 +1702,24 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 	 *
 	 * @param primaryKey the primary key of the meetups registration
 	 * @return the meetups registration
-	 * @throws com.liferay.portal.NoSuchModelException if a meetups registration with the primary key could not be found
+	 * @throws com.liferay.socialnetworking.NoSuchMeetupsRegistrationException if a meetups registration with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public MeetupsRegistration findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchModelException, SystemException {
-		return findByPrimaryKey(((Long)primaryKey).longValue());
+		throws NoSuchMeetupsRegistrationException, SystemException {
+		MeetupsRegistration meetupsRegistration = fetchByPrimaryKey(primaryKey);
+
+		if (meetupsRegistration == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			}
+
+			throw new NoSuchMeetupsRegistrationException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
+		}
+
+		return meetupsRegistration;
 	}
 
 	/**
@@ -1722,19 +1732,7 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 	 */
 	public MeetupsRegistration findByPrimaryKey(long meetupsRegistrationId)
 		throws NoSuchMeetupsRegistrationException, SystemException {
-		MeetupsRegistration meetupsRegistration = fetchByPrimaryKey(meetupsRegistrationId);
-
-		if (meetupsRegistration == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-					meetupsRegistrationId);
-			}
-
-			throw new NoSuchMeetupsRegistrationException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				meetupsRegistrationId);
-		}
-
-		return meetupsRegistration;
+		return findByPrimaryKey((Serializable)meetupsRegistrationId);
 	}
 
 	/**
@@ -1747,20 +1745,8 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 	@Override
 	public MeetupsRegistration fetchByPrimaryKey(Serializable primaryKey)
 		throws SystemException {
-		return fetchByPrimaryKey(((Long)primaryKey).longValue());
-	}
-
-	/**
-	 * Returns the meetups registration with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param meetupsRegistrationId the primary key of the meetups registration
-	 * @return the meetups registration, or <code>null</code> if a meetups registration with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public MeetupsRegistration fetchByPrimaryKey(long meetupsRegistrationId)
-		throws SystemException {
 		MeetupsRegistration meetupsRegistration = (MeetupsRegistration)EntityCacheUtil.getResult(MeetupsRegistrationModelImpl.ENTITY_CACHE_ENABLED,
-				MeetupsRegistrationImpl.class, meetupsRegistrationId);
+				MeetupsRegistrationImpl.class, primaryKey);
 
 		if (meetupsRegistration == _nullMeetupsRegistration) {
 			return null;
@@ -1773,20 +1759,20 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 				session = openSession();
 
 				meetupsRegistration = (MeetupsRegistration)session.get(MeetupsRegistrationImpl.class,
-						Long.valueOf(meetupsRegistrationId));
+						primaryKey);
 
 				if (meetupsRegistration != null) {
 					cacheResult(meetupsRegistration);
 				}
 				else {
 					EntityCacheUtil.putResult(MeetupsRegistrationModelImpl.ENTITY_CACHE_ENABLED,
-						MeetupsRegistrationImpl.class, meetupsRegistrationId,
+						MeetupsRegistrationImpl.class, primaryKey,
 						_nullMeetupsRegistration);
 				}
 			}
 			catch (Exception e) {
 				EntityCacheUtil.removeResult(MeetupsRegistrationModelImpl.ENTITY_CACHE_ENABLED,
-					MeetupsRegistrationImpl.class, meetupsRegistrationId);
+					MeetupsRegistrationImpl.class, primaryKey);
 
 				throw processException(e);
 			}
@@ -1796,6 +1782,18 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 		}
 
 		return meetupsRegistration;
+	}
+
+	/**
+	 * Returns the meetups registration with the primary key or returns <code>null</code> if it could not be found.
+	 *
+	 * @param meetupsRegistrationId the primary key of the meetups registration
+	 * @return the meetups registration, or <code>null</code> if a meetups registration with the primary key could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public MeetupsRegistration fetchByPrimaryKey(long meetupsRegistrationId)
+		throws SystemException {
+		return fetchByPrimaryKey((Serializable)meetupsRegistrationId);
 	}
 
 	/**

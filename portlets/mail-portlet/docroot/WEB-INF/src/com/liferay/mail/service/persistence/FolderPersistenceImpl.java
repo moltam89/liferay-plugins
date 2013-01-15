@@ -19,7 +19,6 @@ import com.liferay.mail.model.Folder;
 import com.liferay.mail.model.impl.FolderImpl;
 import com.liferay.mail.model.impl.FolderModelImpl;
 
-import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -655,16 +654,18 @@ public class FolderPersistenceImpl extends BasePersistenceImpl<Folder>
 
 			query.append(_FINDER_COLUMN_A_F_ACCOUNTID_2);
 
+			boolean bindFullName = false;
+
 			if (fullName == null) {
 				query.append(_FINDER_COLUMN_A_F_FULLNAME_1);
 			}
+			else if (fullName.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_A_F_FULLNAME_3);
+			}
 			else {
-				if (fullName.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_A_F_FULLNAME_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_A_F_FULLNAME_2);
-				}
+				bindFullName = true;
+
+				query.append(_FINDER_COLUMN_A_F_FULLNAME_2);
 			}
 
 			String sql = query.toString();
@@ -680,7 +681,7 @@ public class FolderPersistenceImpl extends BasePersistenceImpl<Folder>
 
 				qPos.add(accountId);
 
-				if (fullName != null) {
+				if (bindFullName) {
 					qPos.add(fullName);
 				}
 
@@ -770,16 +771,18 @@ public class FolderPersistenceImpl extends BasePersistenceImpl<Folder>
 
 			query.append(_FINDER_COLUMN_A_F_ACCOUNTID_2);
 
+			boolean bindFullName = false;
+
 			if (fullName == null) {
 				query.append(_FINDER_COLUMN_A_F_FULLNAME_1);
 			}
+			else if (fullName.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_A_F_FULLNAME_3);
+			}
 			else {
-				if (fullName.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_A_F_FULLNAME_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_A_F_FULLNAME_2);
-				}
+				bindFullName = true;
+
+				query.append(_FINDER_COLUMN_A_F_FULLNAME_2);
 			}
 
 			String sql = query.toString();
@@ -795,7 +798,7 @@ public class FolderPersistenceImpl extends BasePersistenceImpl<Folder>
 
 				qPos.add(accountId);
 
-				if (fullName != null) {
+				if (bindFullName) {
 					qPos.add(fullName);
 				}
 
@@ -819,7 +822,7 @@ public class FolderPersistenceImpl extends BasePersistenceImpl<Folder>
 	private static final String _FINDER_COLUMN_A_F_ACCOUNTID_2 = "folder.accountId = ? AND ";
 	private static final String _FINDER_COLUMN_A_F_FULLNAME_1 = "folder.fullName IS NULL";
 	private static final String _FINDER_COLUMN_A_F_FULLNAME_2 = "folder.fullName = ?";
-	private static final String _FINDER_COLUMN_A_F_FULLNAME_3 = "(folder.fullName IS NULL OR folder.fullName = ?)";
+	private static final String _FINDER_COLUMN_A_F_FULLNAME_3 = "(folder.fullName IS NULL OR folder.fullName = '')";
 
 	/**
 	 * Caches the folder in the entity cache if it is enabled.
@@ -831,11 +834,7 @@ public class FolderPersistenceImpl extends BasePersistenceImpl<Folder>
 			FolderImpl.class, folder.getPrimaryKey(), folder);
 
 		FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_A_F,
-			new Object[] {
-				Long.valueOf(folder.getAccountId()),
-				
-			folder.getFullName()
-			}, folder);
+			new Object[] { folder.getAccountId(), folder.getFullName() }, folder);
 
 		folder.resetOriginalValues();
 	}
@@ -912,9 +911,7 @@ public class FolderPersistenceImpl extends BasePersistenceImpl<Folder>
 	protected void cacheUniqueFindersCache(Folder folder) {
 		if (folder.isNew()) {
 			Object[] args = new Object[] {
-					Long.valueOf(folder.getAccountId()),
-					
-					folder.getFullName()
+					folder.getAccountId(), folder.getFullName()
 				};
 
 			FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_A_F, args,
@@ -927,9 +924,7 @@ public class FolderPersistenceImpl extends BasePersistenceImpl<Folder>
 			if ((folderModelImpl.getColumnBitmask() &
 					FINDER_PATH_FETCH_BY_A_F.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(folder.getAccountId()),
-						
-						folder.getFullName()
+						folder.getAccountId(), folder.getFullName()
 					};
 
 				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_A_F, args,
@@ -942,11 +937,7 @@ public class FolderPersistenceImpl extends BasePersistenceImpl<Folder>
 	protected void clearUniqueFindersCache(Folder folder) {
 		FolderModelImpl folderModelImpl = (FolderModelImpl)folder;
 
-		Object[] args = new Object[] {
-				Long.valueOf(folder.getAccountId()),
-				
-				folder.getFullName()
-			};
+		Object[] args = new Object[] { folder.getAccountId(), folder.getFullName() };
 
 		FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_A_F, args);
 		FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_A_F, args);
@@ -954,8 +945,7 @@ public class FolderPersistenceImpl extends BasePersistenceImpl<Folder>
 		if ((folderModelImpl.getColumnBitmask() &
 				FINDER_PATH_FETCH_BY_A_F.getColumnBitmask()) != 0) {
 			args = new Object[] {
-					Long.valueOf(folderModelImpl.getOriginalAccountId()),
-					
+					folderModelImpl.getOriginalAccountId(),
 					folderModelImpl.getOriginalFullName()
 				};
 
@@ -989,7 +979,7 @@ public class FolderPersistenceImpl extends BasePersistenceImpl<Folder>
 	 */
 	public Folder remove(long folderId)
 		throws NoSuchFolderException, SystemException {
-		return remove(Long.valueOf(folderId));
+		return remove((Serializable)folderId);
 	}
 
 	/**
@@ -1104,7 +1094,7 @@ public class FolderPersistenceImpl extends BasePersistenceImpl<Folder>
 			if ((folderModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ACCOUNTID.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(folderModelImpl.getOriginalAccountId())
+						folderModelImpl.getOriginalAccountId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_ACCOUNTID,
@@ -1112,7 +1102,7 @@ public class FolderPersistenceImpl extends BasePersistenceImpl<Folder>
 				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ACCOUNTID,
 					args);
 
-				args = new Object[] { Long.valueOf(folderModelImpl.getAccountId()) };
+				args = new Object[] { folderModelImpl.getAccountId() };
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_ACCOUNTID,
 					args);
@@ -1159,13 +1149,24 @@ public class FolderPersistenceImpl extends BasePersistenceImpl<Folder>
 	 *
 	 * @param primaryKey the primary key of the folder
 	 * @return the folder
-	 * @throws com.liferay.portal.NoSuchModelException if a folder with the primary key could not be found
+	 * @throws com.liferay.mail.NoSuchFolderException if a folder with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public Folder findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchModelException, SystemException {
-		return findByPrimaryKey(((Long)primaryKey).longValue());
+		throws NoSuchFolderException, SystemException {
+		Folder folder = fetchByPrimaryKey(primaryKey);
+
+		if (folder == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			}
+
+			throw new NoSuchFolderException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
+		}
+
+		return folder;
 	}
 
 	/**
@@ -1178,18 +1179,7 @@ public class FolderPersistenceImpl extends BasePersistenceImpl<Folder>
 	 */
 	public Folder findByPrimaryKey(long folderId)
 		throws NoSuchFolderException, SystemException {
-		Folder folder = fetchByPrimaryKey(folderId);
-
-		if (folder == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + folderId);
-			}
-
-			throw new NoSuchFolderException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				folderId);
-		}
-
-		return folder;
+		return findByPrimaryKey((Serializable)folderId);
 	}
 
 	/**
@@ -1202,19 +1192,8 @@ public class FolderPersistenceImpl extends BasePersistenceImpl<Folder>
 	@Override
 	public Folder fetchByPrimaryKey(Serializable primaryKey)
 		throws SystemException {
-		return fetchByPrimaryKey(((Long)primaryKey).longValue());
-	}
-
-	/**
-	 * Returns the folder with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param folderId the primary key of the folder
-	 * @return the folder, or <code>null</code> if a folder with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public Folder fetchByPrimaryKey(long folderId) throws SystemException {
 		Folder folder = (Folder)EntityCacheUtil.getResult(FolderModelImpl.ENTITY_CACHE_ENABLED,
-				FolderImpl.class, folderId);
+				FolderImpl.class, primaryKey);
 
 		if (folder == _nullFolder) {
 			return null;
@@ -1226,20 +1205,19 @@ public class FolderPersistenceImpl extends BasePersistenceImpl<Folder>
 			try {
 				session = openSession();
 
-				folder = (Folder)session.get(FolderImpl.class,
-						Long.valueOf(folderId));
+				folder = (Folder)session.get(FolderImpl.class, primaryKey);
 
 				if (folder != null) {
 					cacheResult(folder);
 				}
 				else {
 					EntityCacheUtil.putResult(FolderModelImpl.ENTITY_CACHE_ENABLED,
-						FolderImpl.class, folderId, _nullFolder);
+						FolderImpl.class, primaryKey, _nullFolder);
 				}
 			}
 			catch (Exception e) {
 				EntityCacheUtil.removeResult(FolderModelImpl.ENTITY_CACHE_ENABLED,
-					FolderImpl.class, folderId);
+					FolderImpl.class, primaryKey);
 
 				throw processException(e);
 			}
@@ -1249,6 +1227,17 @@ public class FolderPersistenceImpl extends BasePersistenceImpl<Folder>
 		}
 
 		return folder;
+	}
+
+	/**
+	 * Returns the folder with the primary key or returns <code>null</code> if it could not be found.
+	 *
+	 * @param folderId the primary key of the folder
+	 * @return the folder, or <code>null</code> if a folder with the primary key could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public Folder fetchByPrimaryKey(long folderId) throws SystemException {
+		return fetchByPrimaryKey((Serializable)folderId);
 	}
 
 	/**

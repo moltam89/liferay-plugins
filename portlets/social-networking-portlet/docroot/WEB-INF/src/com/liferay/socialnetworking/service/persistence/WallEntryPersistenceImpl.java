@@ -14,7 +14,6 @@
 
 package com.liferay.socialnetworking.service.persistence;
 
-import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -1645,7 +1644,7 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	 */
 	public WallEntry remove(long wallEntryId)
 		throws NoSuchWallEntryException, SystemException {
-		return remove(Long.valueOf(wallEntryId));
+		return remove((Serializable)wallEntryId);
 	}
 
 	/**
@@ -1763,16 +1762,14 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 			if ((wallEntryModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GROUPID.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(wallEntryModelImpl.getOriginalGroupId())
+						wallEntryModelImpl.getOriginalGroupId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_GROUPID, args);
 				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GROUPID,
 					args);
 
-				args = new Object[] {
-						Long.valueOf(wallEntryModelImpl.getGroupId())
-					};
+				args = new Object[] { wallEntryModelImpl.getGroupId() };
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_GROUPID, args);
 				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GROUPID,
@@ -1782,14 +1779,14 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 			if ((wallEntryModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(wallEntryModelImpl.getOriginalUserId())
+						wallEntryModelImpl.getOriginalUserId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
 				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID,
 					args);
 
-				args = new Object[] { Long.valueOf(wallEntryModelImpl.getUserId()) };
+				args = new Object[] { wallEntryModelImpl.getUserId() };
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
 				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID,
@@ -1799,8 +1796,8 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 			if ((wallEntryModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_U.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(wallEntryModelImpl.getOriginalGroupId()),
-						Long.valueOf(wallEntryModelImpl.getOriginalUserId())
+						wallEntryModelImpl.getOriginalGroupId(),
+						wallEntryModelImpl.getOriginalUserId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_G_U, args);
@@ -1808,8 +1805,8 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 					args);
 
 				args = new Object[] {
-						Long.valueOf(wallEntryModelImpl.getGroupId()),
-						Long.valueOf(wallEntryModelImpl.getUserId())
+						wallEntryModelImpl.getGroupId(),
+						wallEntryModelImpl.getUserId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_G_U, args);
@@ -1851,13 +1848,24 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	 *
 	 * @param primaryKey the primary key of the wall entry
 	 * @return the wall entry
-	 * @throws com.liferay.portal.NoSuchModelException if a wall entry with the primary key could not be found
+	 * @throws com.liferay.socialnetworking.NoSuchWallEntryException if a wall entry with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public WallEntry findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchModelException, SystemException {
-		return findByPrimaryKey(((Long)primaryKey).longValue());
+		throws NoSuchWallEntryException, SystemException {
+		WallEntry wallEntry = fetchByPrimaryKey(primaryKey);
+
+		if (wallEntry == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			}
+
+			throw new NoSuchWallEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
+		}
+
+		return wallEntry;
 	}
 
 	/**
@@ -1870,18 +1878,7 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	 */
 	public WallEntry findByPrimaryKey(long wallEntryId)
 		throws NoSuchWallEntryException, SystemException {
-		WallEntry wallEntry = fetchByPrimaryKey(wallEntryId);
-
-		if (wallEntry == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + wallEntryId);
-			}
-
-			throw new NoSuchWallEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				wallEntryId);
-		}
-
-		return wallEntry;
+		return findByPrimaryKey((Serializable)wallEntryId);
 	}
 
 	/**
@@ -1894,20 +1891,8 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	@Override
 	public WallEntry fetchByPrimaryKey(Serializable primaryKey)
 		throws SystemException {
-		return fetchByPrimaryKey(((Long)primaryKey).longValue());
-	}
-
-	/**
-	 * Returns the wall entry with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param wallEntryId the primary key of the wall entry
-	 * @return the wall entry, or <code>null</code> if a wall entry with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public WallEntry fetchByPrimaryKey(long wallEntryId)
-		throws SystemException {
 		WallEntry wallEntry = (WallEntry)EntityCacheUtil.getResult(WallEntryModelImpl.ENTITY_CACHE_ENABLED,
-				WallEntryImpl.class, wallEntryId);
+				WallEntryImpl.class, primaryKey);
 
 		if (wallEntry == _nullWallEntry) {
 			return null;
@@ -1920,19 +1905,19 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 				session = openSession();
 
 				wallEntry = (WallEntry)session.get(WallEntryImpl.class,
-						Long.valueOf(wallEntryId));
+						primaryKey);
 
 				if (wallEntry != null) {
 					cacheResult(wallEntry);
 				}
 				else {
 					EntityCacheUtil.putResult(WallEntryModelImpl.ENTITY_CACHE_ENABLED,
-						WallEntryImpl.class, wallEntryId, _nullWallEntry);
+						WallEntryImpl.class, primaryKey, _nullWallEntry);
 				}
 			}
 			catch (Exception e) {
 				EntityCacheUtil.removeResult(WallEntryModelImpl.ENTITY_CACHE_ENABLED,
-					WallEntryImpl.class, wallEntryId);
+					WallEntryImpl.class, primaryKey);
 
 				throw processException(e);
 			}
@@ -1942,6 +1927,18 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 		}
 
 		return wallEntry;
+	}
+
+	/**
+	 * Returns the wall entry with the primary key or returns <code>null</code> if it could not be found.
+	 *
+	 * @param wallEntryId the primary key of the wall entry
+	 * @return the wall entry, or <code>null</code> if a wall entry with the primary key could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public WallEntry fetchByPrimaryKey(long wallEntryId)
+		throws SystemException {
+		return fetchByPrimaryKey((Serializable)wallEntryId);
 	}
 
 	/**

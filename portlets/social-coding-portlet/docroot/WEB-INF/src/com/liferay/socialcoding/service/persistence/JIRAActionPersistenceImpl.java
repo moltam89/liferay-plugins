@@ -14,7 +14,6 @@
 
 package com.liferay.socialcoding.service.persistence;
 
-import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -194,16 +193,18 @@ public class JIRAActionPersistenceImpl extends BasePersistenceImpl<JIRAAction>
 
 			query.append(_SQL_SELECT_JIRAACTION_WHERE);
 
+			boolean bindJiraUserId = false;
+
 			if (jiraUserId == null) {
 				query.append(_FINDER_COLUMN_JIRAUSERID_JIRAUSERID_1);
 			}
+			else if (jiraUserId.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_JIRAUSERID_JIRAUSERID_3);
+			}
 			else {
-				if (jiraUserId.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_JIRAUSERID_JIRAUSERID_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_JIRAUSERID_JIRAUSERID_2);
-				}
+				bindJiraUserId = true;
+
+				query.append(_FINDER_COLUMN_JIRAUSERID_JIRAUSERID_2);
 			}
 
 			if (orderByComparator != null) {
@@ -226,7 +227,7 @@ public class JIRAActionPersistenceImpl extends BasePersistenceImpl<JIRAAction>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (jiraUserId != null) {
+				if (bindJiraUserId) {
 					qPos.add(jiraUserId);
 				}
 
@@ -419,16 +420,18 @@ public class JIRAActionPersistenceImpl extends BasePersistenceImpl<JIRAAction>
 
 		query.append(_SQL_SELECT_JIRAACTION_WHERE);
 
+		boolean bindJiraUserId = false;
+
 		if (jiraUserId == null) {
 			query.append(_FINDER_COLUMN_JIRAUSERID_JIRAUSERID_1);
 		}
+		else if (jiraUserId.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_JIRAUSERID_JIRAUSERID_3);
+		}
 		else {
-			if (jiraUserId.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_JIRAUSERID_JIRAUSERID_3);
-			}
-			else {
-				query.append(_FINDER_COLUMN_JIRAUSERID_JIRAUSERID_2);
-			}
+			bindJiraUserId = true;
+
+			query.append(_FINDER_COLUMN_JIRAUSERID_JIRAUSERID_2);
 		}
 
 		if (orderByComparator != null) {
@@ -499,7 +502,7 @@ public class JIRAActionPersistenceImpl extends BasePersistenceImpl<JIRAAction>
 
 		QueryPos qPos = QueryPos.getInstance(q);
 
-		if (jiraUserId != null) {
+		if (bindJiraUserId) {
 			qPos.add(jiraUserId);
 		}
 
@@ -554,16 +557,18 @@ public class JIRAActionPersistenceImpl extends BasePersistenceImpl<JIRAAction>
 
 			query.append(_SQL_COUNT_JIRAACTION_WHERE);
 
+			boolean bindJiraUserId = false;
+
 			if (jiraUserId == null) {
 				query.append(_FINDER_COLUMN_JIRAUSERID_JIRAUSERID_1);
 			}
+			else if (jiraUserId.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_JIRAUSERID_JIRAUSERID_3);
+			}
 			else {
-				if (jiraUserId.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_JIRAUSERID_JIRAUSERID_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_JIRAUSERID_JIRAUSERID_2);
-				}
+				bindJiraUserId = true;
+
+				query.append(_FINDER_COLUMN_JIRAUSERID_JIRAUSERID_2);
 			}
 
 			String sql = query.toString();
@@ -577,7 +582,7 @@ public class JIRAActionPersistenceImpl extends BasePersistenceImpl<JIRAAction>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (jiraUserId != null) {
+				if (bindJiraUserId) {
 					qPos.add(jiraUserId);
 				}
 
@@ -600,7 +605,7 @@ public class JIRAActionPersistenceImpl extends BasePersistenceImpl<JIRAAction>
 
 	private static final String _FINDER_COLUMN_JIRAUSERID_JIRAUSERID_1 = "jiraAction.jiraUserId IS NULL";
 	private static final String _FINDER_COLUMN_JIRAUSERID_JIRAUSERID_2 = "jiraAction.jiraUserId = ?";
-	private static final String _FINDER_COLUMN_JIRAUSERID_JIRAUSERID_3 = "(jiraAction.jiraUserId IS NULL OR jiraAction.jiraUserId = ?)";
+	private static final String _FINDER_COLUMN_JIRAUSERID_JIRAUSERID_3 = "(jiraAction.jiraUserId IS NULL OR jiraAction.jiraUserId = '')";
 	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_JIRAISSUEID =
 		new FinderPath(JIRAActionModelImpl.ENTITY_CACHE_ENABLED,
 			JIRAActionModelImpl.FINDER_CACHE_ENABLED, JIRAActionImpl.class,
@@ -1186,16 +1191,18 @@ public class JIRAActionPersistenceImpl extends BasePersistenceImpl<JIRAAction>
 
 			query.append(_SQL_SELECT_JIRAACTION_WHERE);
 
+			boolean bindType = false;
+
 			if (type == null) {
 				query.append(_FINDER_COLUMN_TYPE_TYPE_1);
 			}
+			else if (type.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_TYPE_TYPE_3);
+			}
 			else {
-				if (type.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_TYPE_TYPE_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_TYPE_TYPE_2);
-				}
+				bindType = true;
+
+				query.append(_FINDER_COLUMN_TYPE_TYPE_2);
 			}
 
 			if (orderByComparator != null) {
@@ -1218,7 +1225,7 @@ public class JIRAActionPersistenceImpl extends BasePersistenceImpl<JIRAAction>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (type != null) {
+				if (bindType) {
 					qPos.add(type);
 				}
 
@@ -1408,16 +1415,18 @@ public class JIRAActionPersistenceImpl extends BasePersistenceImpl<JIRAAction>
 
 		query.append(_SQL_SELECT_JIRAACTION_WHERE);
 
+		boolean bindType = false;
+
 		if (type == null) {
 			query.append(_FINDER_COLUMN_TYPE_TYPE_1);
 		}
+		else if (type.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_TYPE_TYPE_3);
+		}
 		else {
-			if (type.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_TYPE_TYPE_3);
-			}
-			else {
-				query.append(_FINDER_COLUMN_TYPE_TYPE_2);
-			}
+			bindType = true;
+
+			query.append(_FINDER_COLUMN_TYPE_TYPE_2);
 		}
 
 		if (orderByComparator != null) {
@@ -1488,7 +1497,7 @@ public class JIRAActionPersistenceImpl extends BasePersistenceImpl<JIRAAction>
 
 		QueryPos qPos = QueryPos.getInstance(q);
 
-		if (type != null) {
+		if (bindType) {
 			qPos.add(type);
 		}
 
@@ -1543,16 +1552,18 @@ public class JIRAActionPersistenceImpl extends BasePersistenceImpl<JIRAAction>
 
 			query.append(_SQL_COUNT_JIRAACTION_WHERE);
 
+			boolean bindType = false;
+
 			if (type == null) {
 				query.append(_FINDER_COLUMN_TYPE_TYPE_1);
 			}
+			else if (type.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_TYPE_TYPE_3);
+			}
 			else {
-				if (type.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_TYPE_TYPE_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_TYPE_TYPE_2);
-				}
+				bindType = true;
+
+				query.append(_FINDER_COLUMN_TYPE_TYPE_2);
 			}
 
 			String sql = query.toString();
@@ -1566,7 +1577,7 @@ public class JIRAActionPersistenceImpl extends BasePersistenceImpl<JIRAAction>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (type != null) {
+				if (bindType) {
 					qPos.add(type);
 				}
 
@@ -1589,7 +1600,7 @@ public class JIRAActionPersistenceImpl extends BasePersistenceImpl<JIRAAction>
 
 	private static final String _FINDER_COLUMN_TYPE_TYPE_1 = "jiraAction.type IS NULL";
 	private static final String _FINDER_COLUMN_TYPE_TYPE_2 = "jiraAction.type = ?";
-	private static final String _FINDER_COLUMN_TYPE_TYPE_3 = "(jiraAction.type IS NULL OR jiraAction.type = ?)";
+	private static final String _FINDER_COLUMN_TYPE_TYPE_3 = "(jiraAction.type IS NULL OR jiraAction.type = '')";
 
 	/**
 	 * Caches the j i r a action in the entity cache if it is enabled.
@@ -1693,7 +1704,7 @@ public class JIRAActionPersistenceImpl extends BasePersistenceImpl<JIRAAction>
 	 */
 	public JIRAAction remove(long jiraActionId)
 		throws NoSuchJIRAActionException, SystemException {
-		return remove(Long.valueOf(jiraActionId));
+		return remove((Serializable)jiraActionId);
 	}
 
 	/**
@@ -1830,7 +1841,7 @@ public class JIRAActionPersistenceImpl extends BasePersistenceImpl<JIRAAction>
 			if ((jiraActionModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_JIRAISSUEID.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(jiraActionModelImpl.getOriginalJiraIssueId())
+						jiraActionModelImpl.getOriginalJiraIssueId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_JIRAISSUEID,
@@ -1838,9 +1849,7 @@ public class JIRAActionPersistenceImpl extends BasePersistenceImpl<JIRAAction>
 				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_JIRAISSUEID,
 					args);
 
-				args = new Object[] {
-						Long.valueOf(jiraActionModelImpl.getJiraIssueId())
-					};
+				args = new Object[] { jiraActionModelImpl.getJiraIssueId() };
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_JIRAISSUEID,
 					args);
@@ -1899,13 +1908,24 @@ public class JIRAActionPersistenceImpl extends BasePersistenceImpl<JIRAAction>
 	 *
 	 * @param primaryKey the primary key of the j i r a action
 	 * @return the j i r a action
-	 * @throws com.liferay.portal.NoSuchModelException if a j i r a action with the primary key could not be found
+	 * @throws com.liferay.socialcoding.NoSuchJIRAActionException if a j i r a action with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JIRAAction findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchModelException, SystemException {
-		return findByPrimaryKey(((Long)primaryKey).longValue());
+		throws NoSuchJIRAActionException, SystemException {
+		JIRAAction jiraAction = fetchByPrimaryKey(primaryKey);
+
+		if (jiraAction == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			}
+
+			throw new NoSuchJIRAActionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
+		}
+
+		return jiraAction;
 	}
 
 	/**
@@ -1918,18 +1938,7 @@ public class JIRAActionPersistenceImpl extends BasePersistenceImpl<JIRAAction>
 	 */
 	public JIRAAction findByPrimaryKey(long jiraActionId)
 		throws NoSuchJIRAActionException, SystemException {
-		JIRAAction jiraAction = fetchByPrimaryKey(jiraActionId);
-
-		if (jiraAction == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + jiraActionId);
-			}
-
-			throw new NoSuchJIRAActionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				jiraActionId);
-		}
-
-		return jiraAction;
+		return findByPrimaryKey((Serializable)jiraActionId);
 	}
 
 	/**
@@ -1942,20 +1951,8 @@ public class JIRAActionPersistenceImpl extends BasePersistenceImpl<JIRAAction>
 	@Override
 	public JIRAAction fetchByPrimaryKey(Serializable primaryKey)
 		throws SystemException {
-		return fetchByPrimaryKey(((Long)primaryKey).longValue());
-	}
-
-	/**
-	 * Returns the j i r a action with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param jiraActionId the primary key of the j i r a action
-	 * @return the j i r a action, or <code>null</code> if a j i r a action with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public JIRAAction fetchByPrimaryKey(long jiraActionId)
-		throws SystemException {
 		JIRAAction jiraAction = (JIRAAction)EntityCacheUtil.getResult(JIRAActionModelImpl.ENTITY_CACHE_ENABLED,
-				JIRAActionImpl.class, jiraActionId);
+				JIRAActionImpl.class, primaryKey);
 
 		if (jiraAction == _nullJIRAAction) {
 			return null;
@@ -1968,19 +1965,19 @@ public class JIRAActionPersistenceImpl extends BasePersistenceImpl<JIRAAction>
 				session = openSession();
 
 				jiraAction = (JIRAAction)session.get(JIRAActionImpl.class,
-						Long.valueOf(jiraActionId));
+						primaryKey);
 
 				if (jiraAction != null) {
 					cacheResult(jiraAction);
 				}
 				else {
 					EntityCacheUtil.putResult(JIRAActionModelImpl.ENTITY_CACHE_ENABLED,
-						JIRAActionImpl.class, jiraActionId, _nullJIRAAction);
+						JIRAActionImpl.class, primaryKey, _nullJIRAAction);
 				}
 			}
 			catch (Exception e) {
 				EntityCacheUtil.removeResult(JIRAActionModelImpl.ENTITY_CACHE_ENABLED,
-					JIRAActionImpl.class, jiraActionId);
+					JIRAActionImpl.class, primaryKey);
 
 				throw processException(e);
 			}
@@ -1990,6 +1987,18 @@ public class JIRAActionPersistenceImpl extends BasePersistenceImpl<JIRAAction>
 		}
 
 		return jiraAction;
+	}
+
+	/**
+	 * Returns the j i r a action with the primary key or returns <code>null</code> if it could not be found.
+	 *
+	 * @param jiraActionId the primary key of the j i r a action
+	 * @return the j i r a action, or <code>null</code> if a j i r a action with the primary key could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public JIRAAction fetchByPrimaryKey(long jiraActionId)
+		throws SystemException {
+		return fetchByPrimaryKey((Serializable)jiraActionId);
 	}
 
 	/**

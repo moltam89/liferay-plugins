@@ -19,7 +19,6 @@ import com.liferay.calendar.model.Calendar;
 import com.liferay.calendar.model.impl.CalendarImpl;
 import com.liferay.calendar.model.impl.CalendarModelImpl;
 
-import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -679,16 +678,18 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 
 			query.append(_SQL_SELECT_CALENDAR_WHERE);
 
+			boolean bindUuid = false;
+
 			if (uuid == null) {
 				query.append(_FINDER_COLUMN_UUID_UUID_1);
 			}
+			else if (uuid.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_UUID_UUID_3);
+			}
 			else {
-				if (uuid.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_UUID_UUID_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_UUID_UUID_2);
-				}
+				bindUuid = true;
+
+				query.append(_FINDER_COLUMN_UUID_UUID_2);
 			}
 
 			if (orderByComparator != null) {
@@ -711,7 +712,7 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (uuid != null) {
+				if (bindUuid) {
 					qPos.add(uuid);
 				}
 
@@ -901,16 +902,18 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 
 		query.append(_SQL_SELECT_CALENDAR_WHERE);
 
+		boolean bindUuid = false;
+
 		if (uuid == null) {
 			query.append(_FINDER_COLUMN_UUID_UUID_1);
 		}
+		else if (uuid.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_UUID_UUID_3);
+		}
 		else {
-			if (uuid.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_UUID_UUID_3);
-			}
-			else {
-				query.append(_FINDER_COLUMN_UUID_UUID_2);
-			}
+			bindUuid = true;
+
+			query.append(_FINDER_COLUMN_UUID_UUID_2);
 		}
 
 		if (orderByComparator != null) {
@@ -981,7 +984,7 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 
 		QueryPos qPos = QueryPos.getInstance(q);
 
-		if (uuid != null) {
+		if (bindUuid) {
 			qPos.add(uuid);
 		}
 
@@ -1036,16 +1039,18 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 
 			query.append(_SQL_COUNT_CALENDAR_WHERE);
 
+			boolean bindUuid = false;
+
 			if (uuid == null) {
 				query.append(_FINDER_COLUMN_UUID_UUID_1);
 			}
+			else if (uuid.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_UUID_UUID_3);
+			}
 			else {
-				if (uuid.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_UUID_UUID_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_UUID_UUID_2);
-				}
+				bindUuid = true;
+
+				query.append(_FINDER_COLUMN_UUID_UUID_2);
 			}
 
 			String sql = query.toString();
@@ -1059,7 +1064,7 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (uuid != null) {
+				if (bindUuid) {
 					qPos.add(uuid);
 				}
 
@@ -1082,7 +1087,7 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 
 	private static final String _FINDER_COLUMN_UUID_UUID_1 = "calendar.uuid IS NULL";
 	private static final String _FINDER_COLUMN_UUID_UUID_2 = "calendar.uuid = ?";
-	private static final String _FINDER_COLUMN_UUID_UUID_3 = "(calendar.uuid IS NULL OR calendar.uuid = ?)";
+	private static final String _FINDER_COLUMN_UUID_UUID_3 = "(calendar.uuid IS NULL OR calendar.uuid = '')";
 	public static final FinderPath FINDER_PATH_FETCH_BY_UUID_G = new FinderPath(CalendarModelImpl.ENTITY_CACHE_ENABLED,
 			CalendarModelImpl.FINDER_CACHE_ENABLED, CalendarImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G",
@@ -1177,16 +1182,18 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 
 			query.append(_SQL_SELECT_CALENDAR_WHERE);
 
+			boolean bindUuid = false;
+
 			if (uuid == null) {
 				query.append(_FINDER_COLUMN_UUID_G_UUID_1);
 			}
+			else if (uuid.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_UUID_G_UUID_3);
+			}
 			else {
-				if (uuid.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_UUID_G_UUID_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_UUID_G_UUID_2);
-				}
+				bindUuid = true;
+
+				query.append(_FINDER_COLUMN_UUID_G_UUID_2);
 			}
 
 			query.append(_FINDER_COLUMN_UUID_G_GROUPID_2);
@@ -1202,7 +1209,7 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (uuid != null) {
+				if (bindUuid) {
 					qPos.add(uuid);
 				}
 
@@ -1285,16 +1292,18 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 
 			query.append(_SQL_COUNT_CALENDAR_WHERE);
 
+			boolean bindUuid = false;
+
 			if (uuid == null) {
 				query.append(_FINDER_COLUMN_UUID_G_UUID_1);
 			}
+			else if (uuid.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_UUID_G_UUID_3);
+			}
 			else {
-				if (uuid.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_UUID_G_UUID_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_UUID_G_UUID_2);
-				}
+				bindUuid = true;
+
+				query.append(_FINDER_COLUMN_UUID_G_UUID_2);
 			}
 
 			query.append(_FINDER_COLUMN_UUID_G_GROUPID_2);
@@ -1310,7 +1319,7 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (uuid != null) {
+				if (bindUuid) {
 					qPos.add(uuid);
 				}
 
@@ -1335,7 +1344,7 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 
 	private static final String _FINDER_COLUMN_UUID_G_UUID_1 = "calendar.uuid IS NULL AND ";
 	private static final String _FINDER_COLUMN_UUID_G_UUID_2 = "calendar.uuid = ? AND ";
-	private static final String _FINDER_COLUMN_UUID_G_UUID_3 = "(calendar.uuid IS NULL OR calendar.uuid = ?) AND ";
+	private static final String _FINDER_COLUMN_UUID_G_UUID_3 = "(calendar.uuid IS NULL OR calendar.uuid = '') AND ";
 	private static final String _FINDER_COLUMN_UUID_G_GROUPID_2 = "calendar.groupId = ?";
 	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_UUID_C = new FinderPath(CalendarModelImpl.ENTITY_CACHE_ENABLED,
 			CalendarModelImpl.FINDER_CACHE_ENABLED, CalendarImpl.class,
@@ -1455,16 +1464,18 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 
 			query.append(_SQL_SELECT_CALENDAR_WHERE);
 
+			boolean bindUuid = false;
+
 			if (uuid == null) {
 				query.append(_FINDER_COLUMN_UUID_C_UUID_1);
 			}
+			else if (uuid.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_UUID_C_UUID_3);
+			}
 			else {
-				if (uuid.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_UUID_C_UUID_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_UUID_C_UUID_2);
-				}
+				bindUuid = true;
+
+				query.append(_FINDER_COLUMN_UUID_C_UUID_2);
 			}
 
 			query.append(_FINDER_COLUMN_UUID_C_COMPANYID_2);
@@ -1489,7 +1500,7 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (uuid != null) {
+				if (bindUuid) {
 					qPos.add(uuid);
 				}
 
@@ -1695,16 +1706,18 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 
 		query.append(_SQL_SELECT_CALENDAR_WHERE);
 
+		boolean bindUuid = false;
+
 		if (uuid == null) {
 			query.append(_FINDER_COLUMN_UUID_C_UUID_1);
 		}
+		else if (uuid.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_UUID_C_UUID_3);
+		}
 		else {
-			if (uuid.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_UUID_C_UUID_3);
-			}
-			else {
-				query.append(_FINDER_COLUMN_UUID_C_UUID_2);
-			}
+			bindUuid = true;
+
+			query.append(_FINDER_COLUMN_UUID_C_UUID_2);
 		}
 
 		query.append(_FINDER_COLUMN_UUID_C_COMPANYID_2);
@@ -1777,7 +1790,7 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 
 		QueryPos qPos = QueryPos.getInstance(q);
 
-		if (uuid != null) {
+		if (bindUuid) {
 			qPos.add(uuid);
 		}
 
@@ -1838,16 +1851,18 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 
 			query.append(_SQL_COUNT_CALENDAR_WHERE);
 
+			boolean bindUuid = false;
+
 			if (uuid == null) {
 				query.append(_FINDER_COLUMN_UUID_C_UUID_1);
 			}
+			else if (uuid.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_UUID_C_UUID_3);
+			}
 			else {
-				if (uuid.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_UUID_C_UUID_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_UUID_C_UUID_2);
-				}
+				bindUuid = true;
+
+				query.append(_FINDER_COLUMN_UUID_C_UUID_2);
 			}
 
 			query.append(_FINDER_COLUMN_UUID_C_COMPANYID_2);
@@ -1863,7 +1878,7 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (uuid != null) {
+				if (bindUuid) {
 					qPos.add(uuid);
 				}
 
@@ -1888,7 +1903,7 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 
 	private static final String _FINDER_COLUMN_UUID_C_UUID_1 = "calendar.uuid IS NULL AND ";
 	private static final String _FINDER_COLUMN_UUID_C_UUID_2 = "calendar.uuid = ? AND ";
-	private static final String _FINDER_COLUMN_UUID_C_UUID_3 = "(calendar.uuid IS NULL OR calendar.uuid = ?) AND ";
+	private static final String _FINDER_COLUMN_UUID_C_UUID_3 = "(calendar.uuid IS NULL OR calendar.uuid = '') AND ";
 	private static final String _FINDER_COLUMN_UUID_C_COMPANYID_2 = "calendar.companyId = ?";
 	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_G_C = new FinderPath(CalendarModelImpl.ENTITY_CACHE_ENABLED,
 			CalendarModelImpl.FINDER_CACHE_ENABLED, CalendarImpl.class,
@@ -3639,8 +3654,7 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 			CalendarImpl.class, calendar.getPrimaryKey(), calendar);
 
 		FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_UUID_G,
-			new Object[] { calendar.getUuid(), Long.valueOf(
-					calendar.getGroupId()) }, calendar);
+			new Object[] { calendar.getUuid(), calendar.getGroupId() }, calendar);
 
 		calendar.resetOriginalValues();
 	}
@@ -3717,7 +3731,7 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 	protected void cacheUniqueFindersCache(Calendar calendar) {
 		if (calendar.isNew()) {
 			Object[] args = new Object[] {
-					calendar.getUuid(), Long.valueOf(calendar.getGroupId())
+					calendar.getUuid(), calendar.getGroupId()
 				};
 
 			FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_UUID_G, args,
@@ -3731,7 +3745,7 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 			if ((calendarModelImpl.getColumnBitmask() &
 					FINDER_PATH_FETCH_BY_UUID_G.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						calendar.getUuid(), Long.valueOf(calendar.getGroupId())
+						calendar.getUuid(), calendar.getGroupId()
 					};
 
 				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_UUID_G, args,
@@ -3745,9 +3759,7 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 	protected void clearUniqueFindersCache(Calendar calendar) {
 		CalendarModelImpl calendarModelImpl = (CalendarModelImpl)calendar;
 
-		Object[] args = new Object[] {
-				calendar.getUuid(), Long.valueOf(calendar.getGroupId())
-			};
+		Object[] args = new Object[] { calendar.getUuid(), calendar.getGroupId() };
 
 		FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_UUID_G, args);
 		FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_UUID_G, args);
@@ -3756,7 +3768,7 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 				FINDER_PATH_FETCH_BY_UUID_G.getColumnBitmask()) != 0) {
 			args = new Object[] {
 					calendarModelImpl.getOriginalUuid(),
-					Long.valueOf(calendarModelImpl.getOriginalGroupId())
+					calendarModelImpl.getOriginalGroupId()
 				};
 
 			FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_UUID_G, args);
@@ -3793,7 +3805,7 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 	 */
 	public Calendar remove(long calendarId)
 		throws NoSuchCalendarException, SystemException {
-		return remove(Long.valueOf(calendarId));
+		return remove((Serializable)calendarId);
 	}
 
 	/**
@@ -3915,7 +3927,7 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 			if ((calendarModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_RESOURCEBLOCKID.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(calendarModelImpl.getOriginalResourceBlockId())
+						calendarModelImpl.getOriginalResourceBlockId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_RESOURCEBLOCKID,
@@ -3923,9 +3935,7 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_RESOURCEBLOCKID,
 					args);
 
-				args = new Object[] {
-						Long.valueOf(calendarModelImpl.getResourceBlockId())
-					};
+				args = new Object[] { calendarModelImpl.getResourceBlockId() };
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_RESOURCEBLOCKID,
 					args);
@@ -3952,7 +3962,7 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID_C.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
 						calendarModelImpl.getOriginalUuid(),
-						Long.valueOf(calendarModelImpl.getOriginalCompanyId())
+						calendarModelImpl.getOriginalCompanyId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_UUID_C, args);
@@ -3961,7 +3971,7 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 
 				args = new Object[] {
 						calendarModelImpl.getUuid(),
-						Long.valueOf(calendarModelImpl.getCompanyId())
+						calendarModelImpl.getCompanyId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_UUID_C, args);
@@ -3972,8 +3982,8 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 			if ((calendarModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_C.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(calendarModelImpl.getOriginalGroupId()),
-						Long.valueOf(calendarModelImpl.getOriginalCalendarResourceId())
+						calendarModelImpl.getOriginalGroupId(),
+						calendarModelImpl.getOriginalCalendarResourceId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_G_C, args);
@@ -3981,8 +3991,8 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 					args);
 
 				args = new Object[] {
-						Long.valueOf(calendarModelImpl.getGroupId()),
-						Long.valueOf(calendarModelImpl.getCalendarResourceId())
+						calendarModelImpl.getGroupId(),
+						calendarModelImpl.getCalendarResourceId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_G_C, args);
@@ -3993,9 +4003,9 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 			if ((calendarModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_C_D.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(calendarModelImpl.getOriginalGroupId()),
-						Long.valueOf(calendarModelImpl.getOriginalCalendarResourceId()),
-						Boolean.valueOf(calendarModelImpl.getOriginalDefaultCalendar())
+						calendarModelImpl.getOriginalGroupId(),
+						calendarModelImpl.getOriginalCalendarResourceId(),
+						calendarModelImpl.getOriginalDefaultCalendar()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_G_C_D, args);
@@ -4003,9 +4013,9 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 					args);
 
 				args = new Object[] {
-						Long.valueOf(calendarModelImpl.getGroupId()),
-						Long.valueOf(calendarModelImpl.getCalendarResourceId()),
-						Boolean.valueOf(calendarModelImpl.getDefaultCalendar())
+						calendarModelImpl.getGroupId(),
+						calendarModelImpl.getCalendarResourceId(),
+						calendarModelImpl.getDefaultCalendar()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_G_C_D, args);
@@ -4056,13 +4066,24 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 	 *
 	 * @param primaryKey the primary key of the calendar
 	 * @return the calendar
-	 * @throws com.liferay.portal.NoSuchModelException if a calendar with the primary key could not be found
+	 * @throws com.liferay.calendar.NoSuchCalendarException if a calendar with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public Calendar findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchModelException, SystemException {
-		return findByPrimaryKey(((Long)primaryKey).longValue());
+		throws NoSuchCalendarException, SystemException {
+		Calendar calendar = fetchByPrimaryKey(primaryKey);
+
+		if (calendar == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			}
+
+			throw new NoSuchCalendarException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
+		}
+
+		return calendar;
 	}
 
 	/**
@@ -4075,18 +4096,7 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 	 */
 	public Calendar findByPrimaryKey(long calendarId)
 		throws NoSuchCalendarException, SystemException {
-		Calendar calendar = fetchByPrimaryKey(calendarId);
-
-		if (calendar == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + calendarId);
-			}
-
-			throw new NoSuchCalendarException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				calendarId);
-		}
-
-		return calendar;
+		return findByPrimaryKey((Serializable)calendarId);
 	}
 
 	/**
@@ -4099,20 +4109,8 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 	@Override
 	public Calendar fetchByPrimaryKey(Serializable primaryKey)
 		throws SystemException {
-		return fetchByPrimaryKey(((Long)primaryKey).longValue());
-	}
-
-	/**
-	 * Returns the calendar with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param calendarId the primary key of the calendar
-	 * @return the calendar, or <code>null</code> if a calendar with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public Calendar fetchByPrimaryKey(long calendarId)
-		throws SystemException {
 		Calendar calendar = (Calendar)EntityCacheUtil.getResult(CalendarModelImpl.ENTITY_CACHE_ENABLED,
-				CalendarImpl.class, calendarId);
+				CalendarImpl.class, primaryKey);
 
 		if (calendar == _nullCalendar) {
 			return null;
@@ -4124,20 +4122,19 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 			try {
 				session = openSession();
 
-				calendar = (Calendar)session.get(CalendarImpl.class,
-						Long.valueOf(calendarId));
+				calendar = (Calendar)session.get(CalendarImpl.class, primaryKey);
 
 				if (calendar != null) {
 					cacheResult(calendar);
 				}
 				else {
 					EntityCacheUtil.putResult(CalendarModelImpl.ENTITY_CACHE_ENABLED,
-						CalendarImpl.class, calendarId, _nullCalendar);
+						CalendarImpl.class, primaryKey, _nullCalendar);
 				}
 			}
 			catch (Exception e) {
 				EntityCacheUtil.removeResult(CalendarModelImpl.ENTITY_CACHE_ENABLED,
-					CalendarImpl.class, calendarId);
+					CalendarImpl.class, primaryKey);
 
 				throw processException(e);
 			}
@@ -4147,6 +4144,18 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 		}
 
 		return calendar;
+	}
+
+	/**
+	 * Returns the calendar with the primary key or returns <code>null</code> if it could not be found.
+	 *
+	 * @param calendarId the primary key of the calendar
+	 * @return the calendar, or <code>null</code> if a calendar with the primary key could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public Calendar fetchByPrimaryKey(long calendarId)
+		throws SystemException {
+		return fetchByPrimaryKey((Serializable)calendarId);
 	}
 
 	/**

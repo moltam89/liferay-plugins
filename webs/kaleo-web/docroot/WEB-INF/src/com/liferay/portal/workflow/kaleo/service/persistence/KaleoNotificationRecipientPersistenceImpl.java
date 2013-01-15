@@ -14,7 +14,6 @@
 
 package com.liferay.portal.workflow.kaleo.service.persistence;
 
-import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -1671,7 +1670,7 @@ public class KaleoNotificationRecipientPersistenceImpl
 	 */
 	public KaleoNotificationRecipient remove(long kaleoNotificationRecipientId)
 		throws NoSuchNotificationRecipientException, SystemException {
-		return remove(Long.valueOf(kaleoNotificationRecipientId));
+		return remove((Serializable)kaleoNotificationRecipientId);
 	}
 
 	/**
@@ -1791,7 +1790,7 @@ public class KaleoNotificationRecipientPersistenceImpl
 			if ((kaleoNotificationRecipientModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(kaleoNotificationRecipientModelImpl.getOriginalCompanyId())
+						kaleoNotificationRecipientModelImpl.getOriginalCompanyId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_COMPANYID,
@@ -1800,7 +1799,7 @@ public class KaleoNotificationRecipientPersistenceImpl
 					args);
 
 				args = new Object[] {
-						Long.valueOf(kaleoNotificationRecipientModelImpl.getCompanyId())
+						kaleoNotificationRecipientModelImpl.getCompanyId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_COMPANYID,
@@ -1812,7 +1811,7 @@ public class KaleoNotificationRecipientPersistenceImpl
 			if ((kaleoNotificationRecipientModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KALEODEFINITIONID.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(kaleoNotificationRecipientModelImpl.getOriginalKaleoDefinitionId())
+						kaleoNotificationRecipientModelImpl.getOriginalKaleoDefinitionId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_KALEODEFINITIONID,
@@ -1821,7 +1820,7 @@ public class KaleoNotificationRecipientPersistenceImpl
 					args);
 
 				args = new Object[] {
-						Long.valueOf(kaleoNotificationRecipientModelImpl.getKaleoDefinitionId())
+						kaleoNotificationRecipientModelImpl.getKaleoDefinitionId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_KALEODEFINITIONID,
@@ -1833,7 +1832,7 @@ public class KaleoNotificationRecipientPersistenceImpl
 			if ((kaleoNotificationRecipientModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KALEONOTIFICATIONID.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(kaleoNotificationRecipientModelImpl.getOriginalKaleoNotificationId())
+						kaleoNotificationRecipientModelImpl.getOriginalKaleoNotificationId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_KALEONOTIFICATIONID,
@@ -1842,7 +1841,7 @@ public class KaleoNotificationRecipientPersistenceImpl
 					args);
 
 				args = new Object[] {
-						Long.valueOf(kaleoNotificationRecipientModelImpl.getKaleoNotificationId())
+						kaleoNotificationRecipientModelImpl.getKaleoNotificationId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_KALEONOTIFICATIONID,
@@ -1893,13 +1892,24 @@ public class KaleoNotificationRecipientPersistenceImpl
 	 *
 	 * @param primaryKey the primary key of the kaleo notification recipient
 	 * @return the kaleo notification recipient
-	 * @throws com.liferay.portal.NoSuchModelException if a kaleo notification recipient with the primary key could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.NoSuchNotificationRecipientException if a kaleo notification recipient with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public KaleoNotificationRecipient findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchModelException, SystemException {
-		return findByPrimaryKey(((Long)primaryKey).longValue());
+		throws NoSuchNotificationRecipientException, SystemException {
+		KaleoNotificationRecipient kaleoNotificationRecipient = fetchByPrimaryKey(primaryKey);
+
+		if (kaleoNotificationRecipient == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			}
+
+			throw new NoSuchNotificationRecipientException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
+		}
+
+		return kaleoNotificationRecipient;
 	}
 
 	/**
@@ -1913,19 +1923,7 @@ public class KaleoNotificationRecipientPersistenceImpl
 	public KaleoNotificationRecipient findByPrimaryKey(
 		long kaleoNotificationRecipientId)
 		throws NoSuchNotificationRecipientException, SystemException {
-		KaleoNotificationRecipient kaleoNotificationRecipient = fetchByPrimaryKey(kaleoNotificationRecipientId);
-
-		if (kaleoNotificationRecipient == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-					kaleoNotificationRecipientId);
-			}
-
-			throw new NoSuchNotificationRecipientException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				kaleoNotificationRecipientId);
-		}
-
-		return kaleoNotificationRecipient;
+		return findByPrimaryKey((Serializable)kaleoNotificationRecipientId);
 	}
 
 	/**
@@ -1938,21 +1936,8 @@ public class KaleoNotificationRecipientPersistenceImpl
 	@Override
 	public KaleoNotificationRecipient fetchByPrimaryKey(Serializable primaryKey)
 		throws SystemException {
-		return fetchByPrimaryKey(((Long)primaryKey).longValue());
-	}
-
-	/**
-	 * Returns the kaleo notification recipient with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param kaleoNotificationRecipientId the primary key of the kaleo notification recipient
-	 * @return the kaleo notification recipient, or <code>null</code> if a kaleo notification recipient with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public KaleoNotificationRecipient fetchByPrimaryKey(
-		long kaleoNotificationRecipientId) throws SystemException {
 		KaleoNotificationRecipient kaleoNotificationRecipient = (KaleoNotificationRecipient)EntityCacheUtil.getResult(KaleoNotificationRecipientModelImpl.ENTITY_CACHE_ENABLED,
-				KaleoNotificationRecipientImpl.class,
-				kaleoNotificationRecipientId);
+				KaleoNotificationRecipientImpl.class, primaryKey);
 
 		if (kaleoNotificationRecipient == _nullKaleoNotificationRecipient) {
 			return null;
@@ -1965,22 +1950,20 @@ public class KaleoNotificationRecipientPersistenceImpl
 				session = openSession();
 
 				kaleoNotificationRecipient = (KaleoNotificationRecipient)session.get(KaleoNotificationRecipientImpl.class,
-						Long.valueOf(kaleoNotificationRecipientId));
+						primaryKey);
 
 				if (kaleoNotificationRecipient != null) {
 					cacheResult(kaleoNotificationRecipient);
 				}
 				else {
 					EntityCacheUtil.putResult(KaleoNotificationRecipientModelImpl.ENTITY_CACHE_ENABLED,
-						KaleoNotificationRecipientImpl.class,
-						kaleoNotificationRecipientId,
+						KaleoNotificationRecipientImpl.class, primaryKey,
 						_nullKaleoNotificationRecipient);
 				}
 			}
 			catch (Exception e) {
 				EntityCacheUtil.removeResult(KaleoNotificationRecipientModelImpl.ENTITY_CACHE_ENABLED,
-					KaleoNotificationRecipientImpl.class,
-					kaleoNotificationRecipientId);
+					KaleoNotificationRecipientImpl.class, primaryKey);
 
 				throw processException(e);
 			}
@@ -1990,6 +1973,18 @@ public class KaleoNotificationRecipientPersistenceImpl
 		}
 
 		return kaleoNotificationRecipient;
+	}
+
+	/**
+	 * Returns the kaleo notification recipient with the primary key or returns <code>null</code> if it could not be found.
+	 *
+	 * @param kaleoNotificationRecipientId the primary key of the kaleo notification recipient
+	 * @return the kaleo notification recipient, or <code>null</code> if a kaleo notification recipient with the primary key could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public KaleoNotificationRecipient fetchByPrimaryKey(
+		long kaleoNotificationRecipientId) throws SystemException {
+		return fetchByPrimaryKey((Serializable)kaleoNotificationRecipientId);
 	}
 
 	/**

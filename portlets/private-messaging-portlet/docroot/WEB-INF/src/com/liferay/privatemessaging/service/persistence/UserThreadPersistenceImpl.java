@@ -14,7 +14,6 @@
 
 package com.liferay.privatemessaging.service.persistence;
 
-import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -2349,10 +2348,8 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 			UserThreadImpl.class, userThread.getPrimaryKey(), userThread);
 
 		FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_U_M,
-			new Object[] {
-				Long.valueOf(userThread.getUserId()),
-				Long.valueOf(userThread.getMbThreadId())
-			}, userThread);
+			new Object[] { userThread.getUserId(), userThread.getMbThreadId() },
+			userThread);
 
 		userThread.resetOriginalValues();
 	}
@@ -2429,8 +2426,7 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 	protected void cacheUniqueFindersCache(UserThread userThread) {
 		if (userThread.isNew()) {
 			Object[] args = new Object[] {
-					Long.valueOf(userThread.getUserId()),
-					Long.valueOf(userThread.getMbThreadId())
+					userThread.getUserId(), userThread.getMbThreadId()
 				};
 
 			FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_U_M, args,
@@ -2443,8 +2439,7 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 			if ((userThreadModelImpl.getColumnBitmask() &
 					FINDER_PATH_FETCH_BY_U_M.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(userThread.getUserId()),
-						Long.valueOf(userThread.getMbThreadId())
+						userThread.getUserId(), userThread.getMbThreadId()
 					};
 
 				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_U_M, args,
@@ -2459,8 +2454,7 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 		UserThreadModelImpl userThreadModelImpl = (UserThreadModelImpl)userThread;
 
 		Object[] args = new Object[] {
-				Long.valueOf(userThread.getUserId()),
-				Long.valueOf(userThread.getMbThreadId())
+				userThread.getUserId(), userThread.getMbThreadId()
 			};
 
 		FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_U_M, args);
@@ -2469,8 +2463,8 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 		if ((userThreadModelImpl.getColumnBitmask() &
 				FINDER_PATH_FETCH_BY_U_M.getColumnBitmask()) != 0) {
 			args = new Object[] {
-					Long.valueOf(userThreadModelImpl.getOriginalUserId()),
-					Long.valueOf(userThreadModelImpl.getOriginalMbThreadId())
+					userThreadModelImpl.getOriginalUserId(),
+					userThreadModelImpl.getOriginalMbThreadId()
 				};
 
 			FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_U_M, args);
@@ -2503,7 +2497,7 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 	 */
 	public UserThread remove(long userThreadId)
 		throws NoSuchUserThreadException, SystemException {
-		return remove(Long.valueOf(userThreadId));
+		return remove((Serializable)userThreadId);
 	}
 
 	/**
@@ -2621,7 +2615,7 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 			if ((userThreadModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_MBTHREADID.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(userThreadModelImpl.getOriginalMbThreadId())
+						userThreadModelImpl.getOriginalMbThreadId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_MBTHREADID,
@@ -2629,9 +2623,7 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_MBTHREADID,
 					args);
 
-				args = new Object[] {
-						Long.valueOf(userThreadModelImpl.getMbThreadId())
-					};
+				args = new Object[] { userThreadModelImpl.getMbThreadId() };
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_MBTHREADID,
 					args);
@@ -2642,16 +2634,14 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 			if ((userThreadModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(userThreadModelImpl.getOriginalUserId())
+						userThreadModelImpl.getOriginalUserId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
 				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID,
 					args);
 
-				args = new Object[] {
-						Long.valueOf(userThreadModelImpl.getUserId())
-					};
+				args = new Object[] { userThreadModelImpl.getUserId() };
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
 				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID,
@@ -2661,8 +2651,8 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 			if ((userThreadModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_U_D.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(userThreadModelImpl.getOriginalUserId()),
-						Boolean.valueOf(userThreadModelImpl.getOriginalDeleted())
+						userThreadModelImpl.getOriginalUserId(),
+						userThreadModelImpl.getOriginalDeleted()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_U_D, args);
@@ -2670,8 +2660,8 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 					args);
 
 				args = new Object[] {
-						Long.valueOf(userThreadModelImpl.getUserId()),
-						Boolean.valueOf(userThreadModelImpl.getDeleted())
+						userThreadModelImpl.getUserId(),
+						userThreadModelImpl.getDeleted()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_U_D, args);
@@ -2682,9 +2672,9 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 			if ((userThreadModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_U_R_D.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(userThreadModelImpl.getOriginalUserId()),
-						Boolean.valueOf(userThreadModelImpl.getOriginalRead()),
-						Boolean.valueOf(userThreadModelImpl.getOriginalDeleted())
+						userThreadModelImpl.getOriginalUserId(),
+						userThreadModelImpl.getOriginalRead(),
+						userThreadModelImpl.getOriginalDeleted()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_U_R_D, args);
@@ -2692,9 +2682,9 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 					args);
 
 				args = new Object[] {
-						Long.valueOf(userThreadModelImpl.getUserId()),
-						Boolean.valueOf(userThreadModelImpl.getRead()),
-						Boolean.valueOf(userThreadModelImpl.getDeleted())
+						userThreadModelImpl.getUserId(),
+						userThreadModelImpl.getRead(),
+						userThreadModelImpl.getDeleted()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_U_R_D, args);
@@ -2741,13 +2731,24 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 	 *
 	 * @param primaryKey the primary key of the user thread
 	 * @return the user thread
-	 * @throws com.liferay.portal.NoSuchModelException if a user thread with the primary key could not be found
+	 * @throws com.liferay.privatemessaging.NoSuchUserThreadException if a user thread with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public UserThread findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchModelException, SystemException {
-		return findByPrimaryKey(((Long)primaryKey).longValue());
+		throws NoSuchUserThreadException, SystemException {
+		UserThread userThread = fetchByPrimaryKey(primaryKey);
+
+		if (userThread == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			}
+
+			throw new NoSuchUserThreadException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
+		}
+
+		return userThread;
 	}
 
 	/**
@@ -2760,18 +2761,7 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 	 */
 	public UserThread findByPrimaryKey(long userThreadId)
 		throws NoSuchUserThreadException, SystemException {
-		UserThread userThread = fetchByPrimaryKey(userThreadId);
-
-		if (userThread == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + userThreadId);
-			}
-
-			throw new NoSuchUserThreadException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				userThreadId);
-		}
-
-		return userThread;
+		return findByPrimaryKey((Serializable)userThreadId);
 	}
 
 	/**
@@ -2784,20 +2774,8 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 	@Override
 	public UserThread fetchByPrimaryKey(Serializable primaryKey)
 		throws SystemException {
-		return fetchByPrimaryKey(((Long)primaryKey).longValue());
-	}
-
-	/**
-	 * Returns the user thread with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param userThreadId the primary key of the user thread
-	 * @return the user thread, or <code>null</code> if a user thread with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public UserThread fetchByPrimaryKey(long userThreadId)
-		throws SystemException {
 		UserThread userThread = (UserThread)EntityCacheUtil.getResult(UserThreadModelImpl.ENTITY_CACHE_ENABLED,
-				UserThreadImpl.class, userThreadId);
+				UserThreadImpl.class, primaryKey);
 
 		if (userThread == _nullUserThread) {
 			return null;
@@ -2810,19 +2788,19 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 				session = openSession();
 
 				userThread = (UserThread)session.get(UserThreadImpl.class,
-						Long.valueOf(userThreadId));
+						primaryKey);
 
 				if (userThread != null) {
 					cacheResult(userThread);
 				}
 				else {
 					EntityCacheUtil.putResult(UserThreadModelImpl.ENTITY_CACHE_ENABLED,
-						UserThreadImpl.class, userThreadId, _nullUserThread);
+						UserThreadImpl.class, primaryKey, _nullUserThread);
 				}
 			}
 			catch (Exception e) {
 				EntityCacheUtil.removeResult(UserThreadModelImpl.ENTITY_CACHE_ENABLED,
-					UserThreadImpl.class, userThreadId);
+					UserThreadImpl.class, primaryKey);
 
 				throw processException(e);
 			}
@@ -2832,6 +2810,18 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 		}
 
 		return userThread;
+	}
+
+	/**
+	 * Returns the user thread with the primary key or returns <code>null</code> if it could not be found.
+	 *
+	 * @param userThreadId the primary key of the user thread
+	 * @return the user thread, or <code>null</code> if a user thread with the primary key could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public UserThread fetchByPrimaryKey(long userThreadId)
+		throws SystemException {
+		return fetchByPrimaryKey((Serializable)userThreadId);
 	}
 
 	/**

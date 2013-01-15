@@ -31,7 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author Juan Fernández
+ * @author Juan Fern�ndez
  */
 public class PollsVoteClp extends BaseModelImpl<PollsVote> implements PollsVote {
 	public PollsVoteClp() {
@@ -54,7 +54,7 @@ public class PollsVoteClp extends BaseModelImpl<PollsVote> implements PollsVote 
 	}
 
 	public Serializable getPrimaryKeyObj() {
-		return new Long(_pollsVoteId);
+		return _pollsVoteId;
 	}
 
 	public void setPrimaryKeyObj(Serializable primaryKeyObj) {

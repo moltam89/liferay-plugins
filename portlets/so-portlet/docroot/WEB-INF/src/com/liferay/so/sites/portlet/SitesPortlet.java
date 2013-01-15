@@ -248,7 +248,12 @@ public class SitesPortlet extends MVCPortlet {
 			groupJSONObject.put(
 				"name", group.getDescriptiveName(themeDisplay.getLocale()));
 
-			if (group.hasPrivateLayouts() || group.hasPublicLayouts()) {
+			boolean member = GroupLocalServiceUtil.hasUserGroup(
+				themeDisplay.getUserId(), group.getGroupId());
+
+			if ((group.hasPrivateLayouts() && member) ||
+				group.hasPublicLayouts()) {
+
 				PortletURL portletURL = liferayPortletResponse.createActionURL(
 					PortletKeys.SITE_REDIRECTOR);
 
@@ -280,9 +285,6 @@ public class SitesPortlet extends MVCPortlet {
 			siteAssignmentsPortletURL.setParameter(
 				"groupId", String.valueOf(group.getGroupId()));
 			siteAssignmentsPortletURL.setWindowState(WindowState.NORMAL);
-
-			boolean member = GroupLocalServiceUtil.hasUserGroup(
-				themeDisplay.getUserId(), group.getGroupId());
 
 			PermissionChecker permissionChecker =
 				themeDisplay.getPermissionChecker();
@@ -557,7 +559,7 @@ public class SitesPortlet extends MVCPortlet {
 				group.getGroupId(), privateLayout);
 
 		PortalClassInvoker.invoke(
-			true, _mergeLayoutSetProtypeLayoutsMethodKey, group, layoutSet);
+			true, _mergeLayoutSetPrototypeLayoutsMethodKey, group, layoutSet);
 
 		long[] deleteLayoutIds = getLongArray(actionRequest, "deleteLayoutIds");
 
@@ -603,10 +605,10 @@ public class SitesPortlet extends MVCPortlet {
 	private static final String _CLASS_NAME =
 		"com.liferay.portlet.sites.util.SitesUtil";
 
-	private static MethodKey _mergeLayoutSetProtypeLayoutsMethodKey =
+	private static MethodKey _mergeLayoutSetPrototypeLayoutsMethodKey =
 		new MethodKey(
 			ClassResolverUtil.resolveByPortalClassLoader(_CLASS_NAME),
-			"mergeLayoutSetProtypeLayouts", Group.class, LayoutSet.class);
+			"mergeLayoutSetPrototypeLayouts", Group.class, LayoutSet.class);
 	private static MethodKey _updateLayoutSetPrototypesMethodKey =
 		new MethodKey(
 			ClassResolverUtil.resolveByPortalClassLoader(_CLASS_NAME),

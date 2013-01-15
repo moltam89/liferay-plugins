@@ -14,7 +14,6 @@
 
 package com.liferay.portal.workflow.kaleo.service.persistence;
 
-import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -1927,8 +1926,8 @@ public class KaleoTimerInstanceTokenPersistenceImpl extends BasePersistenceImpl<
 
 		FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_KITI_KTI,
 			new Object[] {
-				Long.valueOf(kaleoTimerInstanceToken.getKaleoInstanceTokenId()),
-				Long.valueOf(kaleoTimerInstanceToken.getKaleoTimerId())
+				kaleoTimerInstanceToken.getKaleoInstanceTokenId(),
+				kaleoTimerInstanceToken.getKaleoTimerId()
 			}, kaleoTimerInstanceToken);
 
 		kaleoTimerInstanceToken.resetOriginalValues();
@@ -2012,8 +2011,8 @@ public class KaleoTimerInstanceTokenPersistenceImpl extends BasePersistenceImpl<
 		KaleoTimerInstanceToken kaleoTimerInstanceToken) {
 		if (kaleoTimerInstanceToken.isNew()) {
 			Object[] args = new Object[] {
-					Long.valueOf(kaleoTimerInstanceToken.getKaleoInstanceTokenId()),
-					Long.valueOf(kaleoTimerInstanceToken.getKaleoTimerId())
+					kaleoTimerInstanceToken.getKaleoInstanceTokenId(),
+					kaleoTimerInstanceToken.getKaleoTimerId()
 				};
 
 			FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_KITI_KTI, args,
@@ -2027,8 +2026,8 @@ public class KaleoTimerInstanceTokenPersistenceImpl extends BasePersistenceImpl<
 			if ((kaleoTimerInstanceTokenModelImpl.getColumnBitmask() &
 					FINDER_PATH_FETCH_BY_KITI_KTI.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(kaleoTimerInstanceToken.getKaleoInstanceTokenId()),
-						Long.valueOf(kaleoTimerInstanceToken.getKaleoTimerId())
+						kaleoTimerInstanceToken.getKaleoInstanceTokenId(),
+						kaleoTimerInstanceToken.getKaleoTimerId()
 					};
 
 				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_KITI_KTI, args,
@@ -2044,8 +2043,8 @@ public class KaleoTimerInstanceTokenPersistenceImpl extends BasePersistenceImpl<
 		KaleoTimerInstanceTokenModelImpl kaleoTimerInstanceTokenModelImpl = (KaleoTimerInstanceTokenModelImpl)kaleoTimerInstanceToken;
 
 		Object[] args = new Object[] {
-				Long.valueOf(kaleoTimerInstanceToken.getKaleoInstanceTokenId()),
-				Long.valueOf(kaleoTimerInstanceToken.getKaleoTimerId())
+				kaleoTimerInstanceToken.getKaleoInstanceTokenId(),
+				kaleoTimerInstanceToken.getKaleoTimerId()
 			};
 
 		FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_KITI_KTI, args);
@@ -2054,8 +2053,8 @@ public class KaleoTimerInstanceTokenPersistenceImpl extends BasePersistenceImpl<
 		if ((kaleoTimerInstanceTokenModelImpl.getColumnBitmask() &
 				FINDER_PATH_FETCH_BY_KITI_KTI.getColumnBitmask()) != 0) {
 			args = new Object[] {
-					Long.valueOf(kaleoTimerInstanceTokenModelImpl.getOriginalKaleoInstanceTokenId()),
-					Long.valueOf(kaleoTimerInstanceTokenModelImpl.getOriginalKaleoTimerId())
+					kaleoTimerInstanceTokenModelImpl.getOriginalKaleoInstanceTokenId(),
+					kaleoTimerInstanceTokenModelImpl.getOriginalKaleoTimerId()
 				};
 
 			FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_KITI_KTI, args);
@@ -2088,7 +2087,7 @@ public class KaleoTimerInstanceTokenPersistenceImpl extends BasePersistenceImpl<
 	 */
 	public KaleoTimerInstanceToken remove(long kaleoTimerInstanceTokenId)
 		throws NoSuchTimerInstanceTokenException, SystemException {
-		return remove(Long.valueOf(kaleoTimerInstanceTokenId));
+		return remove((Serializable)kaleoTimerInstanceTokenId);
 	}
 
 	/**
@@ -2207,7 +2206,7 @@ public class KaleoTimerInstanceTokenPersistenceImpl extends BasePersistenceImpl<
 			if ((kaleoTimerInstanceTokenModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KALEOINSTANCEID.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(kaleoTimerInstanceTokenModelImpl.getOriginalKaleoInstanceId())
+						kaleoTimerInstanceTokenModelImpl.getOriginalKaleoInstanceId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_KALEOINSTANCEID,
@@ -2216,7 +2215,7 @@ public class KaleoTimerInstanceTokenPersistenceImpl extends BasePersistenceImpl<
 					args);
 
 				args = new Object[] {
-						Long.valueOf(kaleoTimerInstanceTokenModelImpl.getKaleoInstanceId())
+						kaleoTimerInstanceTokenModelImpl.getKaleoInstanceId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_KALEOINSTANCEID,
@@ -2228,8 +2227,8 @@ public class KaleoTimerInstanceTokenPersistenceImpl extends BasePersistenceImpl<
 			if ((kaleoTimerInstanceTokenModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KITI_C.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(kaleoTimerInstanceTokenModelImpl.getOriginalKaleoInstanceTokenId()),
-						Boolean.valueOf(kaleoTimerInstanceTokenModelImpl.getOriginalCompleted())
+						kaleoTimerInstanceTokenModelImpl.getOriginalKaleoInstanceTokenId(),
+						kaleoTimerInstanceTokenModelImpl.getOriginalCompleted()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_KITI_C, args);
@@ -2237,8 +2236,8 @@ public class KaleoTimerInstanceTokenPersistenceImpl extends BasePersistenceImpl<
 					args);
 
 				args = new Object[] {
-						Long.valueOf(kaleoTimerInstanceTokenModelImpl.getKaleoInstanceTokenId()),
-						Boolean.valueOf(kaleoTimerInstanceTokenModelImpl.getCompleted())
+						kaleoTimerInstanceTokenModelImpl.getKaleoInstanceTokenId(),
+						kaleoTimerInstanceTokenModelImpl.getCompleted()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_KITI_C, args);
@@ -2249,9 +2248,9 @@ public class KaleoTimerInstanceTokenPersistenceImpl extends BasePersistenceImpl<
 			if ((kaleoTimerInstanceTokenModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KITI_C_B.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(kaleoTimerInstanceTokenModelImpl.getOriginalKaleoInstanceTokenId()),
-						Boolean.valueOf(kaleoTimerInstanceTokenModelImpl.getOriginalCompleted()),
-						Boolean.valueOf(kaleoTimerInstanceTokenModelImpl.getOriginalBlocking())
+						kaleoTimerInstanceTokenModelImpl.getOriginalKaleoInstanceTokenId(),
+						kaleoTimerInstanceTokenModelImpl.getOriginalCompleted(),
+						kaleoTimerInstanceTokenModelImpl.getOriginalBlocking()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_KITI_C_B, args);
@@ -2259,9 +2258,9 @@ public class KaleoTimerInstanceTokenPersistenceImpl extends BasePersistenceImpl<
 					args);
 
 				args = new Object[] {
-						Long.valueOf(kaleoTimerInstanceTokenModelImpl.getKaleoInstanceTokenId()),
-						Boolean.valueOf(kaleoTimerInstanceTokenModelImpl.getCompleted()),
-						Boolean.valueOf(kaleoTimerInstanceTokenModelImpl.getBlocking())
+						kaleoTimerInstanceTokenModelImpl.getKaleoInstanceTokenId(),
+						kaleoTimerInstanceTokenModelImpl.getCompleted(),
+						kaleoTimerInstanceTokenModelImpl.getBlocking()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_KITI_C_B, args);
@@ -2320,13 +2319,24 @@ public class KaleoTimerInstanceTokenPersistenceImpl extends BasePersistenceImpl<
 	 *
 	 * @param primaryKey the primary key of the kaleo timer instance token
 	 * @return the kaleo timer instance token
-	 * @throws com.liferay.portal.NoSuchModelException if a kaleo timer instance token with the primary key could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.NoSuchTimerInstanceTokenException if a kaleo timer instance token with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public KaleoTimerInstanceToken findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchModelException, SystemException {
-		return findByPrimaryKey(((Long)primaryKey).longValue());
+		throws NoSuchTimerInstanceTokenException, SystemException {
+		KaleoTimerInstanceToken kaleoTimerInstanceToken = fetchByPrimaryKey(primaryKey);
+
+		if (kaleoTimerInstanceToken == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			}
+
+			throw new NoSuchTimerInstanceTokenException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
+		}
+
+		return kaleoTimerInstanceToken;
 	}
 
 	/**
@@ -2340,19 +2350,7 @@ public class KaleoTimerInstanceTokenPersistenceImpl extends BasePersistenceImpl<
 	public KaleoTimerInstanceToken findByPrimaryKey(
 		long kaleoTimerInstanceTokenId)
 		throws NoSuchTimerInstanceTokenException, SystemException {
-		KaleoTimerInstanceToken kaleoTimerInstanceToken = fetchByPrimaryKey(kaleoTimerInstanceTokenId);
-
-		if (kaleoTimerInstanceToken == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-					kaleoTimerInstanceTokenId);
-			}
-
-			throw new NoSuchTimerInstanceTokenException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				kaleoTimerInstanceTokenId);
-		}
-
-		return kaleoTimerInstanceToken;
+		return findByPrimaryKey((Serializable)kaleoTimerInstanceTokenId);
 	}
 
 	/**
@@ -2365,20 +2363,8 @@ public class KaleoTimerInstanceTokenPersistenceImpl extends BasePersistenceImpl<
 	@Override
 	public KaleoTimerInstanceToken fetchByPrimaryKey(Serializable primaryKey)
 		throws SystemException {
-		return fetchByPrimaryKey(((Long)primaryKey).longValue());
-	}
-
-	/**
-	 * Returns the kaleo timer instance token with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param kaleoTimerInstanceTokenId the primary key of the kaleo timer instance token
-	 * @return the kaleo timer instance token, or <code>null</code> if a kaleo timer instance token with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public KaleoTimerInstanceToken fetchByPrimaryKey(
-		long kaleoTimerInstanceTokenId) throws SystemException {
 		KaleoTimerInstanceToken kaleoTimerInstanceToken = (KaleoTimerInstanceToken)EntityCacheUtil.getResult(KaleoTimerInstanceTokenModelImpl.ENTITY_CACHE_ENABLED,
-				KaleoTimerInstanceTokenImpl.class, kaleoTimerInstanceTokenId);
+				KaleoTimerInstanceTokenImpl.class, primaryKey);
 
 		if (kaleoTimerInstanceToken == _nullKaleoTimerInstanceToken) {
 			return null;
@@ -2391,20 +2377,20 @@ public class KaleoTimerInstanceTokenPersistenceImpl extends BasePersistenceImpl<
 				session = openSession();
 
 				kaleoTimerInstanceToken = (KaleoTimerInstanceToken)session.get(KaleoTimerInstanceTokenImpl.class,
-						Long.valueOf(kaleoTimerInstanceTokenId));
+						primaryKey);
 
 				if (kaleoTimerInstanceToken != null) {
 					cacheResult(kaleoTimerInstanceToken);
 				}
 				else {
 					EntityCacheUtil.putResult(KaleoTimerInstanceTokenModelImpl.ENTITY_CACHE_ENABLED,
-						KaleoTimerInstanceTokenImpl.class,
-						kaleoTimerInstanceTokenId, _nullKaleoTimerInstanceToken);
+						KaleoTimerInstanceTokenImpl.class, primaryKey,
+						_nullKaleoTimerInstanceToken);
 				}
 			}
 			catch (Exception e) {
 				EntityCacheUtil.removeResult(KaleoTimerInstanceTokenModelImpl.ENTITY_CACHE_ENABLED,
-					KaleoTimerInstanceTokenImpl.class, kaleoTimerInstanceTokenId);
+					KaleoTimerInstanceTokenImpl.class, primaryKey);
 
 				throw processException(e);
 			}
@@ -2414,6 +2400,18 @@ public class KaleoTimerInstanceTokenPersistenceImpl extends BasePersistenceImpl<
 		}
 
 		return kaleoTimerInstanceToken;
+	}
+
+	/**
+	 * Returns the kaleo timer instance token with the primary key or returns <code>null</code> if it could not be found.
+	 *
+	 * @param kaleoTimerInstanceTokenId the primary key of the kaleo timer instance token
+	 * @return the kaleo timer instance token, or <code>null</code> if a kaleo timer instance token with the primary key could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public KaleoTimerInstanceToken fetchByPrimaryKey(
+		long kaleoTimerInstanceTokenId) throws SystemException {
+		return fetchByPrimaryKey((Serializable)kaleoTimerInstanceTokenId);
 	}
 
 	/**

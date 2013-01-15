@@ -1579,7 +1579,8 @@ AUI.add(
 										}
 									},
 									destroyOnClose: true,
-									modal: true
+									modal: true,
+									width: 915
 								},
 								refreshWindow: window,
 								title: Liferay.Language.get('edit-details'),
@@ -1633,7 +1634,7 @@ AUI.add(
 						var eventRecorderCalendar = A.one('#' + portletNamespace + 'eventRecorderCalendar');
 
 						if (eventRecorderCalendar) {
-							eventRecorderCalendar.val(calendarId);
+							eventRecorderCalendar.val(calendarId.toString());
 						}
 
 						instance._syncToolbarButtons(event.newVal);

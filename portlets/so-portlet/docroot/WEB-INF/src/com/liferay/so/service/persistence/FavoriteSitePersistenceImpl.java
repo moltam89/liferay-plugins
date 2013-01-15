@@ -14,7 +14,6 @@
 
 package com.liferay.so.service.persistence;
 
-import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -794,10 +793,8 @@ public class FavoriteSitePersistenceImpl extends BasePersistenceImpl<FavoriteSit
 			FavoriteSiteImpl.class, favoriteSite.getPrimaryKey(), favoriteSite);
 
 		FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_G_U,
-			new Object[] {
-				Long.valueOf(favoriteSite.getGroupId()),
-				Long.valueOf(favoriteSite.getUserId())
-			}, favoriteSite);
+			new Object[] { favoriteSite.getGroupId(), favoriteSite.getUserId() },
+			favoriteSite);
 
 		favoriteSite.resetOriginalValues();
 	}
@@ -874,8 +871,7 @@ public class FavoriteSitePersistenceImpl extends BasePersistenceImpl<FavoriteSit
 	protected void cacheUniqueFindersCache(FavoriteSite favoriteSite) {
 		if (favoriteSite.isNew()) {
 			Object[] args = new Object[] {
-					Long.valueOf(favoriteSite.getGroupId()),
-					Long.valueOf(favoriteSite.getUserId())
+					favoriteSite.getGroupId(), favoriteSite.getUserId()
 				};
 
 			FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_G_U, args,
@@ -889,8 +885,7 @@ public class FavoriteSitePersistenceImpl extends BasePersistenceImpl<FavoriteSit
 			if ((favoriteSiteModelImpl.getColumnBitmask() &
 					FINDER_PATH_FETCH_BY_G_U.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(favoriteSite.getGroupId()),
-						Long.valueOf(favoriteSite.getUserId())
+						favoriteSite.getGroupId(), favoriteSite.getUserId()
 					};
 
 				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_G_U, args,
@@ -905,8 +900,7 @@ public class FavoriteSitePersistenceImpl extends BasePersistenceImpl<FavoriteSit
 		FavoriteSiteModelImpl favoriteSiteModelImpl = (FavoriteSiteModelImpl)favoriteSite;
 
 		Object[] args = new Object[] {
-				Long.valueOf(favoriteSite.getGroupId()),
-				Long.valueOf(favoriteSite.getUserId())
+				favoriteSite.getGroupId(), favoriteSite.getUserId()
 			};
 
 		FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_G_U, args);
@@ -915,8 +909,8 @@ public class FavoriteSitePersistenceImpl extends BasePersistenceImpl<FavoriteSit
 		if ((favoriteSiteModelImpl.getColumnBitmask() &
 				FINDER_PATH_FETCH_BY_G_U.getColumnBitmask()) != 0) {
 			args = new Object[] {
-					Long.valueOf(favoriteSiteModelImpl.getOriginalGroupId()),
-					Long.valueOf(favoriteSiteModelImpl.getOriginalUserId())
+					favoriteSiteModelImpl.getOriginalGroupId(),
+					favoriteSiteModelImpl.getOriginalUserId()
 				};
 
 			FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_G_U, args);
@@ -949,7 +943,7 @@ public class FavoriteSitePersistenceImpl extends BasePersistenceImpl<FavoriteSit
 	 */
 	public FavoriteSite remove(long favoriteSiteId)
 		throws NoSuchFavoriteSiteException, SystemException {
-		return remove(Long.valueOf(favoriteSiteId));
+		return remove((Serializable)favoriteSiteId);
 	}
 
 	/**
@@ -1067,16 +1061,14 @@ public class FavoriteSitePersistenceImpl extends BasePersistenceImpl<FavoriteSit
 			if ((favoriteSiteModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(favoriteSiteModelImpl.getOriginalUserId())
+						favoriteSiteModelImpl.getOriginalUserId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
 				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID,
 					args);
 
-				args = new Object[] {
-						Long.valueOf(favoriteSiteModelImpl.getUserId())
-					};
+				args = new Object[] { favoriteSiteModelImpl.getUserId() };
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
 				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID,
@@ -1116,13 +1108,24 @@ public class FavoriteSitePersistenceImpl extends BasePersistenceImpl<FavoriteSit
 	 *
 	 * @param primaryKey the primary key of the favorite site
 	 * @return the favorite site
-	 * @throws com.liferay.portal.NoSuchModelException if a favorite site with the primary key could not be found
+	 * @throws com.liferay.so.NoSuchFavoriteSiteException if a favorite site with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public FavoriteSite findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchModelException, SystemException {
-		return findByPrimaryKey(((Long)primaryKey).longValue());
+		throws NoSuchFavoriteSiteException, SystemException {
+		FavoriteSite favoriteSite = fetchByPrimaryKey(primaryKey);
+
+		if (favoriteSite == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			}
+
+			throw new NoSuchFavoriteSiteException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
+		}
+
+		return favoriteSite;
 	}
 
 	/**
@@ -1135,18 +1138,7 @@ public class FavoriteSitePersistenceImpl extends BasePersistenceImpl<FavoriteSit
 	 */
 	public FavoriteSite findByPrimaryKey(long favoriteSiteId)
 		throws NoSuchFavoriteSiteException, SystemException {
-		FavoriteSite favoriteSite = fetchByPrimaryKey(favoriteSiteId);
-
-		if (favoriteSite == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + favoriteSiteId);
-			}
-
-			throw new NoSuchFavoriteSiteException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				favoriteSiteId);
-		}
-
-		return favoriteSite;
+		return findByPrimaryKey((Serializable)favoriteSiteId);
 	}
 
 	/**
@@ -1159,20 +1151,8 @@ public class FavoriteSitePersistenceImpl extends BasePersistenceImpl<FavoriteSit
 	@Override
 	public FavoriteSite fetchByPrimaryKey(Serializable primaryKey)
 		throws SystemException {
-		return fetchByPrimaryKey(((Long)primaryKey).longValue());
-	}
-
-	/**
-	 * Returns the favorite site with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param favoriteSiteId the primary key of the favorite site
-	 * @return the favorite site, or <code>null</code> if a favorite site with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public FavoriteSite fetchByPrimaryKey(long favoriteSiteId)
-		throws SystemException {
 		FavoriteSite favoriteSite = (FavoriteSite)EntityCacheUtil.getResult(FavoriteSiteModelImpl.ENTITY_CACHE_ENABLED,
-				FavoriteSiteImpl.class, favoriteSiteId);
+				FavoriteSiteImpl.class, primaryKey);
 
 		if (favoriteSite == _nullFavoriteSite) {
 			return null;
@@ -1185,20 +1165,19 @@ public class FavoriteSitePersistenceImpl extends BasePersistenceImpl<FavoriteSit
 				session = openSession();
 
 				favoriteSite = (FavoriteSite)session.get(FavoriteSiteImpl.class,
-						Long.valueOf(favoriteSiteId));
+						primaryKey);
 
 				if (favoriteSite != null) {
 					cacheResult(favoriteSite);
 				}
 				else {
 					EntityCacheUtil.putResult(FavoriteSiteModelImpl.ENTITY_CACHE_ENABLED,
-						FavoriteSiteImpl.class, favoriteSiteId,
-						_nullFavoriteSite);
+						FavoriteSiteImpl.class, primaryKey, _nullFavoriteSite);
 				}
 			}
 			catch (Exception e) {
 				EntityCacheUtil.removeResult(FavoriteSiteModelImpl.ENTITY_CACHE_ENABLED,
-					FavoriteSiteImpl.class, favoriteSiteId);
+					FavoriteSiteImpl.class, primaryKey);
 
 				throw processException(e);
 			}
@@ -1208,6 +1187,18 @@ public class FavoriteSitePersistenceImpl extends BasePersistenceImpl<FavoriteSit
 		}
 
 		return favoriteSite;
+	}
+
+	/**
+	 * Returns the favorite site with the primary key or returns <code>null</code> if it could not be found.
+	 *
+	 * @param favoriteSiteId the primary key of the favorite site
+	 * @return the favorite site, or <code>null</code> if a favorite site with the primary key could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public FavoriteSite fetchByPrimaryKey(long favoriteSiteId)
+		throws SystemException {
+		return fetchByPrimaryKey((Serializable)favoriteSiteId);
 	}
 
 	/**

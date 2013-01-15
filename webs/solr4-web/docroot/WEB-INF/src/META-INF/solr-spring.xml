@@ -10,7 +10,7 @@
 >
 	<bean class="com.liferay.portal.spring.context.PortletBeanFactoryPostProcessor" />
 
-	<!-- Solr search engine -->
+	<!-- Solr search engine client -->
 
 	<bean id="com.liferay.portal.search.solr.server.BasicAuthSolrServer" class="com.liferay.portal.search.solr.server.BasicAuthSolrServer">
 		<constructor-arg type="java.lang.String" value="http://localhost:8080/solr" />
@@ -32,6 +32,9 @@
 		</constructor-arg>
 		<constructor-arg type="java.lang.Long" value="10" />
 	</bean>
+
+	<!-- Solr search engine adapter -->
+
 	<bean id="com.liferay.portal.search.solr.SolrIndexSearcherImpl" class="com.liferay.portal.search.solr.SolrIndexSearcherImpl">
 		<property name="solrServer" ref="com.liferay.portal.search.solr.server.BasicAuthSolrServer" />
 		<property name="swallowException" value="true" />

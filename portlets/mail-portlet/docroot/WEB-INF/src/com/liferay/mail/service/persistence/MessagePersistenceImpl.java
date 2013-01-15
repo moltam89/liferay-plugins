@@ -19,7 +19,6 @@ import com.liferay.mail.model.Message;
 import com.liferay.mail.model.impl.MessageImpl;
 import com.liferay.mail.model.impl.MessageModelImpl;
 
-import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -1279,10 +1278,8 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 			MessageImpl.class, message.getPrimaryKey(), message);
 
 		FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_F_R,
-			new Object[] {
-				Long.valueOf(message.getFolderId()),
-				Long.valueOf(message.getRemoteMessageId())
-			}, message);
+			new Object[] { message.getFolderId(), message.getRemoteMessageId() },
+			message);
 
 		message.resetOriginalValues();
 	}
@@ -1359,8 +1356,7 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 	protected void cacheUniqueFindersCache(Message message) {
 		if (message.isNew()) {
 			Object[] args = new Object[] {
-					Long.valueOf(message.getFolderId()),
-					Long.valueOf(message.getRemoteMessageId())
+					message.getFolderId(), message.getRemoteMessageId()
 				};
 
 			FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_F_R, args,
@@ -1373,8 +1369,7 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 			if ((messageModelImpl.getColumnBitmask() &
 					FINDER_PATH_FETCH_BY_F_R.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(message.getFolderId()),
-						Long.valueOf(message.getRemoteMessageId())
+						message.getFolderId(), message.getRemoteMessageId()
 					};
 
 				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_F_R, args,
@@ -1389,8 +1384,7 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 		MessageModelImpl messageModelImpl = (MessageModelImpl)message;
 
 		Object[] args = new Object[] {
-				Long.valueOf(message.getFolderId()),
-				Long.valueOf(message.getRemoteMessageId())
+				message.getFolderId(), message.getRemoteMessageId()
 			};
 
 		FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_F_R, args);
@@ -1399,8 +1393,8 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 		if ((messageModelImpl.getColumnBitmask() &
 				FINDER_PATH_FETCH_BY_F_R.getColumnBitmask()) != 0) {
 			args = new Object[] {
-					Long.valueOf(messageModelImpl.getOriginalFolderId()),
-					Long.valueOf(messageModelImpl.getOriginalRemoteMessageId())
+					messageModelImpl.getOriginalFolderId(),
+					messageModelImpl.getOriginalRemoteMessageId()
 				};
 
 			FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_F_R, args);
@@ -1433,7 +1427,7 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 	 */
 	public Message remove(long messageId)
 		throws NoSuchMessageException, SystemException {
-		return remove(Long.valueOf(messageId));
+		return remove((Serializable)messageId);
 	}
 
 	/**
@@ -1548,7 +1542,7 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 			if ((messageModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(messageModelImpl.getOriginalCompanyId())
+						messageModelImpl.getOriginalCompanyId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_COMPANYID,
@@ -1556,9 +1550,7 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID,
 					args);
 
-				args = new Object[] {
-						Long.valueOf(messageModelImpl.getCompanyId())
-					};
+				args = new Object[] { messageModelImpl.getCompanyId() };
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_COMPANYID,
 					args);
@@ -1569,14 +1561,14 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 			if ((messageModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_FOLDERID.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(messageModelImpl.getOriginalFolderId())
+						messageModelImpl.getOriginalFolderId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_FOLDERID, args);
 				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_FOLDERID,
 					args);
 
-				args = new Object[] { Long.valueOf(messageModelImpl.getFolderId()) };
+				args = new Object[] { messageModelImpl.getFolderId() };
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_FOLDERID, args);
 				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_FOLDERID,
@@ -1631,13 +1623,24 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 	 *
 	 * @param primaryKey the primary key of the message
 	 * @return the message
-	 * @throws com.liferay.portal.NoSuchModelException if a message with the primary key could not be found
+	 * @throws com.liferay.mail.NoSuchMessageException if a message with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public Message findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchModelException, SystemException {
-		return findByPrimaryKey(((Long)primaryKey).longValue());
+		throws NoSuchMessageException, SystemException {
+		Message message = fetchByPrimaryKey(primaryKey);
+
+		if (message == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			}
+
+			throw new NoSuchMessageException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
+		}
+
+		return message;
 	}
 
 	/**
@@ -1650,18 +1653,7 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 	 */
 	public Message findByPrimaryKey(long messageId)
 		throws NoSuchMessageException, SystemException {
-		Message message = fetchByPrimaryKey(messageId);
-
-		if (message == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + messageId);
-			}
-
-			throw new NoSuchMessageException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				messageId);
-		}
-
-		return message;
+		return findByPrimaryKey((Serializable)messageId);
 	}
 
 	/**
@@ -1674,19 +1666,8 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 	@Override
 	public Message fetchByPrimaryKey(Serializable primaryKey)
 		throws SystemException {
-		return fetchByPrimaryKey(((Long)primaryKey).longValue());
-	}
-
-	/**
-	 * Returns the message with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param messageId the primary key of the message
-	 * @return the message, or <code>null</code> if a message with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public Message fetchByPrimaryKey(long messageId) throws SystemException {
 		Message message = (Message)EntityCacheUtil.getResult(MessageModelImpl.ENTITY_CACHE_ENABLED,
-				MessageImpl.class, messageId);
+				MessageImpl.class, primaryKey);
 
 		if (message == _nullMessage) {
 			return null;
@@ -1698,20 +1679,19 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 			try {
 				session = openSession();
 
-				message = (Message)session.get(MessageImpl.class,
-						Long.valueOf(messageId));
+				message = (Message)session.get(MessageImpl.class, primaryKey);
 
 				if (message != null) {
 					cacheResult(message);
 				}
 				else {
 					EntityCacheUtil.putResult(MessageModelImpl.ENTITY_CACHE_ENABLED,
-						MessageImpl.class, messageId, _nullMessage);
+						MessageImpl.class, primaryKey, _nullMessage);
 				}
 			}
 			catch (Exception e) {
 				EntityCacheUtil.removeResult(MessageModelImpl.ENTITY_CACHE_ENABLED,
-					MessageImpl.class, messageId);
+					MessageImpl.class, primaryKey);
 
 				throw processException(e);
 			}
@@ -1721,6 +1701,17 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 		}
 
 		return message;
+	}
+
+	/**
+	 * Returns the message with the primary key or returns <code>null</code> if it could not be found.
+	 *
+	 * @param messageId the primary key of the message
+	 * @return the message, or <code>null</code> if a message with the primary key could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public Message fetchByPrimaryKey(long messageId) throws SystemException {
+		return fetchByPrimaryKey((Serializable)messageId);
 	}
 
 	/**

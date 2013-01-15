@@ -19,7 +19,6 @@ import com.liferay.marketplace.model.Module;
 import com.liferay.marketplace.model.impl.ModuleImpl;
 import com.liferay.marketplace.model.impl.ModuleModelImpl;
 
-import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -190,16 +189,18 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 
 			query.append(_SQL_SELECT_MODULE_WHERE);
 
+			boolean bindUuid = false;
+
 			if (uuid == null) {
 				query.append(_FINDER_COLUMN_UUID_UUID_1);
 			}
+			else if (uuid.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_UUID_UUID_3);
+			}
 			else {
-				if (uuid.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_UUID_UUID_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_UUID_UUID_2);
-				}
+				bindUuid = true;
+
+				query.append(_FINDER_COLUMN_UUID_UUID_2);
 			}
 
 			if (orderByComparator != null) {
@@ -222,7 +223,7 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (uuid != null) {
+				if (bindUuid) {
 					qPos.add(uuid);
 				}
 
@@ -410,16 +411,18 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 
 		query.append(_SQL_SELECT_MODULE_WHERE);
 
+		boolean bindUuid = false;
+
 		if (uuid == null) {
 			query.append(_FINDER_COLUMN_UUID_UUID_1);
 		}
+		else if (uuid.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_UUID_UUID_3);
+		}
 		else {
-			if (uuid.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_UUID_UUID_3);
-			}
-			else {
-				query.append(_FINDER_COLUMN_UUID_UUID_2);
-			}
+			bindUuid = true;
+
+			query.append(_FINDER_COLUMN_UUID_UUID_2);
 		}
 
 		if (orderByComparator != null) {
@@ -490,7 +493,7 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 
 		QueryPos qPos = QueryPos.getInstance(q);
 
-		if (uuid != null) {
+		if (bindUuid) {
 			qPos.add(uuid);
 		}
 
@@ -545,16 +548,18 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 
 			query.append(_SQL_COUNT_MODULE_WHERE);
 
+			boolean bindUuid = false;
+
 			if (uuid == null) {
 				query.append(_FINDER_COLUMN_UUID_UUID_1);
 			}
+			else if (uuid.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_UUID_UUID_3);
+			}
 			else {
-				if (uuid.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_UUID_UUID_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_UUID_UUID_2);
-				}
+				bindUuid = true;
+
+				query.append(_FINDER_COLUMN_UUID_UUID_2);
 			}
 
 			String sql = query.toString();
@@ -568,7 +573,7 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (uuid != null) {
+				if (bindUuid) {
 					qPos.add(uuid);
 				}
 
@@ -591,7 +596,7 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 
 	private static final String _FINDER_COLUMN_UUID_UUID_1 = "module.uuid IS NULL";
 	private static final String _FINDER_COLUMN_UUID_UUID_2 = "module.uuid = ?";
-	private static final String _FINDER_COLUMN_UUID_UUID_3 = "(module.uuid IS NULL OR module.uuid = ?)";
+	private static final String _FINDER_COLUMN_UUID_UUID_3 = "(module.uuid IS NULL OR module.uuid = '')";
 	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_APPID = new FinderPath(ModuleModelImpl.ENTITY_CACHE_ENABLED,
 			ModuleModelImpl.FINDER_CACHE_ENABLED, ModuleImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByAppId",
@@ -1171,16 +1176,18 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 
 			query.append(_SQL_SELECT_MODULE_WHERE);
 
+			boolean bindContextName = false;
+
 			if (contextName == null) {
 				query.append(_FINDER_COLUMN_CONTEXTNAME_CONTEXTNAME_1);
 			}
+			else if (contextName.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_CONTEXTNAME_CONTEXTNAME_3);
+			}
 			else {
-				if (contextName.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_CONTEXTNAME_CONTEXTNAME_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_CONTEXTNAME_CONTEXTNAME_2);
-				}
+				bindContextName = true;
+
+				query.append(_FINDER_COLUMN_CONTEXTNAME_CONTEXTNAME_2);
 			}
 
 			if (orderByComparator != null) {
@@ -1203,7 +1210,7 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (contextName != null) {
+				if (bindContextName) {
 					qPos.add(contextName);
 				}
 
@@ -1394,16 +1401,18 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 
 		query.append(_SQL_SELECT_MODULE_WHERE);
 
+		boolean bindContextName = false;
+
 		if (contextName == null) {
 			query.append(_FINDER_COLUMN_CONTEXTNAME_CONTEXTNAME_1);
 		}
+		else if (contextName.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_CONTEXTNAME_CONTEXTNAME_3);
+		}
 		else {
-			if (contextName.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_CONTEXTNAME_CONTEXTNAME_3);
-			}
-			else {
-				query.append(_FINDER_COLUMN_CONTEXTNAME_CONTEXTNAME_2);
-			}
+			bindContextName = true;
+
+			query.append(_FINDER_COLUMN_CONTEXTNAME_CONTEXTNAME_2);
 		}
 
 		if (orderByComparator != null) {
@@ -1474,7 +1483,7 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 
 		QueryPos qPos = QueryPos.getInstance(q);
 
-		if (contextName != null) {
+		if (bindContextName) {
 			qPos.add(contextName);
 		}
 
@@ -1530,16 +1539,18 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 
 			query.append(_SQL_COUNT_MODULE_WHERE);
 
+			boolean bindContextName = false;
+
 			if (contextName == null) {
 				query.append(_FINDER_COLUMN_CONTEXTNAME_CONTEXTNAME_1);
 			}
+			else if (contextName.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_CONTEXTNAME_CONTEXTNAME_3);
+			}
 			else {
-				if (contextName.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_CONTEXTNAME_CONTEXTNAME_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_CONTEXTNAME_CONTEXTNAME_2);
-				}
+				bindContextName = true;
+
+				query.append(_FINDER_COLUMN_CONTEXTNAME_CONTEXTNAME_2);
 			}
 
 			String sql = query.toString();
@@ -1553,7 +1564,7 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (contextName != null) {
+				if (bindContextName) {
 					qPos.add(contextName);
 				}
 
@@ -1576,7 +1587,7 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 
 	private static final String _FINDER_COLUMN_CONTEXTNAME_CONTEXTNAME_1 = "module.contextName IS NULL";
 	private static final String _FINDER_COLUMN_CONTEXTNAME_CONTEXTNAME_2 = "module.contextName = ?";
-	private static final String _FINDER_COLUMN_CONTEXTNAME_CONTEXTNAME_3 = "(module.contextName IS NULL OR module.contextName = ?)";
+	private static final String _FINDER_COLUMN_CONTEXTNAME_CONTEXTNAME_3 = "(module.contextName IS NULL OR module.contextName = '')";
 	public static final FinderPath FINDER_PATH_FETCH_BY_A_C = new FinderPath(ModuleModelImpl.ENTITY_CACHE_ENABLED,
 			ModuleModelImpl.FINDER_CACHE_ENABLED, ModuleImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByA_C",
@@ -1673,16 +1684,18 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 
 			query.append(_FINDER_COLUMN_A_C_APPID_2);
 
+			boolean bindContextName = false;
+
 			if (contextName == null) {
 				query.append(_FINDER_COLUMN_A_C_CONTEXTNAME_1);
 			}
+			else if (contextName.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_A_C_CONTEXTNAME_3);
+			}
 			else {
-				if (contextName.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_A_C_CONTEXTNAME_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_A_C_CONTEXTNAME_2);
-				}
+				bindContextName = true;
+
+				query.append(_FINDER_COLUMN_A_C_CONTEXTNAME_2);
 			}
 
 			String sql = query.toString();
@@ -1698,7 +1711,7 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 
 				qPos.add(appId);
 
-				if (contextName != null) {
+				if (bindContextName) {
 					qPos.add(contextName);
 				}
 
@@ -1788,16 +1801,18 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 
 			query.append(_FINDER_COLUMN_A_C_APPID_2);
 
+			boolean bindContextName = false;
+
 			if (contextName == null) {
 				query.append(_FINDER_COLUMN_A_C_CONTEXTNAME_1);
 			}
+			else if (contextName.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_A_C_CONTEXTNAME_3);
+			}
 			else {
-				if (contextName.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_A_C_CONTEXTNAME_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_A_C_CONTEXTNAME_2);
-				}
+				bindContextName = true;
+
+				query.append(_FINDER_COLUMN_A_C_CONTEXTNAME_2);
 			}
 
 			String sql = query.toString();
@@ -1813,7 +1828,7 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 
 				qPos.add(appId);
 
-				if (contextName != null) {
+				if (bindContextName) {
 					qPos.add(contextName);
 				}
 
@@ -1837,7 +1852,7 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 	private static final String _FINDER_COLUMN_A_C_APPID_2 = "module.appId = ? AND ";
 	private static final String _FINDER_COLUMN_A_C_CONTEXTNAME_1 = "module.contextName IS NULL";
 	private static final String _FINDER_COLUMN_A_C_CONTEXTNAME_2 = "module.contextName = ?";
-	private static final String _FINDER_COLUMN_A_C_CONTEXTNAME_3 = "(module.contextName IS NULL OR module.contextName = ?)";
+	private static final String _FINDER_COLUMN_A_C_CONTEXTNAME_3 = "(module.contextName IS NULL OR module.contextName = '')";
 
 	/**
 	 * Caches the module in the entity cache if it is enabled.
@@ -1849,11 +1864,7 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 			ModuleImpl.class, module.getPrimaryKey(), module);
 
 		FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_A_C,
-			new Object[] {
-				Long.valueOf(module.getAppId()),
-				
-			module.getContextName()
-			}, module);
+			new Object[] { module.getAppId(), module.getContextName() }, module);
 
 		module.resetOriginalValues();
 	}
@@ -1930,9 +1941,7 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 	protected void cacheUniqueFindersCache(Module module) {
 		if (module.isNew()) {
 			Object[] args = new Object[] {
-					Long.valueOf(module.getAppId()),
-					
-					module.getContextName()
+					module.getAppId(), module.getContextName()
 				};
 
 			FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_A_C, args,
@@ -1945,9 +1954,7 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 			if ((moduleModelImpl.getColumnBitmask() &
 					FINDER_PATH_FETCH_BY_A_C.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(module.getAppId()),
-						
-						module.getContextName()
+						module.getAppId(), module.getContextName()
 					};
 
 				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_A_C, args,
@@ -1960,11 +1967,7 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 	protected void clearUniqueFindersCache(Module module) {
 		ModuleModelImpl moduleModelImpl = (ModuleModelImpl)module;
 
-		Object[] args = new Object[] {
-				Long.valueOf(module.getAppId()),
-				
-				module.getContextName()
-			};
+		Object[] args = new Object[] { module.getAppId(), module.getContextName() };
 
 		FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_A_C, args);
 		FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_A_C, args);
@@ -1972,8 +1975,7 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 		if ((moduleModelImpl.getColumnBitmask() &
 				FINDER_PATH_FETCH_BY_A_C.getColumnBitmask()) != 0) {
 			args = new Object[] {
-					Long.valueOf(moduleModelImpl.getOriginalAppId()),
-					
+					moduleModelImpl.getOriginalAppId(),
 					moduleModelImpl.getOriginalContextName()
 				};
 
@@ -2011,7 +2013,7 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 	 */
 	public Module remove(long moduleId)
 		throws NoSuchModuleException, SystemException {
-		return remove(Long.valueOf(moduleId));
+		return remove((Serializable)moduleId);
 	}
 
 	/**
@@ -2146,15 +2148,13 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 
 			if ((moduleModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_APPID.getColumnBitmask()) != 0) {
-				Object[] args = new Object[] {
-						Long.valueOf(moduleModelImpl.getOriginalAppId())
-					};
+				Object[] args = new Object[] { moduleModelImpl.getOriginalAppId() };
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_APPID, args);
 				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_APPID,
 					args);
 
-				args = new Object[] { Long.valueOf(moduleModelImpl.getAppId()) };
+				args = new Object[] { moduleModelImpl.getAppId() };
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_APPID, args);
 				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_APPID,
@@ -2213,13 +2213,24 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 	 *
 	 * @param primaryKey the primary key of the module
 	 * @return the module
-	 * @throws com.liferay.portal.NoSuchModelException if a module with the primary key could not be found
+	 * @throws com.liferay.marketplace.NoSuchModuleException if a module with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public Module findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchModelException, SystemException {
-		return findByPrimaryKey(((Long)primaryKey).longValue());
+		throws NoSuchModuleException, SystemException {
+		Module module = fetchByPrimaryKey(primaryKey);
+
+		if (module == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			}
+
+			throw new NoSuchModuleException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
+		}
+
+		return module;
 	}
 
 	/**
@@ -2232,18 +2243,7 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 	 */
 	public Module findByPrimaryKey(long moduleId)
 		throws NoSuchModuleException, SystemException {
-		Module module = fetchByPrimaryKey(moduleId);
-
-		if (module == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + moduleId);
-			}
-
-			throw new NoSuchModuleException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				moduleId);
-		}
-
-		return module;
+		return findByPrimaryKey((Serializable)moduleId);
 	}
 
 	/**
@@ -2256,19 +2256,8 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 	@Override
 	public Module fetchByPrimaryKey(Serializable primaryKey)
 		throws SystemException {
-		return fetchByPrimaryKey(((Long)primaryKey).longValue());
-	}
-
-	/**
-	 * Returns the module with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param moduleId the primary key of the module
-	 * @return the module, or <code>null</code> if a module with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public Module fetchByPrimaryKey(long moduleId) throws SystemException {
 		Module module = (Module)EntityCacheUtil.getResult(ModuleModelImpl.ENTITY_CACHE_ENABLED,
-				ModuleImpl.class, moduleId);
+				ModuleImpl.class, primaryKey);
 
 		if (module == _nullModule) {
 			return null;
@@ -2280,20 +2269,19 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 			try {
 				session = openSession();
 
-				module = (Module)session.get(ModuleImpl.class,
-						Long.valueOf(moduleId));
+				module = (Module)session.get(ModuleImpl.class, primaryKey);
 
 				if (module != null) {
 					cacheResult(module);
 				}
 				else {
 					EntityCacheUtil.putResult(ModuleModelImpl.ENTITY_CACHE_ENABLED,
-						ModuleImpl.class, moduleId, _nullModule);
+						ModuleImpl.class, primaryKey, _nullModule);
 				}
 			}
 			catch (Exception e) {
 				EntityCacheUtil.removeResult(ModuleModelImpl.ENTITY_CACHE_ENABLED,
-					ModuleImpl.class, moduleId);
+					ModuleImpl.class, primaryKey);
 
 				throw processException(e);
 			}
@@ -2303,6 +2291,17 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 		}
 
 		return module;
+	}
+
+	/**
+	 * Returns the module with the primary key or returns <code>null</code> if it could not be found.
+	 *
+	 * @param moduleId the primary key of the module
+	 * @return the module, or <code>null</code> if a module with the primary key could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public Module fetchByPrimaryKey(long moduleId) throws SystemException {
+		return fetchByPrimaryKey((Serializable)moduleId);
 	}
 
 	/**

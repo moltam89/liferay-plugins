@@ -19,7 +19,6 @@ import com.liferay.mail.model.Attachment;
 import com.liferay.mail.model.impl.AttachmentImpl;
 import com.liferay.mail.model.impl.AttachmentModelImpl;
 
-import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -664,7 +663,7 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 	 */
 	public Attachment remove(long attachmentId)
 		throws NoSuchAttachmentException, SystemException {
-		return remove(Long.valueOf(attachmentId));
+		return remove((Serializable)attachmentId);
 	}
 
 	/**
@@ -781,7 +780,7 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 			if ((attachmentModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_MESSAGEID.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						Long.valueOf(attachmentModelImpl.getOriginalMessageId())
+						attachmentModelImpl.getOriginalMessageId()
 					};
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_MESSAGEID,
@@ -789,9 +788,7 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_MESSAGEID,
 					args);
 
-				args = new Object[] {
-						Long.valueOf(attachmentModelImpl.getMessageId())
-					};
+				args = new Object[] { attachmentModelImpl.getMessageId() };
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_MESSAGEID,
 					args);
@@ -834,13 +831,24 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 	 *
 	 * @param primaryKey the primary key of the attachment
 	 * @return the attachment
-	 * @throws com.liferay.portal.NoSuchModelException if a attachment with the primary key could not be found
+	 * @throws com.liferay.mail.NoSuchAttachmentException if a attachment with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public Attachment findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchModelException, SystemException {
-		return findByPrimaryKey(((Long)primaryKey).longValue());
+		throws NoSuchAttachmentException, SystemException {
+		Attachment attachment = fetchByPrimaryKey(primaryKey);
+
+		if (attachment == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			}
+
+			throw new NoSuchAttachmentException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
+		}
+
+		return attachment;
 	}
 
 	/**
@@ -853,18 +861,7 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 	 */
 	public Attachment findByPrimaryKey(long attachmentId)
 		throws NoSuchAttachmentException, SystemException {
-		Attachment attachment = fetchByPrimaryKey(attachmentId);
-
-		if (attachment == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + attachmentId);
-			}
-
-			throw new NoSuchAttachmentException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				attachmentId);
-		}
-
-		return attachment;
+		return findByPrimaryKey((Serializable)attachmentId);
 	}
 
 	/**
@@ -877,20 +874,8 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 	@Override
 	public Attachment fetchByPrimaryKey(Serializable primaryKey)
 		throws SystemException {
-		return fetchByPrimaryKey(((Long)primaryKey).longValue());
-	}
-
-	/**
-	 * Returns the attachment with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param attachmentId the primary key of the attachment
-	 * @return the attachment, or <code>null</code> if a attachment with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public Attachment fetchByPrimaryKey(long attachmentId)
-		throws SystemException {
 		Attachment attachment = (Attachment)EntityCacheUtil.getResult(AttachmentModelImpl.ENTITY_CACHE_ENABLED,
-				AttachmentImpl.class, attachmentId);
+				AttachmentImpl.class, primaryKey);
 
 		if (attachment == _nullAttachment) {
 			return null;
@@ -903,19 +888,19 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 				session = openSession();
 
 				attachment = (Attachment)session.get(AttachmentImpl.class,
-						Long.valueOf(attachmentId));
+						primaryKey);
 
 				if (attachment != null) {
 					cacheResult(attachment);
 				}
 				else {
 					EntityCacheUtil.putResult(AttachmentModelImpl.ENTITY_CACHE_ENABLED,
-						AttachmentImpl.class, attachmentId, _nullAttachment);
+						AttachmentImpl.class, primaryKey, _nullAttachment);
 				}
 			}
 			catch (Exception e) {
 				EntityCacheUtil.removeResult(AttachmentModelImpl.ENTITY_CACHE_ENABLED,
-					AttachmentImpl.class, attachmentId);
+					AttachmentImpl.class, primaryKey);
 
 				throw processException(e);
 			}
@@ -925,6 +910,18 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 		}
 
 		return attachment;
+	}
+
+	/**
+	 * Returns the attachment with the primary key or returns <code>null</code> if it could not be found.
+	 *
+	 * @param attachmentId the primary key of the attachment
+	 * @return the attachment, or <code>null</code> if a attachment with the primary key could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public Attachment fetchByPrimaryKey(long attachmentId)
+		throws SystemException {
+		return fetchByPrimaryKey((Serializable)attachmentId);
 	}
 
 	/**
