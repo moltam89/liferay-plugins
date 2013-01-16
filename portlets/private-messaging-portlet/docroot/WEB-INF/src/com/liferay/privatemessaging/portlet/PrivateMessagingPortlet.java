@@ -227,15 +227,21 @@ public class PrivateMessagingPortlet extends MVCPortlet {
 				themeDisplay);
 		}
 		catch (Exception e) {
-			if (e instanceof IOException) {
-				throw new PortalException("Unable to process attachment", e);
-			}
-			else if (e instanceof FileExtensionException ||
-					 e instanceof FileNameException ||
-					 e instanceof FileSizeException ||
-					 e instanceof UserScreenNameException) {
+			if (!(e instanceof FileExtensionException) &&
+				!(e instanceof FileNameException) &&
+				!(e instanceof FileSizeException)) {
 
-				SessionErrors.add(actionRequest, e.getClass());
+				_log.error(e);
+			}
+
+			try {
+				SessionErrors.add(
+					actionRequest, "error", getMessage(actionRequest, e));
+
+				actionResponse.sendRedirect(
+					ParamUtil.getString(actionRequest, "redirect"));
+			} catch (Exception ioe) {
+				_log.error(ioe);
 			}
 		}
 		finally {
@@ -316,9 +322,6 @@ public class PrivateMessagingPortlet extends MVCPortlet {
 	protected String getMessage(PortletRequest portletRequest, Exception key)
 		throws Exception {
 
-		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
 		String message = null;
 
 		if (key instanceof FileExtensionException) {
@@ -353,6 +356,9 @@ public class PrivateMessagingPortlet extends MVCPortlet {
 				"please-enter-a-file-with-a-valid-file-size-no-larger-than-x",
 				fileMaxSize);
 		}
+		else if (key instanceof IOException) {
+			message = translate(portletRequest, "unable-to-process-attachment");
+		}
 		else if (key instanceof UserScreenNameException) {
 			message = translate(
 				portletRequest, "the-following-users-were-not-found");
@@ -361,7 +367,8 @@ public class PrivateMessagingPortlet extends MVCPortlet {
 		}
 		else {
 			message = translate(
-				portletRequest, "your-request-failed-to-complete");
+				portletRequest,
+				"an-unexpected-error-occurred-while-sending-your-message");
 		}
 
 		return message;
