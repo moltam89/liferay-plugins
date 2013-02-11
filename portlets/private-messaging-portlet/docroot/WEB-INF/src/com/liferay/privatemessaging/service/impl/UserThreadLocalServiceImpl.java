@@ -18,6 +18,7 @@
 package com.liferay.privatemessaging.service.impl;
 
 import com.liferay.mail.service.MailServiceUtil;
+import com.liferay.portal.EmailAddressException;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -36,6 +37,7 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.Company;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Layout;
+import com.liferay.portal.model.LayoutConstants;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.CompanyLocalServiceUtil;
 import com.liferay.portal.service.GroupLocalServiceUtil;
@@ -56,6 +58,7 @@ import com.liferay.privatemessaging.service.base.UserThreadLocalServiceBaseImpl;
 import com.liferay.privatemessaging.util.PortletKeys;
 import com.liferay.privatemessaging.util.PrivateMessagingConstants;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 import java.text.Format;
@@ -64,6 +67,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
 /**
@@ -325,12 +329,7 @@ public class UserThreadLocalServiceImpl extends UserThreadLocalServiceBaseImpl {
 
 		// Email
 
-		try {
-			sendEmail(mbMessage.getMessageId(), themeDisplay);
-		}
-		catch (Exception e) {
-			throw new SystemException(e);
-		}
+		sendEmail(mbMessage.getMessageId(), themeDisplay);
 
 		// Notifications
 
@@ -339,14 +338,47 @@ public class UserThreadLocalServiceImpl extends UserThreadLocalServiceBaseImpl {
 		return mbMessage;
 	}
 
+	protected InternetAddress createEmailAddress(String emailAddress)
+		throws EmailAddressException {
+
+		InternetAddress internetAddress = null;
+
+		try {
+			internetAddress = new InternetAddress(emailAddress);
+		}
+		catch (AddressException ae) {
+			throw new EmailAddressException(ae);
+		}
+
+		return internetAddress;
+	}
+
+	protected String getTemplate(String path) throws SystemException {
+		String template = null;
+
+		try {
+			template = StringUtil.read(
+				PrivateMessagingPortlet.class.getResourceAsStream(path));
+		}
+		catch (IOException ioe) {
+			throw new SystemException(ioe);
+		}
+
+		return template;
+	}
+
 	protected String getThreadURL(
 			User user, long threadId, ThemeDisplay themeDisplay)
-		throws Exception {
+		throws PortalException, SystemException {
 
 		Group group = user.getGroup();
 
 		long plid = PortalUtil.getPlidFromPortletId(
 			group.getGroupId(), true, PortletKeys.PRIVATE_MESSAGING);
+
+		if (plid == LayoutConstants.DEFAULT_PLID) {
+			return null;
+		}
 
 		Layout layout = LayoutLocalServiceUtil.getLayout(plid);
 
@@ -391,7 +423,7 @@ public class UserThreadLocalServiceImpl extends UserThreadLocalServiceBaseImpl {
 	}
 
 	protected void sendEmail(long mbMessageId, ThemeDisplay themeDisplay)
-		throws Exception {
+		throws PortalException, SystemException {
 
 		MBMessage mbMessage = MBMessageLocalServiceUtil.getMBMessage(
 			mbMessageId);
@@ -401,11 +433,10 @@ public class UserThreadLocalServiceImpl extends UserThreadLocalServiceBaseImpl {
 		Company company = CompanyLocalServiceUtil.getCompany(
 			sender.getCompanyId());
 
-		InternetAddress from = new InternetAddress(company.getEmailAddress());
+		InternetAddress from = createEmailAddress(company.getEmailAddress());
 
-		String subject = StringUtil.read(
-			PrivateMessagingPortlet.class.getResourceAsStream(
-				"dependencies/notification_message_subject.tmpl"));
+		String subject = getTemplate(
+			"dependencies/notification_message_subject.tmpl");
 
 		subject = StringUtil.replace(
 			subject,
@@ -416,9 +447,8 @@ public class UserThreadLocalServiceImpl extends UserThreadLocalServiceBaseImpl {
 				company.getName(), sender.getFullName()
 			});
 
-		String body = StringUtil.read(
-			PrivateMessagingPortlet.class.getResourceAsStream(
-				"dependencies/notification_message_body.tmpl"));
+		String body = getTemplate(
+			"dependencies/notification_message_body.tmpl");
 
 		long portraitId = sender.getPortraitId();
 		String tokenId = WebServerServletTokenUtil.getToken(
@@ -459,7 +489,7 @@ public class UserThreadLocalServiceImpl extends UserThreadLocalServiceBaseImpl {
 				continue;
 			}
 
-			InternetAddress to = new InternetAddress(
+			InternetAddress to = createEmailAddress(
 				recipient.getEmailAddress());
 
 			Format dateFormatDateTime =
