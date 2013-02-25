@@ -35,6 +35,7 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -118,15 +119,33 @@ public class ChatPollerProcessor extends BasePollerProcessor {
 
 		long createDate = status.getModifiedDate();
 
-		if (pollerRequest.isInitialRequest()) {
+		boolean initialRequest = pollerRequest.isInitialRequest();
+
+		if (initialRequest) {
 			createDate = createDate - Time.DAY;
 		}
+
+		boolean initialNewMessage = false;
 
 		List<Entry> entries = EntryLocalServiceUtil.getNewEntries(
 			pollerRequest.getUserId(), createDate, 0,
 			PortletPropsValues.BUDDY_LIST_MAX_BUDDIES);
 
 		entries = ListUtil.copy(entries);
+
+		if (initialRequest) {
+			Iterator<Entry> itr = entries.iterator();
+
+			while (itr.hasNext()) {
+				Entry entry = itr.next();
+
+				if (entry.getCreateDate() > status.getModifiedDate()) {
+					itr.remove();
+
+					initialNewMessage = true;
+				}
+			}
+		}
 
 		Collections.reverse(entries);
 
@@ -183,7 +202,7 @@ public class ChatPollerProcessor extends BasePollerProcessor {
 			}
 		}
 
-		if (updatePresence) {
+		if (updatePresence && !initialNewMessage) {
 			StatusLocalServiceUtil.updateStatus(
 				pollerRequest.getUserId(), pollerRequest.getTimestamp());
 		}
