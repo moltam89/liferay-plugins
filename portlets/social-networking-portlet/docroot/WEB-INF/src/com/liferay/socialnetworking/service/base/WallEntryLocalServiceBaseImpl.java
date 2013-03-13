@@ -118,7 +118,7 @@ public abstract class WallEntryLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	public WallEntry deleteWallEntry(WallEntry wallEntry)
-		throws SystemException {
+		throws PortalException, SystemException {
 		return wallEntryPersistence.remove(wallEntry);
 	}
 
