@@ -69,7 +69,7 @@ public class WallActivityInterpreter extends BaseSocialActivityInterpreter {
 			themeDisplay.getPortalURL() +
 				themeDisplay.getPathFriendlyURLPublic() + StringPool.SLASH +
 					HtmlUtil.escapeURL(receiverUser.getScreenName()) +
-						"/profile/-/wall/" + activity.getClassPK();
+						"/home/-/wall/" + activity.getClassPK();
 
 		// Title
 

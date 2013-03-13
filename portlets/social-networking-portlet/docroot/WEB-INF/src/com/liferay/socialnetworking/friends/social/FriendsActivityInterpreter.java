@@ -45,8 +45,6 @@ public class FriendsActivityInterpreter extends BaseSocialActivityInterpreter {
 
 		User creatorUser = UserLocalServiceUtil.getUserById(
 			activity.getUserId());
-		User receiverUser = UserLocalServiceUtil.getUserById(
-			activity.getReceiverUserId());
 
 		int activityType = activity.getType();
 
@@ -66,35 +64,10 @@ public class FriendsActivityInterpreter extends BaseSocialActivityInterpreter {
 		String title = StringPool.BLANK;
 
 		if (activityType == FriendsActivityKeys.ADD_FRIEND) {
-			sb = new StringBundler(8);
-
-			sb.append("<a href=\"");
-			sb.append(themeDisplay.getPortalURL());
-			sb.append(themeDisplay.getPathFriendlyURLPublic());
-			sb.append(StringPool.SLASH);
-			sb.append(HtmlUtil.escapeURL(creatorUser.getScreenName()));
-			sb.append("/profile\">");
-			sb.append(creatorUserName);
-			sb.append("</a>");
-
-			String creatorUserNameURL = sb.toString();
-
-			sb = new StringBundler(8);
-
-			sb.append("<a href=\"");
-			sb.append(themeDisplay.getPortalURL());
-			sb.append(themeDisplay.getPathFriendlyURLPublic());
-			sb.append(StringPool.SLASH);
-			sb.append(HtmlUtil.escapeURL(receiverUser.getScreenName()));
-			sb.append("/profile\">");
-			sb.append(receiverUserName);
-			sb.append("</a>");
-
-			String receiverUserNameURL = sb.toString();
 
 			title = themeDisplay.translate(
 				"activity-social-networking-summary-add-friend",
-				new Object[] {creatorUserNameURL, receiverUserNameURL});
+				new Object[] {creatorUserName, receiverUserName});
 		}
 
 		// Body
