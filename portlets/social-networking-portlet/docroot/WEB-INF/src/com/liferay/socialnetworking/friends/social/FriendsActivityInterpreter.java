@@ -14,15 +14,21 @@
 
 package com.liferay.socialnetworking.friends.social;
 
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.social.model.BaseSocialActivityInterpreter;
 import com.liferay.portlet.social.model.SocialActivity;
+import com.liferay.socialnetworking.util.PortletPropsValues;
+import com.liferay.socialnetworking.util.SocialNetworkingUtil;
 
 /**
  * @author Brian Wing Shun Chan
@@ -64,41 +70,11 @@ public class FriendsActivityInterpreter extends BaseSocialActivityInterpreter {
 			return new Object[0];
 		}
 
-		StringBundler sb = new StringBundler(5);
-
-		sb.append(serviceContext.getPortalURL());
-		sb.append(serviceContext.getPathFriendlyURLPublic());
-		sb.append(StringPool.SLASH);
-
-		User creatorUser = UserLocalServiceUtil.getUserById(
-			activity.getUserId());
-
-		sb.append(HtmlUtil.escapeURL(creatorUser.getScreenName()));
-
-		sb.append("/profile");
-
-		String creatorUserName = getUserName(
+		String creatorUserNameURL = getUserProfileURL(
 			activity.getUserId(), serviceContext);
 
-		String creatorUserNameURL = wrapLink(sb.toString(), creatorUserName);
-
-		sb = new StringBundler(5);
-
-		sb.append(serviceContext.getPortalURL());
-		sb.append(serviceContext.getPathFriendlyURLPublic());
-		sb.append(StringPool.SLASH);
-
-		User receiverUser = UserLocalServiceUtil.getUserById(
-			activity.getReceiverUserId());
-
-		sb.append(HtmlUtil.escapeURL(receiverUser.getScreenName()));
-
-		sb.append("/profile");
-
-		String receiverUserName = getUserName(
+		String receiverUserNameURL = getUserProfileURL(
 			activity.getReceiverUserId(), serviceContext);
-
-		String receiverUserNameURL = wrapLink(sb.toString(), receiverUserName);
 
 		return new Object[] {creatorUserNameURL, receiverUserNameURL};
 	}
@@ -122,6 +98,26 @@ public class FriendsActivityInterpreter extends BaseSocialActivityInterpreter {
 		String actionId, ServiceContext serviceContext) {
 
 		return true;
+	}
+
+	private String getUserProfileURL(long userId, ServiceContext serviceContext)
+		throws PortalException, SystemException {
+
+		String urlPattern = PortletPropsValues.FRIENDS_USER_PROFILE_URL;
+
+		if (Validator.isNull(urlPattern)) {
+			return getUserName(userId, serviceContext);
+		}
+
+		User user = UserLocalServiceUtil.getUserById(userId);
+
+		StringBundler sb = new StringBundler(3);
+
+		sb.append(serviceContext.getPortalURL());
+		sb.append(PortalUtil.getPathContext());
+		sb.append(SocialNetworkingUtil.replaceVariables(urlPattern, user));
+
+		return wrapLink(sb.toString(), HtmlUtil.escape(user.getFullName()));
 	}
 
 	private static final String[] _CLASS_NAMES = {User.class.getName()};
