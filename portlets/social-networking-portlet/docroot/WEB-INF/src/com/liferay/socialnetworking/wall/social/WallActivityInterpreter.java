@@ -17,8 +17,12 @@ package com.liferay.socialnetworking.wall.social;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.model.Layout;
+import com.liferay.portal.model.LayoutTypePortlet;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.permission.PermissionChecker;
+import com.liferay.portal.service.LayoutLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.social.model.BaseSocialActivityInterpreter;
@@ -27,6 +31,9 @@ import com.liferay.portlet.social.model.SocialRelationConstants;
 import com.liferay.portlet.social.service.SocialRelationLocalServiceUtil;
 import com.liferay.socialnetworking.model.WallEntry;
 import com.liferay.socialnetworking.service.WallEntryLocalServiceUtil;
+import com.liferay.socialnetworking.util.PortletKeys;
+
+import java.util.List;
 
 /**
  * @author Brian Wing Shun Chan
@@ -58,6 +65,12 @@ public class WallActivityInterpreter extends BaseSocialActivityInterpreter {
 			SocialActivity activity, ServiceContext serviceContext)
 		throws Exception {
 
+		String path = getPath(activity);
+
+		if (Validator.isNull(path)) {
+			return null;
+		}
+
 		StringBundler sb = new StringBundler(6);
 
 		sb.append(serviceContext.getPortalURL());
@@ -69,10 +82,46 @@ public class WallActivityInterpreter extends BaseSocialActivityInterpreter {
 
 		sb.append(HtmlUtil.escapeURL(receiverUser.getScreenName()));
 
-		sb.append("/profile/-/wall/");
+		sb.append(path);
 		sb.append(activity.getClassPK());
 
 		return sb.toString();
+	}
+
+	@Override
+	protected String getPath(SocialActivity activity) {
+		User receiverUser = null;
+
+		List<Layout> layouts = null;;
+
+		try {
+			receiverUser = UserLocalServiceUtil.getUserById(
+				activity.getReceiverUserId());
+
+			layouts = LayoutLocalServiceUtil.getLayouts(
+				receiverUser.getGroup().getPrimaryKey(), false);
+		}
+		catch (Exception e) {
+			return null;
+		}
+
+		for (Layout layout : layouts) {
+			LayoutTypePortlet layoutTypePortlet =
+				(LayoutTypePortlet)layout.getLayoutType();
+
+			try {
+				if (!layoutTypePortlet.hasPortletId(PortletKeys.WALL)) {
+					continue;
+				}
+			}
+			catch (Exception e) {
+				continue;
+			}
+
+			return layout.getFriendlyURL()+"/-/wall/";
+		}
+
+		return null;
 	}
 
 	@Override
