@@ -17,6 +17,8 @@ package com.liferay.chat.service.impl;
 import com.liferay.chat.jabber.JabberUtil;
 import com.liferay.chat.model.Entry;
 import com.liferay.chat.service.base.EntryLocalServiceBaseImpl;
+import com.liferay.portal.kernel.dao.db.DB;
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
@@ -39,13 +41,21 @@ public class EntryLocalServiceImpl extends EntryLocalServiceBaseImpl {
 			entryPersistence.remove(entry);
 		}
 
+		DB db = DBFactoryUtil.getDB();
+
+		String dbType = db.getType();
+
+		int maxContentLength = 500;
+
+		if (dbType.equals(DB.TYPE_SQLSERVER)) {
+			maxContentLength = 442;
+		}
+
 		if (Validator.isNull(content)) {
 			content = StringPool.BLANK;
 		}
-		else {
-			if (content.length() > 500) {
-				content = content.substring(0, 500);
-			}
+		else if (content.length() > maxContentLength) {
+			content = content.substring(0, maxContentLength);
 		}
 
 		long entryId = counterLocalService.increment();
