@@ -1316,7 +1316,7 @@ AUI().use(
 
 					var entryProcessed = (entryIds.indexOf('|' + entry.entryId) > -1);
 
-					if (!entryProcessed || (instance._initialRequest && !entry.flag)) {
+					if (!entryProcessed || instance._initialRequest) {
 						var userId = entry.toUserId;
 						var incoming = false;
 
@@ -1327,7 +1327,7 @@ AUI().use(
 
 						var buddy = instance._buddies[userId];
 
-						if (buddy && incoming) {
+						if (buddy && (incoming || instance._initialRequest)) {
 							var chat = instance._chatSessions[userId];
 
 							if (!chat && entry.content) {
