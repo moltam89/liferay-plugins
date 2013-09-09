@@ -25,11 +25,13 @@ import com.liferay.portal.kernel.workflow.WorkflowTaskManager;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.RoleConstants;
 import com.liferay.portal.model.User;
+import com.liferay.portal.model.UserGroup;
 import com.liferay.portal.model.UserGroupGroupRole;
 import com.liferay.portal.model.UserGroupRole;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserGroupGroupRoleLocalServiceUtil;
+import com.liferay.portal.service.UserGroupLocalServiceUtil;
 import com.liferay.portal.service.UserGroupRoleLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.workflow.kaleo.model.KaleoInstanceToken;
@@ -228,6 +230,20 @@ public class WorkflowTaskManagerImpl implements WorkflowTaskManager {
 						kaleoTaskAssignment.getAssigneeClassPK());
 
 					pooledActors.addAll(userIds);
+					
+					List<UserGroup> userGroups =
+						UserGroupLocalServiceUtil.getRoleUserGroups(
+							kaleoTaskAssignment.getAssigneeClassPK());
+					
+					for (UserGroup userGroup : userGroups) {
+						List<User> users =
+							UserLocalServiceUtil.getUserGroupUsers(
+								userGroup.getUserGroupId());
+
+						for (User user : users) {
+							pooledActors.add(user.getUserId());
+						}
+					}
 				}
 			}
 
