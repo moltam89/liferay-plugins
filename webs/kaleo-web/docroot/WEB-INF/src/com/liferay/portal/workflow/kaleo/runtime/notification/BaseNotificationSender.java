@@ -19,10 +19,12 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.RoleConstants;
 import com.liferay.portal.model.User;
+import com.liferay.portal.model.UserGroup;
 import com.liferay.portal.model.UserGroupGroupRole;
 import com.liferay.portal.model.UserGroupRole;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.UserGroupGroupRoleLocalServiceUtil;
+import com.liferay.portal.service.UserGroupLocalServiceUtil;
 import com.liferay.portal.service.UserGroupRoleLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.workflow.kaleo.definition.RecipientType;
@@ -215,33 +217,42 @@ public abstract class BaseNotificationSender implements NotificationSender {
 	protected List<User> getRoleUsers(
 			long roleId, int roleType, ExecutionContext executionContext)
 		throws Exception {
-
-		if (roleType == RoleConstants.TYPE_REGULAR) {
-			return UserLocalServiceUtil.getRoleUsers(roleId);
-		}
-
+		
 		List<User> users = new ArrayList<User>();
 
-		KaleoInstanceToken kaleoInstanceToken =
-			executionContext.getKaleoInstanceToken();
+		if (roleType == RoleConstants.TYPE_REGULAR) {
+			users.addAll(UserLocalServiceUtil.getRoleUsers(roleId));
+			
+			List<UserGroup> userGroups =
+				UserGroupLocalServiceUtil.getRoleUserGroups(roleId);
 
-		List<UserGroupRole> userGroupRoles =
-			UserGroupRoleLocalServiceUtil.getUserGroupRolesByGroupAndRole(
-				kaleoInstanceToken.getGroupId(), roleId);
-
-		for (UserGroupRole userGroupRole : userGroupRoles) {
-			users.add(userGroupRole.getUser());
+			for (UserGroup userGroup : userGroups) {
+				users.addAll(UserLocalServiceUtil.getUserGroupUsers(
+					userGroup.getUserGroupId()));
+			}
 		}
-
-		List<UserGroupGroupRole> userGroupGroupRoles =
-			UserGroupGroupRoleLocalServiceUtil.
-				getUserGroupGroupRolesByGroupAndRole(
+		else {
+			KaleoInstanceToken kaleoInstanceToken =
+				executionContext.getKaleoInstanceToken();
+	
+			List<UserGroupRole> userGroupRoles =
+				UserGroupRoleLocalServiceUtil.getUserGroupRolesByGroupAndRole(
 					kaleoInstanceToken.getGroupId(), roleId);
-
-		for (UserGroupGroupRole userGroupGroupRole : userGroupGroupRoles) {
-			users.addAll(
-				UserLocalServiceUtil.getUserGroupUsers(
-					userGroupGroupRole.getUserGroupId()));
+	
+			for (UserGroupRole userGroupRole : userGroupRoles) {
+				users.add(userGroupRole.getUser());
+			}
+	
+			List<UserGroupGroupRole> userGroupGroupRoles =
+				UserGroupGroupRoleLocalServiceUtil.
+					getUserGroupGroupRolesByGroupAndRole(
+						kaleoInstanceToken.getGroupId(), roleId);
+	
+			for (UserGroupGroupRole userGroupGroupRole : userGroupGroupRoles) {
+				users.addAll(
+					UserLocalServiceUtil.getUserGroupUsers(
+						userGroupGroupRole.getUserGroupId()));
+			}
 		}
 
 		return users;
