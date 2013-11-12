@@ -52,13 +52,13 @@ if (entryId > 0) {
 	</aui:button-row>
 </aui:form>
 
-<aui:script use="aui-io-request-deprecated">
+<aui:script use="aui-io-request-deprecated,datatype-number">
 	Liferay.Util.focusFormField(document.<portlet:namespace />addEntry.<portlet:namespace />fullName);
 
 	var form = A.one('#<portlet:namespace />addEntry');
 
 	var failureCallback = function() {
-		var errorMessage = A.one('#<portlet:namespace/>errorMessage');
+		var errorMessage = A.one('#<portlet:namespace />errorMessage');
 
 		if (errorMessage) {
 			errorMessage.html('<span class="alert alert-error"><liferay-ui:message key="an-error-occurred-while-retrieving-the-users-information" unicode="<%= true %>" /></span>');
