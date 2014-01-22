@@ -19,6 +19,7 @@ package com.liferay.so.service.impl;
 
 import com.liferay.mail.service.MailServiceUtil;
 import com.liferay.portal.NoSuchUserException;
+import com.liferay.portal.NoSuchWorkflowDefinitionLinkException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -40,6 +41,7 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.model.UserNotificationDeliveryConstants;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserNotificationEventLocalServiceUtil;
+import com.liferay.portal.service.WorkflowDefinitionLinkLocalServiceUtil;
 import com.liferay.so.MemberRequestAlreadyUsedException;
 import com.liferay.so.MemberRequestInvalidUserException;
 import com.liferay.so.invitemembers.util.InviteMembersConstants;
@@ -261,7 +263,8 @@ public class MemberRequestLocalServiceImpl
 	}
 
 	protected String getCreateAccountURL(
-		MemberRequest memberRequest, ServiceContext serviceContext) {
+		MemberRequest memberRequest, ServiceContext serviceContext)
+			throws PortalException, SystemException {
 
 		String createAccountURL = (String)serviceContext.getAttribute(
 			"createAccountURL");
@@ -270,13 +273,22 @@ public class MemberRequestLocalServiceImpl
 			createAccountURL = serviceContext.getPortalURL();
 		}
 
-		String redirectURL = getRedirectURL(serviceContext);
+		try {
+			WorkflowDefinitionLinkLocalServiceUtil.
+				getDefaultWorkflowDefinitionLink(
+					memberRequest.getCompanyId(), User.class.getName(), 0, 0);
+		}
+		catch (NoSuchWorkflowDefinitionLinkException nswdle) {
+			String redirectURL = getRedirectURL(serviceContext);
 
-		redirectURL = HttpUtil.addParameter(
-			redirectURL, "key", memberRequest.getKey());
+			redirectURL =
+				HttpUtil.addParameter(
+					redirectURL, "key", memberRequest.getKey());
 
-		createAccountURL = HttpUtil.addParameter(
-			createAccountURL, "redirect", redirectURL);
+			createAccountURL =
+				HttpUtil.addParameter(
+					createAccountURL, "redirect", redirectURL);
+		}
 
 		return createAccountURL;
 	}
