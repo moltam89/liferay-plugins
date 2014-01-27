@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.notifications.UserNotificationManagerUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -260,6 +261,20 @@ public class MemberRequestLocalServiceImpl
 		return memberRequest;
 	}
 
+	protected static String addParameterWithPortletId(
+		String url, String name, String value) {
+
+		String portletId = HttpUtil.getParameter(url, "p_p_id", false);
+
+		if (!Validator.isBlank(portletId)) {
+			StringBundler sb = new StringBundler(
+				new String[] {"_", portletId, "_", name});
+			name = sb.toString();
+		}
+
+		return HttpUtil.addParameter(url, name, value);
+	}
+
 	protected String getCreateAccountURL(
 		MemberRequest memberRequest, ServiceContext serviceContext) {
 
@@ -272,10 +287,10 @@ public class MemberRequestLocalServiceImpl
 
 		String redirectURL = getRedirectURL(serviceContext);
 
-		redirectURL = HttpUtil.addParameter(
+		redirectURL = addParameterWithPortletId(
 			redirectURL, "key", memberRequest.getKey());
 
-		createAccountURL = HttpUtil.addParameter(
+		createAccountURL = addParameterWithPortletId(
 			createAccountURL, "redirect", redirectURL);
 
 		return createAccountURL;
@@ -290,7 +305,7 @@ public class MemberRequestLocalServiceImpl
 
 		String redirectURL = getRedirectURL(serviceContext);
 
-		return HttpUtil.addParameter(loginURL, "redirect", redirectURL);
+		return addParameterWithPortletId(loginURL, "redirect", redirectURL);
 	}
 
 	protected String getRedirectURL(ServiceContext serviceContext) {
