@@ -76,7 +76,9 @@ public class CalendarBookingApprovalWorkflowImpl
 		throws PortalException {
 
 		if (status == CalendarBookingWorkflowConstants.STATUS_PENDING) {
-			if (isAutoApproveCalendarBooking(userId, calendarBooking)) {
+			if (isAutoApproveCalendarBooking(userId, calendarBooking) &&
+				!hasEngagedResources(calendarBooking)) {
+
 				status = CalendarBookingWorkflowConstants.STATUS_APPROVED;
 			}
 			else {
@@ -97,6 +99,31 @@ public class CalendarBookingApprovalWorkflowImpl
 		invokeTransition(
 			userId, calendarBooking,
 			CalendarBookingWorkflowConstants.STATUS_PENDING, serviceContext);
+	}
+
+	protected boolean hasEngagedResources(CalendarBooking calendarBooking)
+		throws PortalException {
+
+		long calendarId = calendarBooking.getCalendarId();
+		long calendarBookingId = calendarBooking.getCalendarBookingId();
+
+		long startTime = calendarBooking.getStartTime();
+		long endTime = calendarBooking.getEndTime();
+
+		List<CalendarBooking> calendarBookings =
+			CalendarBookingLocalServiceUtil.getCalendarBookings(calendarId);
+
+		for (CalendarBooking othercalendarBooking : calendarBookings) {
+			if ((othercalendarBooking.getCalendarBookingId() !=
+					calendarBookingId) &&
+				(startTime < othercalendarBooking.getEndTime()) &&
+				(othercalendarBooking.getStartTime() < endTime)) {
+
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	protected boolean isAutoApproveCalendarBooking(
